@@ -1,0 +1,28 @@
+{
+  "pages": [
+    "pages/index/main",
+    "pages/logs/main" ,
+    "pages/news/main"  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "118地下管线挖掘",
+    "navigationBarTextStyle": "black"
+  }
+  ,
+    "tabBar": {
+      "color": "#202020",
+      "selectedColor": "#ec5045",
+      "list": [{
+        "pagePath": "pages/index/main",
+        "text": "首页",
+        "iconPath": "/static/images/shouye.png",
+        "selectedIconPath": "/static/images/shouye.png"},{
+        "pagePath": "pages/news/main",
+        "text": "我的",
+        "iconPath": "/static/images/xiaoxi.png",
+        "selectedIconPath": "/static/images/xiaoxi.png"
+      }]
+    }
+
+}
