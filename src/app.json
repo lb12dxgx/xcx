@@ -1,8 +1,9 @@
 {
   "pages": [
     "pages/index/main",
+    "pages/my/main",
     "pages/logs/main" ,
-    "pages/news/main"  ],
+    "pages/news/main"  ], 
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#fff",
@@ -18,7 +19,7 @@
         "text": "首页",
         "iconPath": "/static/images/shouye.png",
         "selectedIconPath": "/static/images/shouye.png"},{
-        "pagePath": "pages/news/main",
+        "pagePath": "pages/my/main",
         "text": "我的",
         "iconPath": "/static/images/xiaoxi.png",
         "selectedIconPath": "/static/images/xiaoxi.png"
