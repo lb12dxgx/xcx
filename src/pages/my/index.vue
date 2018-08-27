@@ -9,56 +9,60 @@
          {{userInfo.nickName}}
        </div> 
     </div>
-     <div class="my-reg">
-       <div class="weui-cell weui-cell_vcode">
+     <div class="weui-cells weui-cells_form">
+       <div class="weui-cell ">
                   <div class="weui-cell__hd">
                       <label class="weui-label">手机号</label>
                   </div>
                   <div class="weui-cell__bd">
-                      <input class="weui-input" type="tel" placeholder="请输入手机号">
+                      <input class="weui-input" type="number" pattern="[0-9]*"  placeholder="请输入手机号" v-model="telphone">
                   </div>
-                  <div class="weui-cell__ft">
-                      <button class="weui-vcode-btn">获取验证码</button>
-                  </div>
+                  
       </div>
-       <div class="weui-cell weui-cell_vcode">
-                  <div class="weui-cell__hd">
-                      <label class="weui-label">验证码</label>
-                  </div>
-                  <div class="weui-cell__bd">
-                      <input class="weui-input" type="tel" placeholder="请输入验证码">
-                  </div>
-            
+      <div class="weui-cell ">
+            <div class="weui-cell__hd">
+                <label class="weui-label">验证码</label>
+            </div>
+            <div class="weui-cell__bd">
+                <input class="weui-input" type="number" pattern="[0-9]*" placeholder="请输入验证码" v-model="smscode">
+            </div>
+            <div class="weui-cell__ft">
+                <a  class="weui-btn weui-btn_mini weui-btn_primary" @click="sendSms" >发送验证码</a>
+            </div>  
+      </div>
+      <div class="weui-cell ">
+            <div class="weui-cell__hd">
+                <label class="weui-label">姓名</label>
+            </div>
+            <div class="weui-cell__bd">
+                <input class="weui-input" type="text" placeholder="请输入姓名" v-model="name">
+            </div>
+           
       </div>
     </div>
-  </div>
+         
+    <a href="javascript:;" class="weui-btn weui-btn_min weui-btn_primary" style="width:30%;margin-top:20px">登录</a> 
+    
+    </div>
+ 
 
 </template>
 
 <script>
-
+import {isExitByTelphone,getSmsCode,validateSmsCode} from '../../api/api';
 export default {
   data () {
     return {
-      motto: 'Hello World',
-      userInfo: {},
-      movies:[{'url':'/static/images/banner.jpg'},{'url':'/static/images/banner.jpg'}],
-      pages:[{'url':'/static/images/shigu.png','name':'事故上报'},
-              {'url':'/static/images/zhaobiao.png','name':'施工申请'},
-              {'url':'/static/images/caigou.png','name':'行业资讯'},
-              {'url':'/static/images/huiyi.png','name':'产业服务'},
-              {'url':'/static/images/qiye.png','name':'工作必备'},
-              {'url':'/static/images/chanpin.png','name':'知识库'}]
-
+      userInfo:{},
+      telphone:'',
+      smscode:'',
+      name:''
     }
+     
   },
 
 
   methods: {
-    bindViewTap () {
-      const url = '../logs/main'
-      wx.navigateTo({ url })
-    },
     getUserInfo () {
       console.log("----");
       // 调用登录接口
@@ -73,8 +77,11 @@ export default {
         }
       })
     },
-    clickHandle (msg, ev) {
-      console.log('clickHandle:', msg, ev)
+    sendSms(){
+      console.log('telphone==='+this.telphone)
+      isExitByTelphone({'telphone':this.telphone,"type":0}).then((res) => {
+        console.log('res.retData==='+res.retData)
+      })
     }
   },
 
