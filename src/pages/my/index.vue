@@ -3,10 +3,10 @@
   <div class="my">
     <div class="my-head">
        <div >
-        <img :src="userInfo.avatarUrl" />
+        <img :src="avatarUrl" />
        </div>
        <div class="my-name">
-         {{userInfo.nickName}}
+         {{nickName}}
        </div> 
     </div>
      <div class="weui-cells weui-cells_form">
@@ -49,14 +49,19 @@
 </template>
 
 <script>
-import {isExitByTelphone,getSmsCode,validateSmsCode,getOpenId} from '../../api/api';
+import {isExitByTelphone,getSmsCode,validateSmsCode,getOpenId,regUser} from '../../api/api';
 export default {
   data () {
     return {
-      userInfo:{},
-      telphone:'',
-      smscode:'',
-      name:'',
+      openid:'',
+      avatarUrl:'',
+      nickName:'',
+
+      telphone:'13720053036',
+      smscode:'2688',
+      name:'张三',
+      
+      regInfo:{},
       
     }
      
@@ -70,13 +75,13 @@ export default {
       wx.login({
         success: (r) => {
           getOpenId({"code":r.code}).then((res) => {
-            let openid=res.retData.openid;
+            this.openid=res.retData.openid;
             console.log('res.retData==='+res.retData)
               wx.getUserInfo({
                 success: (res) => {
-                  this.userInfo = res.userInfo;
-                  this.userInfo.openid=openid;
-                  console.log(this.userInfo);
+                  this.avatarUrl = res.userInfo.avatarUrl;
+                  this.nickName = res.userInfo.nickName;
+                 
                 }
               });
           });
@@ -104,11 +109,11 @@ export default {
           }) 
         }else{
           getSmsCode({'telphone':this.telphone,'openId':this.openId,"type":0}).then((res) => {
-            console.log(res.retData);
+            this.regInfo=res.retData;
           })
         }
       })
-    }
+    },
 
     regUser(){
 
@@ -120,8 +125,8 @@ export default {
           });
           return false;
        };
-
-       if(this.smscode==''||this.smscode!=4){
+       console.log(this.smscode.length);
+       if(this.smscode==''||this.smscode.length!=4){
           wx.showToast({
             title: '验证码格式不对',
             duration: 2000
@@ -133,22 +138,49 @@ export default {
        .then((res)=>{
         if(!res.retData){
           wx.showToast({
-            title: '验证码不符合'
+            title: '验证码不符合',
             duration: 2000
           }) 
         }else{
-          getSmsCode({'telphone':this.telphone,'openId':this.openId,"type":0}).then((res) => {
-            console.log(res.retData);
-          })
+          this.regInfo.telphone=this.telphone;
+         this.regInfo.userName=this.telphone;
+         this.regInfo.openId=this.openId;
+         this.regInfo.avatarUrl=this.avatarUrl;
+         this.regInfo.nickName=this.nickName;
+
+         regUser(this.regInfo) .then((res)=>{
+            this.regInfo=res.retData;
+            var regInfostr=JSON.stringify(this.regInfo);
+            console.log(regInfostr);
+            wx.setStorageSync({
+              key:"regInfo ",
+              data:regInfostr
+            });
+
+            wx.switchTab({
+              url: '/pages/index/main'
+            })
+           
+         })
        }
 
-    }
+    })
   },
-
-   mounted() {
-    this.getUserInfo()
+},
+   onShow() {
+    console.log(wx.getStorageSync('regInfo'));
+    if(wx.getStorageSync('regInfo')!=''){
+         var regInfostr=wx.getStorageSync('regInfo');
+         this.regInfo=JSON.parse(regInfostr);
+         this.avatarUrl = this.regInfo.avatarUrl;
+         this.nickName = this.regInfo.nickName;
+         this.openid=this.regInfo.openid;
+    }else{
+        this.getUserInfo();
+    }
   }
 }
+
 </script>
 
 <style scoped>
