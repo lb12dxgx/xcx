@@ -49,14 +49,15 @@
 </template>
 
 <script>
-import {isExitByTelphone,getSmsCode,validateSmsCode} from '../../api/api';
+import {isExitByTelphone,getSmsCode,validateSmsCode,getOpenId} from '../../api/api';
 export default {
   data () {
     return {
       userInfo:{},
       telphone:'',
       smscode:'',
-      name:''
+      name:'',
+      
     }
      
   },
@@ -67,13 +68,19 @@ export default {
       console.log("----");
       // 调用登录接口
       wx.login({
-        success: () => {
-          wx.getUserInfo({
-            success: (res) => {
-              this.userInfo = res.userInfo;
-              console.log(res.userInfo);
-            }
-          })
+        success: (r) => {
+          getOpenId({"code":r.code}).then((res) => {
+            let openid=res.retData.openid;
+            console.log('res.retData==='+res.retData)
+              wx.getUserInfo({
+                success: (res) => {
+                  this.userInfo = res.userInfo;
+                  this.userInfo.openid=openid;
+                  console.log(this.userInfo);
+                }
+              });
+          });
+          
         }
       })
     },
