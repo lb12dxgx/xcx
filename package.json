@@ -10,10 +10,9 @@
     "build": "node build/build.js"
   },
   "dependencies": {
-	"flyio": "^0.6.0",
+    "flyio": "^0.6.0",
     "mpvue": "^1.0.11",
     "qs": "^6.5.2"
-
   },
   "devDependencies": {
     "mpvue-loader": "^1.1.2",

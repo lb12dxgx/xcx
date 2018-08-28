@@ -41,7 +41,7 @@
       </div>
     </div>
          
-    <a href="javascript:;" class="weui-btn weui-btn_min weui-btn_primary" style="width:30%;margin-top:20px">登录</a> 
+    <a  class="weui-btn weui-btn_min weui-btn_primary" style="width:70%;margin-top:20px" @click="regUser">登录</a> 
     
     </div>
  
@@ -85,10 +85,63 @@ export default {
       })
     },
     sendSms(){
-      console.log('telphone==='+this.telphone)
+      
+       var myreg=/^[1][3,4,5,7,8][0-9]{9}$/;
+       if(!myreg.test(this.telphone)||this.telphone==''){
+          wx.showToast({
+            title: '手机号格式不对',
+            duration: 2000
+          });
+          return false;
+       }
+
       isExitByTelphone({'telphone':this.telphone,"type":0}).then((res) => {
-        console.log('res.retData==='+res.retData)
+        
+        if(!res.retData){
+          wx.showToast({
+            title: '手机号已被绑定',
+            duration: 2000
+          }) 
+        }else{
+          getSmsCode({'telphone':this.telphone,'openId':this.openId,"type":0}).then((res) => {
+            console.log(res.retData);
+          })
+        }
       })
+    }
+
+    regUser(){
+
+      var myreg=/^[1][3,4,5,7,8][0-9]{9}$/;
+       if(!myreg.test(this.telphone)||this.telphone==''){
+          wx.showToast({
+            title: '手机号格式不对',
+            duration: 2000
+          });
+          return false;
+       };
+
+       if(this.smscode==''||this.smscode!=4){
+          wx.showToast({
+            title: '验证码格式不对',
+            duration: 2000
+          });
+          return false;
+       };
+
+       validateSmsCode({'telphone':this.telphone,'smscode':this.smscode})
+       .then((res)=>{
+        if(!res.retData){
+          wx.showToast({
+            title: '验证码不符合'
+            duration: 2000
+          }) 
+        }else{
+          getSmsCode({'telphone':this.telphone,'openId':this.openId,"type":0}).then((res) => {
+            console.log(res.retData);
+          })
+       }
+
     }
   },
 
