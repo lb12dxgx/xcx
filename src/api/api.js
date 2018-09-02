@@ -13,3 +13,10 @@ export const getSmsCode = params => { return fly.post(`${base}/xcx/getSmsCode.xc
 export const validateSmsCode = params => { return fly.post(`${base}/xcx/validateSmsCode.xcx`,qs.stringify(params)).then(res => res.data); }; 
 export const getOpenId = params => { return fly.post(`${base}/xcx/getOpenId.xcx`,qs.stringify(params)).then(res => res.data); }; 
 export const regUser = params => { return fly.post(`${base}/xcx/regUser.xcx`,qs.stringify(params)).then(res => res.data); }; 
+
+
+export const savePersonDesc = params => { return fly.post(`${base}/xcx/savePersonDesc.xcx`,qs.stringify(params)).then(res => res.data); }; 
+export const isExitByUserCode = params => { return fly.post(`${base}/xcx/isExitByUserCode.xcx`,qs.stringify(params)).then(res => res.data); }; 
+export const getPersonByOpenid = params => { return fly.post(`${base}/xcx/getPersonByOpenid.xcx`,qs.stringify(params)).then(res => res.data); }; 
+
+

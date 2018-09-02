@@ -2,6 +2,7 @@
   "pages": [
     "pages/index/main",
     "pages/my/main",
+    "pages/person/main",
     "pages/logs/main" ,
     "pages/news/main"  ], 
   "window": {

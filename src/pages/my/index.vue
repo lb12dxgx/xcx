@@ -1,52 +1,77 @@
 <template>
   
-  <div class="my">
-    <div class="my-head">
-       <div >
-        <img :src="avatarUrl" />
-       </div>
-       <div class="my-name">
-         {{nickName}}
-       </div> 
-    </div>
-     <div class="weui-cells weui-cells_form" v-if="isLogin">
-       <div class="weui-cell ">
-                  <div class="weui-cell__hd">
-                      <label class="weui-label">手机号</label>
-                  </div>
-                  <div class="weui-cell__bd">
-                      <input class="weui-input" type="number" pattern="[0-9]*"  placeholder="请输入手机号" v-model="telphone">
-                  </div>
-                  
+  <div>
+    <div class="my">
+      <div class="my-head">
+         <div >
+          <img :src="avatarUrl" />
+         </div>
+         <div class="my-name">
+           {{nickName}}
+         </div> 
       </div>
-      <div class="weui-cell ">
-            <div class="weui-cell__hd">
-                <label class="weui-label">验证码</label>
-            </div>
-            <div class="weui-cell__bd">
-                <input class="weui-input" type="number" pattern="[0-9]*" placeholder="请输入验证码" v-model="smscode">
-            </div>
-            <div class="weui-cell__ft">
-                <a  class="weui-btn weui-btn_mini weui-btn_primary" @click="sendSms"  >{{sendMsg}}</a>
-            </div>  
+       <div class="weui-cells weui-cells_form" v-if="isLogin">
+         <div class="weui-cell ">
+                    <div class="weui-cell__hd">
+                        <label class="weui-label">手机号</label>
+                    </div>
+                    <div class="weui-cell__bd">
+                        <input class="weui-input" type="number" pattern="[0-9]*"  placeholder="请输入手机号" v-model="telphone">
+                    </div>
+                    
+        </div>
+        <div class="weui-cell ">
+              <div class="weui-cell__hd">
+                  <label class="weui-label">验证码</label>
+              </div>
+              <div class="weui-cell__bd">
+                  <input class="weui-input" type="number" pattern="[0-9]*" placeholder="请输入验证码" v-model="smscode">
+              </div>
+              <div class="weui-cell__ft">
+                  <a  class="weui-btn weui-btn_mini weui-btn_primary" @click="sendSms"  >{{sendMsg}}</a>
+              </div>  
+        </div>
+        
       </div>
-      <div class="weui-cell ">
-            <div class="weui-cell__hd">
-                <label class="weui-label">姓名</label>
-            </div>
-            <div class="weui-cell__bd">
-                <input class="weui-input" type="text" placeholder="请输入姓名" v-model="name">
-            </div>
+
+     
            
+      <a  class="weui-btn weui-btn_min weui-btn_primary" style="width:70%;margin-top:20px" @click="regUser" v-if="isLogin">登录</a> 
+      <a  class="weui-btn weui-btn_min weui-btn_primary" style="width:70%;margin-top:20px" @click="logOut" v-if="!isLogin">注销</a> 
+     
+     </div>
+
+     <div class="weui-cells" v-if="!isLogin">
+            <a class="weui-cell weui-cell_access"  @click="goPerson" >
+                <div class="weui-cell__bd">
+                    <p>个人资料</p>
+                </div>
+                <div class="weui-cell__ft">
+                </div>
+            </a>
+            <a class="weui-cell weui-cell_access" href="javascript:;">
+                <div class="weui-cell__bd">
+                    <p>我的事故</p>
+                </div>
+                <div class="weui-cell__ft">
+                </div>
+            </a>
+            <a class="weui-cell weui-cell_access" href="javascript:;">
+                <div class="weui-cell__bd">
+                    <p>我的申请</p>
+                </div>
+                <div class="weui-cell__ft">
+                </div>
+            </a>
+            <a class="weui-cell weui-cell_access" href="javascript:;">
+                <div class="weui-cell__bd">
+                    <p>我的提问</p>
+                </div>
+                <div class="weui-cell__ft">
+                </div>
+            </a>
       </div>
-    </div>
-         
-    <a  class="weui-btn weui-btn_min weui-btn_primary" style="width:70%;margin-top:20px" @click="regUser" v-if="isLogin">登录</a> 
-    <a  class="weui-btn weui-btn_min weui-btn_primary" style="width:70%;margin-top:20px" @click="logOut" v-if="!isLogin">注销</a> 
-   
-   
-    
-    </div>
+ </div>
  
 
 </template>
@@ -58,14 +83,12 @@ export default {
     return {
       senddis:false,
       isLogin:true,
-      openId:'',
+      openid:'',
       avatarUrl:'',
       nickName:'',
 
       telphone:'13720053036',
-      smscode:'2688',
-      name:'张三',
-      regInfo:{},
+      smscode:'6956',
       sendMsg:'发送验证码'
     
     }
@@ -80,7 +103,7 @@ export default {
       wx.login({
         success: (r) => {
           getOpenId({"code":r.code}).then((res) => {
-            this.openId=res.retData.openid;
+            this.openid=res.retData.openid;
             console.log('res.retData==='+res.retData)
               wx.getUserInfo({
                 success: (res) => {
@@ -94,7 +117,9 @@ export default {
         }
       })
     },
+
     sendSms(){
+
        if(this.senddis){
        	 return false;
        };
@@ -117,7 +142,7 @@ export default {
             duration: 2000
           }) 
         }else{
-          getSmsCode({'realName':this.name,'telphone':this.telphone,'openId':this.openId,"type":0}).then((res) => {
+          getSmsCode({'telphone':this.telphone,'openid':this.openid,"type":0}).then((res) => {
               this.senddis=true;
               if(res.state==1){
               	wx.showToast({
@@ -174,16 +199,10 @@ export default {
             duration: 2000
           }) 
         }else{
-         this.regInfo.telphone=this.telphone;
-         this.regInfo.userName=this.telphone;
-         this.regInfo.openId=this.openId;
-         this.regInfo.avatarUrl=this.avatarUrl;
-         this.regInfo.nickName=this.nickName;
-         this.regInfo.smscode=this.smscode;
-         
 
-         regUser(this.regInfo) .then((res)=>{
-            wx.setStorageSync("openId",this.openId);
+        regUser({'telphone':this.telphone}) .then((res)=>{
+            console.log("openid"+res.retData.openid);
+            wx.setStorageSync("openid",res.retData.openid);
             wx.setStorageSync("avatarUrl",this.avatarUrl);
             wx.setStorageSync("nickName",this.nickName);
             console.log(wx.getStorageSync("avatarUrl"));
@@ -199,12 +218,19 @@ export default {
 
     })
   },
+
+ goPerson(){
+  wx.navigateTo({
+    url: '/pages/person/main'
+  })
+ },
+
 },
   onShow() {
-    console.log(wx.getStorageSync("openId"));
-    if(wx.getStorageSync("openId")!=''){
-    	  this.isLogin=false;
-          this.openid=wx.getStorageSync('openId');
+    console.log(wx.getStorageSync("openid"));
+    if(wx.getStorageSync("openid")!=''){
+    	     this.isLogin=false;
+          this.openid=wx.getStorageSync('openid');
           this.avatarUrl = wx.getStorageSync('avatarUrl');
           this.nickName = wx.getStorageSync('nickName');
          
