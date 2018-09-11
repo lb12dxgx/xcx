@@ -33,14 +33,3 @@ html{
 	margin-left: 10px;
 }
 
-.weui-input{
-  width:100%;
-  border:0;
-  outline:0;
-  -webkit-appearance:none;
-  background-color:transparent;
-  font-size:inherit;
-  color:inherit;
-  height:2.87058824em;
-  line-height:2.87058824;
-}

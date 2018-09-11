@@ -104,7 +104,7 @@ export default {
         success: (r) => {
           getOpenId({"code":r.code}).then((res) => {
             this.openid=res.retData.openid;
-            console.log('res.retData==='+res.retData)
+            console.log('res.retData==='+this.openid)
               wx.getUserInfo({
                 success: (res) => {
                   this.avatarUrl = res.userInfo.avatarUrl;

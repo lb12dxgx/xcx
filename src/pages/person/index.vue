@@ -11,18 +11,18 @@
          </div> 
       </div>
        <div class="weui-cells weui-cells_form" >
-         <div class="weui-cell ">
+         <div class="weui-cell  ">
                     <div class="weui-cell__hd">
-                        <label class="weui-label">姓名</label>
+                        <label class="weui-label" :class="error_personName">姓名</label>
                     </div>
                     <div class="weui-cell__bd">
-                        <input class="weui-input"   placeholder="请输入姓名" v-model="addForm.personName">
+                        <input class="weui-input "   placeholder="请输入姓名" v-model="addForm.personName">
                     </div>
                     
         </div>
         <div class="weui-cell ">
               <div class="weui-cell__hd">
-                  <label class="weui-label">身份证号</label>
+                  <label class="weui-label " :class="error_userCode" >身份证号</label>
               </div>
               <div class="weui-cell__bd">
                   <input class="weui-input" placeholder="请输入身份证号" v-model="addForm.userCode">
@@ -51,11 +51,18 @@
                  <input class="weui-input"   placeholder="请输入企业名称" v-model="addForm.enterpriseName">
               </div>
               
-        </div>
+         </div>
+          <div class="weui-cell ">
+              <div class="weui-cell__hd">
+                  <label class="weui-label">公司职务</label>
+              </div>
+              <div class="weui-cell__bd">
+                 <input class="weui-input"   placeholder="请输入公司职务" v-model="addForm.personPosition">
+              </div>
+              
+         </div>
 
-        
-        
-      </div>
+       </div>
 
      
            
@@ -74,6 +81,30 @@
 
 
 import {isExitByUserCode,savePersonDesc,getPersonByOpenid} from '../../api/api';
+
+function isCardNo(card)  
+{  
+   // 身份证号码为15位或者18位，15位时全为数字，18位前17位为数字，最后一位是校验位，可能为数字或字符X  
+   var reg = /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/;  
+   if(reg.test(card) === false)  
+   {  
+    
+      return  false;  
+   }  
+   return true;
+};
+
+function isPersonName(personName)  
+{  
+  console.log(personName=='');
+   
+   if(personName =='')  
+   {  
+     return  false;  
+   }  
+   return true;
+};
+
 export default {
   data () {
     return {
@@ -85,12 +116,16 @@ export default {
         userCode:'',
         enterpriseName:'',
         personSex:'男',
+        personPosition:'',
         openid:''
       },
       items: [
         {name: '男', value: '男',checked: 'true'},
         {name: '女', value: '女',}
-      ]
+      ],
+
+      error_personName:'',
+      error_userCode:'',
     
     }
      
@@ -105,6 +140,28 @@ export default {
 
   
   savePerson(){
+        if(!isPersonName(this.addForm.personName)){
+           wx.showToast({
+            title: '请输入姓名',
+            duration: 2000
+          });
+          this.error_personName="error";
+          return false;
+        }else{
+          this.error_personName="";
+        };
+
+        if(!isCardNo(this.addForm.userCode)){
+           wx.showToast({
+            title: '请输入身份证号',
+            duration: 2000
+          });
+          this.error_userCode="error";
+          return false;
+        }else{
+          this.error_userCode="";
+        };
+
         savePersonDesc(this.addForm) .then((res)=>{
          wx.switchTab({
             url: '/pages/my/main'

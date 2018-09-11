@@ -2,6 +2,7 @@ import Vue from 'vue'
 import App from './App'
 
 import './css/weui.css'
+import './css/weui_ext.css'
 import './css/base.css'
 
 
