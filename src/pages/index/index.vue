@@ -13,7 +13,7 @@
           </swiper>
 
         <div class="weui-grids bg-white">
-          <a href="javascript:;" class="weui-grid" v-for="(item, index) in pages" :index="index" :key="key">
+          <a   class="weui-grid" v-for="(item, index) in pages" :index="index" :key="key" :href="item.page" >
               <div class="weui-grid__icon" style="width:100px;height:100px">
                   <img  :src="item.url"  alt="">
               </div>
@@ -90,7 +90,7 @@ export default {
       motto: 'Hello World',
       userInfo: {},
       movies:[{'url':'/static/images/banner.jpg'},{'url':'/static/images/banner.jpg'}],
-      pages:[{'url':'/static/images/shigu.png','name':'事故上报'},
+      pages:[{'url':'/static/images/shigu.png','name':'事故上报','page':'/pages/accidentinfo/main'},
               {'url':'/static/images/zhaobiao.png','name':'施工申请'},
               {'url':'/static/images/caigou.png','name':'行业资讯'},
               {'url':'/static/images/huiyi.png','name':'产业服务'},

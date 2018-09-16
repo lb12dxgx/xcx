@@ -116,8 +116,7 @@ export default {
         userCode:'',
         enterpriseName:'',
         personSex:'男',
-        personPosition:'',
-        openid:''
+        personPosition:''
       },
       items: [
         {name: '男', value: '男',checked: 'true'},

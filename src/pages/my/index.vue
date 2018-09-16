@@ -134,15 +134,7 @@ export default {
           return false;
        };
 
-      isExitByTelphone({'telphone':this.telphone,"type":0}).then((res) => {
-        
-        if(!res.retData){
-          wx.showToast({
-            title: '手机号已被绑定',
-            duration: 2000
-          }) 
-        }else{
-          getSmsCode({'telphone':this.telphone,'openid':this.openid,"type":0}).then((res) => {
+      getSmsCode({'telphone':this.telphone,'openid':this.openid,"type":0}).then((res) => {
               this.senddis=true;
               if(res.state==1){
               	wx.showToast({
@@ -162,9 +154,8 @@ export default {
 	                 return; 
 	              }
 	             },1000);
-          })
-        }
-      })
+          });
+      
     },
 
     logOut(){
@@ -202,7 +193,7 @@ export default {
 
         regUser({'telphone':this.telphone}) .then((res)=>{
             console.log("openid"+res.retData.openid);
-            wx.setStorageSync("openid",res.retData.openid);
+            wx.setStorageSync("openid",this.openid);
             wx.setStorageSync("avatarUrl",this.avatarUrl);
             wx.setStorageSync("nickName",this.nickName);
             console.log(wx.getStorageSync("avatarUrl"));
@@ -227,7 +218,7 @@ export default {
 
 },
   onShow() {
-    console.log(wx.getStorageSync("openid"));
+    console.log("openid="+wx.getStorageSync("openid"));
     if(wx.getStorageSync("openid")!=''){
     	     this.isLogin=false;
           this.openid=wx.getStorageSync('openid');
