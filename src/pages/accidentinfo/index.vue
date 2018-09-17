@@ -56,8 +56,8 @@
         <div class="weui-uploader__files" id="uploaderFiles">
           <block v-for="(item,index) in files" :key="index">
             <div class="weui-uploader__file posi-rela" @click="predivImage" :id="item">
-              <icon type="cancel" size="20" class="th-icon-cancel" @click.stop="deletImg(index)"/>
-              <image class="weui-uploader__file" :src="item" mode="aspectFill" />
+              <icon type="cancel" size="20" class="th-icon-cancel" @click.stop="deletImg(index,item.fileInfoId)"/>
+              <image class="weui-uploader__file" :src="item.webPath" mode="aspectFill" />
             </div>
           </block>
         </div>
@@ -74,8 +74,8 @@
        <div class="weui-uploader__bd th-backwhite clearfix">
        
          <block v-for="(item,index) in viedoFiles" :key="index">
-            <video   :src="item" controls />
-            <a  class="weui-btn weui-btn_min weui-btn_primary" style="width:70%;margin:20px" @click="delVideo(index)" >删除</a> 
+            <video   :src="item.webPath" controls />
+            <a  class="weui-btn weui-btn_min weui-btn_primary" style="width:70%;margin:20px" @click="delVideo(index,item.fileInfoId)" >删除</a> 
         </block>
         
         <div class="weui-uploader__input-box">
@@ -102,7 +102,7 @@
 <script>
 
 
-import {isExitByUserCode,savePersonDesc,getPersonByOpenid} from '../../api/api';
+import {addAccidentinfo,saveAccidentinfo,deleteFile,url} from '../../api/api';
 
 
 export default {
@@ -110,7 +110,12 @@ export default {
     return {
        files: [],
        viedoFiles:[],
-       addForm:{}
+      
+       addForm:{
+         accidentPicId:'',
+         accidentVideoId:'',
+         openid:''
+       }
     }
      
   },
@@ -124,8 +129,28 @@ export default {
         sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
         sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
         success: function (res) {
+        wx.uploadFile({
+            url: url+'/xcx/accidentinfo/uploadImg.xcx', //仅为示例，非真实的接口地址
+            filePath: res.tempFilePaths[0],
+            name: 'file',
+            formData:{
+              'openIdMd5': _this.addForm.openid,
+              'accidentPicId':_this.addForm.accidentPicId
+            },
+            success: function(res){
+             var file=JSON.parse(res.data);
+              var fileJson={};
+              fileJson.webPath=url+"/"+file.retData.fileWebPath
+              fileJson.fileInfoId=file.retData.fileInfoId
+              _this.files = _this.files.concat(fileJson);
+            }
+        })
+
           // 返回选定照片的本地文件路径列表，tempFilePath可以作为img标签的src属性显示图片
-          _this.files = _this.files.concat(res.tempFilePaths)
+         // _this.files = _this.files.concat(res.tempFilePaths)
+
+
+
         },
         fail: function () {
           console.log('fail');
@@ -142,8 +167,11 @@ export default {
         urls: this.files // 需要预览的图片http链接列表
       })
     },
-    deletImg(index){
-      this.files.splice(index,1)
+    deletImg(index,fileInfoId){
+     deleteFile({'fileInfoId':fileInfoId,'openIdMd5':this.addForm.openid}).then((res)=>{
+      this.files.splice(index,1);
+     })
+      
     },
 
      chooseVideo(e) {
@@ -154,15 +182,34 @@ export default {
         maxDuration: 60,
         camera: 'back',
         success(res) {
-         
-           _this.viedoFiles = _this.viedoFiles.concat(res.tempFilePath)
+
+          wx.uploadFile({
+            url: url+'/xcx/accidentinfo/uploadVideo.xcx', //仅为示例，非真实的接口地址
+            filePath: res.tempFilePath,
+            name: 'file',
+            formData:{
+              'openIdMd5': _this.addForm.openid,
+              'accidentVideoId':_this.addForm.accidentVideoId
+            },
+            success: function(res){
+             var file=JSON.parse(res.data);
+              var fileJson={};
+              fileJson.webPath=url+"/"+file.retData.fileWebPath
+              fileJson.fileInfoId=file.retData.fileInfoId
+              _this.viedoFiles = _this.viedoFiles.concat(fileJson);
+            }
+          })
+          
           
         }
       });
     },
 
-    delVideo(index){
-       this.viedoFiles.splice(index,1)
+    delVideo(index,fileInfoId){
+      deleteFile({'fileInfoId':fileInfoId,'openIdMd5':this.addForm.openid}).then((res)=>{
+        this.viedoFiles.splice(index,1)
+     })
+       
     }
 
 
@@ -172,11 +219,10 @@ export default {
   },
 
   onShow() {
-     this.addForm.openid=wx.getStorageSync('openid');
-     this.avatarUrl = wx.getStorageSync('avatarUrl');
-     this.nickName = wx.getStorageSync('nickName');
-      getPersonByOpenid({'openid':wx.getStorageSync('openid')}) .then((res)=>{
-          this.addForm=res.retData;
+    addAccidentinfo() .then((res)=>{
+        this.addForm.accidentPicId=res.retData.accidentPicId;
+        this.addForm.accidentVideoId=res.retData.accidentVideoId;
+         this.addForm.openid=wx.getStorageSync('openid');
       })
    }
 }
