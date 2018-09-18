@@ -2,7 +2,9 @@
   "pages": [
     "pages/index/main",
     "pages/my/main",
-    "pages/accidentinfo/main", 
+    "pages/accidentinfo/main",
+    "pages/before/main", 
+    "pages/company/main", 
     "pages/person/main",
     "pages/logs/main" ,
     "pages/news/main"  ], 

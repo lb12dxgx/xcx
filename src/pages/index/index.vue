@@ -91,7 +91,7 @@ export default {
       userInfo: {},
       movies:[{'url':'/static/images/banner.jpg'},{'url':'/static/images/banner.jpg'}],
       pages:[{'url':'/static/images/shigu.png','name':'事故上报','page':'/pages/accidentinfo/main'},
-              {'url':'/static/images/zhaobiao.png','name':'施工申请'},
+              {'url':'/static/images/zhaobiao.png','name':'管线挖据','page':'/pages/before/main'},
               {'url':'/static/images/caigou.png','name':'行业资讯'},
               {'url':'/static/images/huiyi.png','name':'产业服务'},
               {'url':'/static/images/qiye.png','name':'工作必备'},
