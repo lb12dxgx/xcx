@@ -66,7 +66,7 @@
 
           <div class="projectMap" v-if="ismap">
 
-            <map id="map" longitude="113.324520" latitude="23.099994" scale="14" :controls="controls"  :markers="markers"  :polyline="polyline"  show-location style="width: 100%; height: 90vh;"
+            <map id="map" :longitude="longitude" :latitude="latitude" scale="14" :controls="controls"  :markers="markers"  :polyline="polyline"  show-location style="width: 100%; height: 60vh;"
             @regionchange="regionchange"
             @controltap="controltap"
             @markertap="markertap"
@@ -75,8 +75,9 @@
 
 
             ></map>
-              
-            </map>
+              <a  class="weui-btn weui-btn_min weui-btn_primary" style="width:70%;margin-top:20px" @click="getMy" >getMy</a> 
+
+          
           </div>
 
       </div>
@@ -106,6 +107,8 @@ export default {
         ismap:false,
         type:"",
         addForm:{},
+        longitude:'',
+        latitude:'',
       markers: [{
         iconPath: "/static/images/timg.jpg", 
         id: 0,
@@ -165,23 +168,47 @@ export default {
     },
 
     showMap(){
-      wx.authorize({scope: "scope.userLocation"});
-      console.log("latitude==");
-      wx.getLocation({
-      type: 'gcj02', //返回可以用于wx.openLocation的经纬度
-      success (res) {
-        const latitude = res.latitude
-        const longitude = res.longitude
-        console.log("latitude=="+latitude);
-        wx.openLocation({
-          latitude,
-          longitude,
-          scale: 28
-        })
-      }
-    });
-
       this.ismap=true;
+      
+
+    },
+
+    getMy(){
+      console.log("=======1");
+      
+      var _this=this;
+      wx.getSetting({
+      success(res) {
+        console.log(res);
+        
+        if (!res['scope.userLocation']||!res['scope.userLocation']) {
+        wx.authorize({
+          scope: 'scope.userLocation', 
+          success(res) {
+            console.log(res)
+          },
+          fail(r) { console.log(r)},
+          complete() { }
+        })
+    }
+  }
+});
+
+      wx.getLocation({
+      type: 'gcj02', 
+        success(res) {
+           _this.latitude = res.latitude
+           _this.longitude = res.longitude
+          
+          console.log(res.latitude);
+          console.log(res.longitude);
+        },
+        fail(re){
+          console.log(re);
+        }
+      });
+
+       console.log("=======2");
     },
 
     regionchange(e) {
