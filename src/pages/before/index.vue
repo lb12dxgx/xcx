@@ -66,18 +66,10 @@
 
           <div class="projectMap" v-if="ismap">
 
-            <map id="map" :longitude="longitude" :latitude="latitude" scale="14" :controls="controls"  :markers="markers"  :polyline="polyline"  show-location style="width: 100%; height: 60vh;"
-            @regionchange="regionchange"
-            @controltap="controltap"
-            @markertap="markertap"
-            @tap="tap"
-
-
-
-            ></map>
-              <a  class="weui-btn weui-btn_min weui-btn_primary" style="width:70%;margin-top:20px" @click="getMy" >getMy</a> 
-
-          
+            <map id="map" :longitude="centpoint.longitude" :latitude="centpoint.latitude" scale="17"   :markers="markers"  :polyline="polyline"  show-location style="width: 100%; height: 80vh;"
+            >
+            </map>
+              <a  class="weui-btn weui-btn_min weui-btn_primary" style="width:70%;margin-top:20px" @click="setMyPoint">标注施工位置</a> 
           </div>
 
       </div>
@@ -94,10 +86,6 @@
 
 <script>
 
-
-
-
-
 export default {
   data () {
      return {
@@ -107,39 +95,13 @@ export default {
         ismap:false,
         type:"",
         addForm:{},
-        longitude:'',
-        latitude:'',
-      markers: [{
-        iconPath: "/static/images/timg.jpg", 
-        id: 0,
-        latitude: 23.099994,
-        longitude: 113.324520,
-        width: 50,
-        height: 50
-    }],
-    polyline: [{
-      points: [{
-        longitude: 113.3245211,
-        latitude: 23.10229
-      }, {
-        longitude: 113.324520,
-        latitude: 23.21229
-      }],
-      color:"#FF0000DD",
-      width: 2,
-      dottedLine: true
-    }],
-    controls: [{
-      id: 1,
-      iconPath: '/static/images/timg.jpg',
-      position: {
-        left: 0,
-        top: 300 - 50,
-        width: 50,
-        height: 50
-      },
-      clickable: true
-    }]
+        centpoint:{
+          longitude:'',
+          latitude:'',
+        },
+        pointarray:[],
+        markers: [],
+        polyline: []
   }
    
    },
@@ -173,68 +135,93 @@ export default {
 
     },
 
-    getMy(){
-      console.log("=======1");
-      
+    setMyPoint(){
       var _this=this;
-      wx.getSetting({
-      success(res) {
-        console.log(res);
-        
-        if (!res['scope.userLocation']||!res['scope.userLocation']) {
-        wx.authorize({
-          scope: 'scope.userLocation', 
-          success(res) {
-            console.log(res)
-          },
-          fail(r) { console.log(r)},
-          complete() { }
-        })
-    }
-  }
-});
-
       wx.getLocation({
       type: 'gcj02', 
         success(res) {
-           _this.latitude = res.latitude
-           _this.longitude = res.longitude
-          
-          console.log(res.latitude);
-          console.log(res.longitude);
-        },
+           var point={};
+           point.latitude = res.latitude+(0.01*_this.pointarray.length);
+           point.longitude = res.longitude+(0.01*_this.pointarray.length);
+           _this.pointarray.push(point);
+           _this.addPoint();
+         },
         fail(re){
           console.log(re);
         }
       });
-
-       console.log("=======2");
+     
     },
+    addPoint(){
+        this.polyline= [{
+            points: this.pointarray,
+            color:"#FF0000DD",
+            width: 2,
+            dottedLine: true
+        }];
+       for (var i = 0; i < this.pointarray.length; i++) {
+          var marker={
+          iconPath: "/static/images/timg.jpg", 
+          id: 0,
+          latitude: 23.099994,
+          longitude: 113.324520,
+          width: 50,
+          height: 50
+        };
+        marker.latitude= this.pointarray[i].latitude;
+        marker.longitude= this.pointarray[i].longitude;
+        this.markers.push(marker);
+       }
+    }
 
-    regionchange(e) {
-    console.log(e)
-  },
-  markertap(e) {
-    console.log(e)
-  },
-  controltap(e) {
-    console.log(e)
-  },
-  tap(e) {
-    console.log(e)
-  }
+   
     
  },
 
   onLoad() {
+    var _this=this;
     this.type=wx.getStorageSync('type');
-  console.log(this.type);
     if(this.type==""){
        wx.navigateTo({
         url: '/pages/company/main'
      })
     }
-  }
+
+    wx.getSetting({
+      success(res) {
+       if (!res['scope.userLocation']||!res['scope.userLocation']) {
+          wx.authorize({
+            scope: 'scope.userLocation', 
+            success(res) {
+              console.log(res)
+            },
+            fail(r) { console.log(r)},
+            complete() { }
+          })
+        }
+      }
+    });
+
+    wx.getLocation({
+      type: 'gcj02', 
+        success(res) {
+           _this.centpoint.latitude = res.latitude;
+           _this.centpoint.longitude = res.longitude;
+           _this.pointarray.push( _this.centpoint);
+           _this.addPoint();
+          
+        },
+        fail(re){
+          console.log(re);
+        }
+      });
+     
+      
+
+  },
+
+
+
 }
 
 </script>
