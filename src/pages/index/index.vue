@@ -13,7 +13,7 @@
           </swiper>
 
         <div class="weui-grids bg-white">
-          <a   class="weui-grid" v-for="(item, index) in pages" :index="index" :key="key" :href="item.page" >
+          <a   class="weui-grid" v-for="(item, index) in pages" :index="index" :key="key"  @click="goUrl(item.page)" >
               <div class="weui-grid__icon" style="width:100px;height:100px">
                   <img  :src="item.url"  alt="">
               </div>
@@ -106,9 +106,9 @@ export default {
 
   methods: {
     goUrl(path){
-      const url = path
-      wx.switchTab({url});
-      wx.navigateTo({ url });
+      wx.navigateTo({
+        url: path
+      })
     },
     
     bindViewTap () {

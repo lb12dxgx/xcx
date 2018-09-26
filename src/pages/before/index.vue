@@ -40,7 +40,7 @@
                 <label class="weui-label" >工程地点</label>
               </div>
               <div class="weui-cell__bd">
-                  <input class="weui-input "   placeholder="请输入工程地点"v-model="addForm.projectCode">
+                  <input class="weui-input "   placeholder="请输入工程地点"v-model="addForm.projectAddren">
               </div>
             </div>
             <div class="weui-cell">
@@ -66,10 +66,11 @@
 
           <div class="projectMap" v-if="ismap">
 
-            <map id="map" :longitude="centpoint.longitude" :latitude="centpoint.latitude" scale="17"   :markers="markers"  :polyline="polyline"  show-location style="width: 100%; height: 80vh;"
+            <map id="map" :longitude="centpoint.longitude" :latitude="centpoint.latitude" scale="17"   :markers="markers"  :polyline="polyline"  show-location style="width: 100%; height: 70vh;"
             >
             </map>
-              <a  class="weui-btn weui-btn_min weui-btn_primary" style="width:70%;margin-top:20px" @click="setMyPoint">标注施工位置</a> 
+              <a  class="weui-btn weui-btn_min weui-btn_primary" style="width:40%;margin-top:20px" @click="setMyPoint">标注位置</a> 
+              <a  class="weui-btn weui-btn_min weui-btn_primary" style="width:40%;margin-top:20px" @click="saveMyPoint">返回</a> 
           </div>
 
       </div>
@@ -85,6 +86,8 @@
 </template>
 
 <script>
+
+import {getAddressByMap} from '../../api/api';
 
 export default {
   data () {
@@ -152,6 +155,16 @@ export default {
       });
      
     },
+    saveMyPoint(){
+      if(this.pointarray.length>=1){
+        var centpoint=this.pointarray[0];
+        getAddressByMap({'longitude':centpoint.longitude,'latitude':centpoint.latitude}).then((res)=>{
+          this.addForm.projectAddren=res.retData;
+          this.ismap=false;
+       });
+      }
+    },
+
     addPoint(){
         this.polyline= [{
             points: this.pointarray,

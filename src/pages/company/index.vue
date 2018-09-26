@@ -1,6 +1,15 @@
 <template>
   
   <div >
+    <div class="step" v-if="step">
+        <div class="weui-cells__title">所在城市</div>
+        <div class="weui-cells ">
+            {{province}}{{city}}{{district}}
+        </div>
+
+         <a  class="weui-btn weui-btn_min weui-btn_primary" style="width:70%;margin-top:20px" @click="toStep1()" v-if="exitCity" >下一步</a>  <a  class="weui-btn weui-btn_min weui-btn_primary" style="width:70%;margin-top:20px" @click="toStep1()" v-if="!exitCity" >城市开通</a>
+    </div>
+
     <div class="step1" v-if="step1">
         <div class="weui-cells__title">请选择身份</div>
         <div class="weui-cells ">
@@ -51,7 +60,7 @@
 </template>
 
 <script>
-
+import {getCityByMap} from '../../api/api';
 
 
 
@@ -70,7 +79,12 @@ export default {
         {name: '4', value: '权属单位4',},
         {name: '5', value: '权属单位5',},
       ],
-      step1:true,
+      province:'',
+      city:'',
+      district:'',
+      exitCity:true,
+      step:true,
+      step1:false,
       step22:false,
       step21:false,
       addForm:{
@@ -86,9 +100,14 @@ export default {
       console.log('radio发生change事件，携带value值为：', e.target.value);
       this.addForm.type=e.target.value
     },
+    toStep1(){
+      this.step1=true;
+      this.step=false;
+    },
     toStep2(){
        console.log("dd"+this.addForm.type)
       this.step1=false;
+      this.step=false;
 
       if(this.addForm.type==1){
         this.step21=true;
@@ -105,7 +124,45 @@ export default {
     
  },
 
-  onShow() {
+  onLoad() {
+     var _this=this;
+     wx.getSetting({
+      success(res) {
+       if (!res['scope.userLocation']||!res['scope.userLocation']) {
+          wx.authorize({
+            scope: 'scope.userLocation', 
+            success(res) {
+              console.log(res)
+            },
+            fail(r) { console.log(r)},
+            complete() { }
+          })
+        }
+      }
+    });
+
+    wx.getLocation({
+      type: 'gcj02', 
+        success(res) {
+          getCityByMap({'longitude':res.longitude,'latitude':res.latitude}).then((res)=>{
+           var province=res.retData.province;
+
+           if("北京市"==province||"天津市"==province||"上海市"==province||"重庆市"==province){
+             _this.province="";
+           }else{
+            _this.province=province;
+           }
+         
+          _this.city=res.retData.city;
+           _this.district=res.retData.district;
+       });
+          
+        },
+        fail(re){
+          console.log(re);
+        }
+      });
+   
     
    }
 }
