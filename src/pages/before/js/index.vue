@@ -87,7 +87,7 @@
 
 <script>
 
-import {getAddressByMap} from '../../api/api';
+import {getAddressByMap} from '../../../api/api';
 
 export default {
   data () {
@@ -193,6 +193,7 @@ export default {
 
   onLoad() {
     var _this=this;
+    
 
     wx.getSetting({
       success(res) {

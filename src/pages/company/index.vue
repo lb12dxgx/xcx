@@ -38,7 +38,7 @@
             </radio-group>
         </div>
 
-         <a  class="weui-btn weui-btn_min weui-btn_primary" style="width:70%;margin-top:20px" @click="toStep3()" >下一步</a> 
+         <a  class="weui-btn weui-btn_min weui-btn_primary" style="width:70%;margin-top:20px" @click="toStepQs()" >下一步</a> 
     </div>
 
     <div class="step22" v-if="step22">
@@ -51,7 +51,7 @@
             </radio-group>
         </div>
 
-         <a  class="weui-btn weui-btn_min weui-btn_primary" style="width:70%;margin-top:20px" @click="toStep3()" >下一步</a> 
+         <a  class="weui-btn weui-btn_min weui-btn_primary" style="width:70%;margin-top:20px" @click="toStepJs()" >下一步</a> 
     </div>
 
   </div>
@@ -115,12 +115,19 @@ export default {
          this.step22=true;
       }
     },
-    toStep3(){
+    toStepJs(){
       wx.setStorageSync("type",this.addForm.type);
       wx.navigateTo({
-        url: '/pages/before/main'
+        url: '/pages/before/js/main'
      })
-    }
+    },
+
+    toStepQs(){
+      wx.setStorageSync("type",this.addForm.type);
+      wx.navigateTo({
+        url: '/pages/before/qs/main'
+     })
+    },
     
  },
 

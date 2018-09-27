@@ -106,9 +106,27 @@ export default {
 
   methods: {
     goUrl(path){
-      wx.navigateTo({
-        url: path
-      })
+      if('/pages/before/main'==path){
+        this.type=wx.getStorageSync('type');
+        if(this.type==""){
+           wx.navigateTo({
+            url: '/pages/company/main'
+          })
+        }else if(this.type==2){
+           wx.navigateTo({
+            url: '/pages/before/js/main'
+          })
+        }else if (this.type==1){
+           wx.navigateTo({
+            url: '/pages/before/qs/main'
+          })
+        }
+        
+      }else{
+        wx.navigateTo({
+          url: path
+        })
+      }
     },
     
     bindViewTap () {
