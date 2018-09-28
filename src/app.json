@@ -6,6 +6,7 @@
     "pages/before/js/main", 
     "pages/project/view/main",
     "pages/project/handle/main",
+    "pages/project/maproute/main",
     "pages/before/qs/main", 
     "pages/company/main", 
     "pages/person/main",
@@ -31,6 +32,17 @@
         "iconPath": "/static/images/xiaoxi.png",
         "selectedIconPath": "/static/images/xiaoxi.png"
       }]
+    },
+
+    "plugins": {
+      "mapPlugin": {
+        "version":"1.0.6",
+        "provider":"wx5bc2ac602a747594"
+        }
     }
+
+
+    
+    
 
 }

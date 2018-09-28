@@ -82,7 +82,7 @@
           <div class="weui-cell">
               
               <div class="weui-cell__bd">
-                 经度：116.307490 维度：39.984154
+                 经度：{{centpoint.longitude}} 维度：{{centpoint.latitude}}
               </div>
         </div> 
           <div class="projectMap">
@@ -188,7 +188,10 @@ export default {
     },
 
     toXianChang(){
-
+       wx.navigateTo({
+            url: '/pages/project/maproute/main'
+          })
+       
     },
     calling(){
       wx.makePhoneCall({
