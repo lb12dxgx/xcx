@@ -131,7 +131,16 @@ export default {
     
  },
 
+	 onUnload(){
+	 	this.step=true;
+	    this.step1=false;
+	    this.step22=false;
+	    this.step21=false;
+	},
+
   onLoad() {
+  	  this.step1=false;
+      this.step=true;
      var _this=this;
      wx.getSetting({
       success(res) {

@@ -95,13 +95,13 @@ export default {
 
   methods: {
     getUserInfo () {
-      console.log("----");
+      //console.log("----");
       // 调用登录接口
       wx.login({
         success: (r) => {
           getOpenId({"code":r.code}).then((res) => {
             this.openid=res.retData.openid;
-            console.log('res.retData==='+this.openid)
+            //console.log('res.retData==='+this.openid)
            
           });
           
