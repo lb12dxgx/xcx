@@ -207,6 +207,7 @@ export default {
         success(res) {
            _this.centpoint.latitude = res.latitude;
            _this.centpoint.longitude = res.longitude;
+           console.log( _this.centpoint);
            _this.pointarray.push( _this.centpoint);
            _this.addPoint();
           
