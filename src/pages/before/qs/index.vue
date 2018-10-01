@@ -4,17 +4,86 @@
    <div class="js">
     <div class="weui-navbar">
         <div @click="goStep1()" class="weui-navbar__item" :class="step1 ?'weui-bar__item_on' : '' ">
-             挖据申请
+             待反馈
         </div>
         <div @click="goStep2()" class="weui-navbar__item" :class="step2 ?'weui-bar__item_on' : '' ">
-              反馈中
+             已反馈 
         </div>
         <div @click="goStep3()" class="weui-navbar__item" :class="step3 ?'weui-bar__item_on' : '' ">
-              已反馈
+              挖据申请
         </div>
     </div>
 
     <div class="step1" v-if="step1">
+      <div class="weui-media-box weui-media-box_text" @click="viewProject()">
+        <h4 class="weui-media-box__title">工程名称1</h4>
+        <p class="weui-media-box__desc">
+          工程地点：北京市海淀区中关村南大街4号
+        </p>
+         <p class="weui-media-box__desc">
+         工程起止点：农科院北门100米到300米。
+        </p>
+         <p class="weui-media-box__desc">
+         工程时间：2018-09-27  工程类别：水利维修 
+        </p>
+         <p class="weui-media-box__desc">
+          联系人：张三 联系电话：1372006345
+        </p>
+      </div>
+      <div class="weui-media-box weui-media-box_text">
+        <h4 class="weui-media-box__title">工程名称2</h4>
+        <p class="weui-media-box__desc">
+          工程地点：北京市海淀区中关村南大街4号
+        </p>
+         <p class="weui-media-box__desc">
+         工程起止点：农科院北门100米到300米。
+        </p>
+         <p class="weui-media-box__desc">
+         工程时间：2018-09-27  工程类别：水利维修 
+        </p>
+         <p class="weui-media-box__desc">
+          联系人：张三 联系电话：1372006345
+        </p>
+      </div>
+      <div class="weui-media-box weui-media-box_text">
+        <h4 class="weui-media-box__title">工程名称3</h4>
+        <p class="weui-media-box__desc">
+          工程地点：北京市海淀区中关村南大街4号
+        </p>
+         <p class="weui-media-box__desc">
+         工程起止点：农科院北门100米到300米。
+        </p>
+         <p class="weui-media-box__desc">
+         工程时间：2018-09-27  工程类别：水利维修 
+        </p>
+         <p class="weui-media-box__desc">
+          联系人：张三 联系电话：1372006345
+        </p>
+      </div>
+      <div class="weui-media-box weui-media-box_text">
+        <h4 class="weui-media-box__title">工程名称4</h4>
+        <p class="weui-media-box__desc">
+          工程地点：北京市海淀区中关村南大街4号
+        </p>
+         <p class="weui-media-box__desc">
+         工程起止点：农科院北门100米到300米。
+        </p>
+         <p class="weui-media-box__desc">
+         工程时间：2018-09-27  工程类别：水利维修 
+        </p>
+         <p class="weui-media-box__desc">
+          联系人：张三 联系电话：1372006345
+        </p>
+      </div>
+      <div class="weui-panel__ft">
+                <a href="javascript:void(0);" class="weui-cell weui-cell_access weui-cell_link">
+                    <div class="weui-cell__bd">查看更多</div>
+                    <span class="weui-cell__ft"></span>
+                </a>    
+    </div>
+    </div>
+
+    <div class="step3" v-if="step3">
         <div class="weui-cells weui-cells_form" >
          <div class="projectDesc" v-if="!ismap">
 
@@ -87,7 +156,7 @@
 
 <script>
 
-import {getAddressByMap} from '../../api/api';
+import {getAddressByMap} from '../../../api/api';
 
 export default {
   data () {
@@ -110,7 +179,7 @@ export default {
    },
      
  
- 
+
 
   methods: {
     goStep1(){
@@ -138,54 +207,16 @@ export default {
 
     },
 
-    setMyPoint(){
-      var _this=this;
-      wx.getLocation({
-      type: 'gcj02', 
-        success(res) {
-           var point={};
-           point.latitude = res.latitude+(0.01*_this.pointarray.length);
-           point.longitude = res.longitude+(0.01*_this.pointarray.length);
-           _this.pointarray.push(point);
-           _this.addPoint();
-         },
-        fail(re){
-          console.log(re);
-        }
-      });
-     
-    },
-    saveMyPoint(){
-      if(this.pointarray.length>=1){
-        var centpoint=this.pointarray[0];
-        getAddressByMap({'longitude':centpoint.longitude,'latitude':centpoint.latitude}).then((res)=>{
-          this.addForm.projectAddren=res.retData;
-          this.ismap=false;
-       });
-      }
-    },
 
-    addPoint(){
-        this.polyline= [{
-            points: this.pointarray,
-            color:"#FF0000DD",
-            width: 2,
-            dottedLine: true
-        }];
-       for (var i = 0; i < this.pointarray.length; i++) {
-          var marker={
-          iconPath: "/static/images/timg.jpg", 
-          id: 0,
-          latitude: 23.099994,
-          longitude: 113.324520,
-          width: 50,
-          height: 50
-        };
-        marker.latitude= this.pointarray[i].latitude;
-        marker.longitude= this.pointarray[i].longitude;
-        this.markers.push(marker);
-       }
+    viewProject(){
+
+       wx.navigateTo({
+            url: '/pages/project/handle/main'
+      })
+
     }
+
+    
 
    
     
@@ -193,37 +224,9 @@ export default {
 
   onLoad() {
     var _this=this;
+    
 
-    wx.getSetting({
-      success(res) {
-       if (!res['scope.userLocation']||!res['scope.userLocation']) {
-          wx.authorize({
-            scope: 'scope.userLocation', 
-            success(res) {
-              console.log(res)
-            },
-            fail(r) { console.log(r)},
-            complete() { }
-          })
-        }
-      }
-    });
-
-    wx.getLocation({
-      type: 'gcj02', 
-        success(res) {
-           _this.centpoint.latitude = res.latitude;
-           _this.centpoint.longitude = res.longitude;
-           console.log( _this.centpoint);
-           _this.pointarray.push( _this.centpoint);
-           _this.addPoint();
-          
-        },
-        fail(re){
-          console.log(re);
-        }
-      });
-     
+   
       
 
   },
@@ -237,6 +240,7 @@ export default {
 <style scoped>
   .step1{
     margin-top:50px;
+    background-color: #FFF;
 
   }
 

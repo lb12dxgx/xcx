@@ -3,11 +3,11 @@
   <div>
     <div class="my">
       <div class="my-head">
-         <div >
-          <img :src="avatarUrl" />
+         <div class="myAvatar">
+           <open-data type="userAvatarUrl"></open-data>
          </div>
          <div class="my-name">
-           {{nickName}}
+           <open-data type="userNickName"></open-data> 
          </div> 
       </div>
        <div class="weui-cells weui-cells_form" v-if="isLogin">
@@ -84,9 +84,6 @@ export default {
       senddis:false,
       isLogin:true,
       openid:'',
-      avatarUrl:'',
-      nickName:'',
-
       telphone:'13720053036',
       smscode:'6956',
       sendMsg:'发送验证码'
@@ -98,20 +95,14 @@ export default {
 
   methods: {
     getUserInfo () {
-      console.log("----");
+      //console.log("----");
       // 调用登录接口
       wx.login({
         success: (r) => {
           getOpenId({"code":r.code}).then((res) => {
             this.openid=res.retData.openid;
-            console.log('res.retData==='+this.openid)
-              wx.getUserInfo({
-                success: (res) => {
-                  this.avatarUrl = res.userInfo.avatarUrl;
-                  this.nickName = res.userInfo.nickName;
-                 
-                }
-              });
+            //console.log('res.retData==='+this.openid)
+           
           });
           
         }
@@ -194,9 +185,7 @@ export default {
         regUser({'telphone':this.telphone}) .then((res)=>{
             console.log("openid"+res.retData.openid);
             wx.setStorageSync("openid",this.openid);
-            wx.setStorageSync("avatarUrl",this.avatarUrl);
-            wx.setStorageSync("nickName",this.nickName);
-            console.log(wx.getStorageSync("avatarUrl"));
+            
            wx.switchTab({
               url: '/pages/index/main'
             })
@@ -222,8 +211,6 @@ export default {
     if(wx.getStorageSync("openid")!=''){
     	     this.isLogin=false;
           this.openid=wx.getStorageSync('openid');
-          this.avatarUrl = wx.getStorageSync('avatarUrl');
-          this.nickName = wx.getStorageSync('nickName');
          
     }else{
         this.getUserInfo();
@@ -241,11 +228,19 @@ export default {
   }
   .my-head{
      background-color: #fff;
+     display: flex;
+     flex-direction: column;
+     align-items: center;
   }
-  .my img{
+  .myAvatar{
     width: 100px;
     height: 100px;
     border-radius:50%;
+    overflow:hidden;
+    display: block;
+    border: 2px solid #fff;
+    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
+
     -webkit-border-radius:50%;
     -moz-border-radius:50%
    }

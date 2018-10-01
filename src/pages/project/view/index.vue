@@ -4,17 +4,61 @@
    <div class="js">
     <div class="weui-navbar">
         <div @click="goStep1()" class="weui-navbar__item" :class="step1 ?'weui-bar__item_on' : '' ">
-             挖据申请
+             项目基本信息
         </div>
         <div @click="goStep2()" class="weui-navbar__item" :class="step2 ?'weui-bar__item_on' : '' ">
-              反馈中
+             位置信息
         </div>
         <div @click="goStep3()" class="weui-navbar__item" :class="step3 ?'weui-bar__item_on' : '' ">
-              已反馈
+            结果反馈
         </div>
     </div>
 
     <div class="step1" v-if="step1">
+      <div class="weui-cell">
+              <div class="weui-cell__hd">
+                <label class="weui-label" >工程名称</label>
+              </div>
+              <div class="weui-cell__bd">
+                  <input class="weui-input "   placeholder="请输入工程名称"v-model="addForm.projectName">
+              </div>
+            </div>
+          
+            <div class="weui-cell">
+              <div class="weui-cell__hd">
+                <label class="weui-label" >工程类别</label>
+              </div>
+              <div class="weui-cell__bd">
+                  <input class="weui-input "   placeholder="请输入工程编号"v-model="addForm.projectCode">
+              </div>
+            </div>
+            <div class="weui-cell">
+              <div class="weui-cell__hd">
+                <label class="weui-label" >工程地点</label>
+              </div>
+              <div class="weui-cell__bd">
+                  <input class="weui-input "   placeholder="请输入工程地点"v-model="addForm.projectAddren">
+              </div>
+            </div>
+            <div class="weui-cell">
+              <div class="weui-cell__hd">
+                <label class="weui-label" >工程起止点</label>
+              </div>
+              <div class="weui-cell__bd">
+                  <input class="weui-input "   placeholder="请输入工程起止点" v-model="addForm.projectCode">
+              </div>
+            </div>
+            <div class="weui-cell">
+              <div class="weui-cell__hd">
+                <label class="weui-label" >施工时间</label>
+              </div>
+              <div class="weui-cell__bd">
+                  <input class="weui-input "   placeholder="请输入施工时间"v-model="addForm.projectCode">
+              </div>
+            </div>
+    </div>
+
+    <div class="step3" v-if="step3">
         <div class="weui-cells weui-cells_form" >
          <div class="projectDesc" v-if="!ismap">
 
@@ -87,7 +131,7 @@
 
 <script>
 
-import {getAddressByMap} from '../../api/api';
+import {getAddressByMap} from '../../../api/api';
 
 export default {
   data () {
@@ -110,7 +154,7 @@ export default {
    },
      
  
- 
+
 
   methods: {
     goStep1(){
@@ -193,6 +237,7 @@ export default {
 
   onLoad() {
     var _this=this;
+    
 
     wx.getSetting({
       success(res) {
@@ -214,7 +259,6 @@ export default {
         success(res) {
            _this.centpoint.latitude = res.latitude;
            _this.centpoint.longitude = res.longitude;
-           console.log( _this.centpoint);
            _this.pointarray.push( _this.centpoint);
            _this.addPoint();
           
@@ -237,6 +281,7 @@ export default {
 <style scoped>
   .step1{
     margin-top:50px;
+    background-color: #FFF;
 
   }
 

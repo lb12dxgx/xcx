@@ -13,7 +13,7 @@
           </swiper>
 
         <div class="weui-grids bg-white">
-          <a   class="weui-grid" v-for="(item, index) in pages" :index="index" :key="key" :href="item.page" >
+          <a   class="weui-grid" v-for="(item, index) in pages" :index="index" :key="key"  @click="goUrl(item.page)" >
               <div class="weui-grid__icon" style="width:100px;height:100px">
                   <img  :src="item.url"  alt="">
               </div>
@@ -82,13 +82,12 @@
 </template>
 
 <script>
-import card from '@/components/card'
+
 
 export default {
   data () {
     return {
-      motto: 'Hello World',
-      userInfo: {},
+      
       movies:[{'url':'/static/images/banner.jpg'},{'url':'/static/images/banner.jpg'}],
       pages:[{'url':'/static/images/shigu.png','name':'事故上报','page':'/pages/accidentinfo/main'},
               {'url':'/static/images/zhaobiao.png','name':'管线挖据','page':'/pages/before/main'},
@@ -100,41 +99,38 @@ export default {
     }
   },
 
-  components: {
-    card
-  },
+  
 
   methods: {
     goUrl(path){
-      const url = path
-      wx.switchTab({url});
-      wx.navigateTo({ url });
-    },
-    
-    bindViewTap () {
-      const url = '../logs/main'
-      wx.navigateTo({ url })
-    },
-    getUserInfo () {
-      // 调用登录接口
-      wx.login({
-        success: () => {
-          wx.getUserInfo({
-            success: (res) => {
-              this.userInfo = res.userInfo
-            }
+      if('/pages/before/main'==path){
+        this.type=wx.getStorageSync('type');
+        if(this.type==""){
+           wx.navigateTo({
+            url: '/pages/company/main'
+          })
+        }else if(this.type==2){
+           wx.navigateTo({
+            url: '/pages/before/js/main'
+          })
+        }else if (this.type==1){
+           wx.navigateTo({
+            url: '/pages/before/qs/main'
           })
         }
-      })
+        
+      }else{
+        wx.navigateTo({
+          url: path
+        })
+      }
     },
-    clickHandle (msg, ev) {
-      console.log('clickHandle:', msg, ev)
-    }
-  },
+    
+   },
 
   created () {
     // 调用应用实例的方法获取全局数据
-    this.getUserInfo()
+    
   }
 }
 </script>

@@ -7,8 +7,9 @@ var fly=new Fly
 
 //let base = ip;
 //let base = 'http://'+ip+'/api/';
-let base = 'http://127.0.0.1:80';
-export const url="http://127.0.0.1";
+let base = 'http://www.118-china.com/'
+//let base = 'http://127.0.0.1:80';
+export const url=base;
 export const isExitByTelphone = params => {return fly.post(`${base}/xcx/isExitByTelphone.xcx`,qs.stringify(params)).then(res => res.data);}; 
 export const getSmsCode = params => { return fly.post(`${base}/xcx/getSmsCode.xcx`,qs.stringify(params)).then(res => res.data); }; 
 export const validateSmsCode = params => { return fly.post(`${base}/xcx/validateSmsCode.xcx`,qs.stringify(params)).then(res => res.data); }; 
@@ -26,6 +27,10 @@ export const saveAccidentinfo = params => { return fly.post(`${base}/xcx/login/a
 export const getAccidentinfo = params => { return fly.post(`${base}/xcx/login/accidentinfo/get.xcx`,qs.stringify(params)).then(res => res.data); }; 
 
 export const deleteFile = params => { return fly.post(`${base}/xcx/accidentinfo/deleteFile.xcx`,qs.stringify(params)).then(res => res.data); }; 
+
+
+export const getAddressByMap = params => { return fly.post(`${base}/xcx/map/getAddress.xcx`,qs.stringify(params)).then(res => res.data); }; 
+export const getCityByMap = params => { return fly.post(`${base}/xcx/map/getCity.xcx`,qs.stringify(params)).then(res => res.data); }; 
 
 
 
