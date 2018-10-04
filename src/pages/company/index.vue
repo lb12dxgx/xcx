@@ -13,7 +13,7 @@
     <div class="step1" v-if="step1">
         <div class="weui-cells__title">请选择身份</div>
         <div class="weui-cells ">
-            <radio-group class="radio-group" @change="radioChange">
+            <radio-group class="radio-group" @change="radioTypeChange">
                     <div class="radio radioDiv" v-for="(item, index) in items" :key="item.name">
                       <radio :value="item.name" :checked="item.checked"/> {{item.value}}
                     </div>
@@ -31,7 +31,7 @@
          <a  class="weui-btn weui-btn_min weui-btn_primary" style="width:70%;margin-top:20px" @click="SearchQs()" >查询</a> 
          <div class="weui-cells__title">请选择权属单位</div>
         <div class="weui-cells ">
-            <radio-group class="radio-group" @change="radioChange">
+            <radio-group class="radio-group" @change="radioCompanyChange">
                     <div class="radio radioDiv" v-for="(item, index) in qsitems" :key="item.name">
                       <radio :value="item.name" :checked="item.checked"/> {{item.value}}
                     </div>
@@ -44,8 +44,8 @@
     <div class="step22" v-if="step22">
         <div class="weui-cells__title">请所属建设单位</div>
         <div class="weui-cells ">
-            <radio-group class="radio-group" @change="radioChange">
-                    <div class="radio radioDiv" v-for="(item, index) in items" :key="item.name">
+            <radio-group class="radio-group" @change="radioCompanyChange">
+                    <div class="radio radioDiv" v-for="(item, index) in jsitems" :key="item.name">
                       <radio :value="item.name" :checked="item.checked"/> {{item.value}}
                     </div>
             </radio-group>
@@ -79,6 +79,13 @@ export default {
         {name: '4', value: '权属单位4',},
         {name: '5', value: '权属单位5',},
       ],
+      jsitems: [
+        {name: '1', value: '建设单位1',},
+        {name: '2', value: '建设单位2',},
+        {name: '3', value: '建设单位3',},
+        {name: '4', value: '建设单位4',},
+        {name: '5', value: '建设单位5',},
+      ],
       province:'',
       city:'',
       district:'',
@@ -89,6 +96,7 @@ export default {
       step21:false,
       addForm:{
         type:1,
+        companyId:'',
       },
     }
      
@@ -96,7 +104,11 @@ export default {
 
 
   methods: {
-    radioChange (e) {
+     radioCompanyChange (e) {
+      console.log('radio发生change事件，携带value值为：', e.target.value);
+      this.addForm.companyId=e.target.value
+    },
+    radioTypeChange (e) {
       console.log('radio发生change事件，携带value值为：', e.target.value);
       this.addForm.type=e.target.value
     },
@@ -111,8 +123,10 @@ export default {
 
       if(this.addForm.type==1){
         this.step21=true;
+        console.log("21")
       }else{
          this.step22=true;
+           console.log("22")
       }
     },
     toStepJs(){

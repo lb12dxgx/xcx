@@ -1,84 +1,79 @@
 <template>
-  
-     <div class="weui-tab">
-    
+  <div class="warpe">
+   
+      <swiper class="swiper" indicator-dots="true" autoplay="true" interval="5000" duration="1000"  >
+                <block v-for="(item, index) in movies" :index="index" :key="key">
+                    <swiper-item>
+                        <image :src="item.url" style="width:100%" mode="widthFix"/>
+                    </swiper-item>
+                </block>
+      </swiper>
+ 
+  <div>
+    <div class="comnav">
 
-        <div class="weui-tab__panel">
-          <swiper class="swiper" indicator-dots="true" autoplay="true" interval="5000" duration="1000" >
-              <block v-for="(item, index) in movies" :index="index" :key="key">
-                  <swiper-item>
-                      <image :src="item.url" class="slide-image" mode="aspectFill"/>
-                  </swiper-item>
-              </block>
-          </swiper>
-
-        <div class="weui-grids bg-white">
-          <a   class="weui-grid" v-for="(item, index) in pages" :index="index" :key="key"  @click="goUrl(item.page)" >
-              <div class="weui-grid__icon" style="width:100px;height:100px">
-                  <img  :src="item.url"  alt="">
-              </div>
-              <p class="weui-grid__label">{{item.name}}</p>
-          </a>
-       </div>
-
-       <div class="weui-panel weui-panel_access">
-            <div class="weui-panel__hd">
-              视频直播
-            </div>
-            <div class="weui-panel__bd">
-                <a href="javascript:void(0);" class="weui-media-box weui-media-box_appmsg">
-                    <div class="weui-media-box__bd">
-                        <h4 class="weui-media-box__title">会议名称</h4>
-                        <p class="weui-media-box__desc">
-                          <div class="meet_desc">
-                            <span>会议地点:</span>
-                            <span>武汉</span>
-                          </div>
-                          <div class="meet_desc">
-                            <span>开始时间:</span> 
-                            <span>2018-08-23 10:00</span> 
-                          </div>
-                          <div class="meet_desc">
-                            <span>直播状态:</span> 
-                            <span>已结束</span> 
-                          </div>
-                        </p>
-                    </div>
-                </a>
-                <a href="javascript:void(0);" class="weui-media-box weui-media-box_appmsg">
-                   
-                    <div class="weui-media-box__bd">
-                       <h4 class="weui-media-box__title">会议名称</h4>
-                        <p class="weui-media-box__desc">
-                          <div class="meet_desc">
-                            <span>会议地点:</span>
-                            <span>武汉</span>
-                          </div>
-                          <div class="meet_desc">
-                            <span>开始时间:</span> 
-                            <span>2018-08-23 10:00</span> 
-                          </div>
-                          <div class="meet_desc">
-                            <span>直播状态:</span> 
-                            <span>已结束</span> 
-                          </div>
-                        </p>
-                    </div>
-                </a>
-            </div>
-            <div class="weui-panel__ft">
-                <a href="javascript:void(0);" class="weui-cell weui-cell_access weui-cell_link">
-                    <div class="weui-cell__bd">查看更多</div>
-                    <span class="weui-cell__ft"></span>
-                </a>    
-            </div>
-        </div>
+        <a  class="left guanxian-box" @click="goUrl('/pages/before/main')">
+          <ul class="pictext">
+            <li class="left"><p><img src="/static/img/gxwj.png"  class="inconbox"></p></li>
+            <li class="right">管线挖掘</li>
+          </ul>
+        </a>
 
 
-        </div> 
-      
+        <a  class="right sgsb-box" @click="goUrl('/pages/accidentinfo/main')">
+          <ul class="pictext">
+            <li class="left"><p><img src="/static/img/sgsb.png"  class="inconbox"></p></li>
+            <li class="right">事故上报</li>
+          </ul>
+        </a>
+    </div>
+    <div class="comnav">
+
+        <a  class="left guanxian-box" @click="goUrl('/pages/accidentinfo/main')">
+          <ul class="pictext">
+            <li class="left"><p><img src="/static/img/hypx.png"  class="inconbox"></p></li>
+            <li class="right">会议培训</li>
+          </ul>
+        </a>
+
+
+        <a class="right sgsb-box" @click="goUrl('/pages/accidentinfo/main')">
+          <ul class="pictext">
+            <li class="left"><p><img src="/static/img/gxbbb.png"  class="inconbox"></p></li>
+            <li class="right">管线帮帮帮</li>
+          </ul>
+        </a>
     </div>
   </div>
+ 
+    <div class="tuijian">
+      <div class="pictitle">
+         <ul>
+          <li class="left pictb"><p><img src="/static/img/pxhy.png"  class="bt-box"></p></li>
+          <li class="left">会议培训</li>
+          <li class="right"><a href="#" class="puff_right">更多 ></a></li>
+         </ul>
+      </div>
+    <div class="pxhy-box">
+      <a href="#" class="zhengwen">
+        <div class="garybt">全国城市道路塌陷灾害与道路病害检测评估</div>
+        <div class="garyzw">党的十九大提出构建以“城市群为主体”的城镇协调发展格局和建设“交通强国”的战略目标，为新时代我国建设安全、绿色、高效的城市道路设施服务体系带来新的历史机遇</div>
+        <div class="garyzsj juyou">2018-08-09</div>
+      </a>
+    </div>
+    <div class="pxhy-box">
+      <a href="#" class="zhengwen">
+        <p class="garybt">全国城市道路塌陷灾害与道路病害检测评估</p>
+        <p class="garyzw">党的十九大提出构建以“城市群为主体”的城镇协调发展格局和建设“交通强国”的战略目标，为新时代我国建设安全、绿色、高效的城市道路设施服务体系带来新的历史机遇</p>
+        <p class="garyzsj juyou">2018-08-09</p>
+      </a>
+    </div>
+       
+    </div>
+
+  
+</div>
+     
 </template>
 
 <script>
@@ -88,13 +83,8 @@ export default {
   data () {
     return {
       
-      movies:[{'url':'/static/images/banner.jpg'},{'url':'/static/images/banner.jpg'}],
-      pages:[{'url':'/static/images/shigu.png','name':'事故上报','page':'/pages/accidentinfo/main'},
-              {'url':'/static/images/zhaobiao.png','name':'管线挖据','page':'/pages/before/main'},
-              {'url':'/static/images/caigou.png','name':'行业资讯'},
-              {'url':'/static/images/huiyi.png','name':'产业服务'},
-              {'url':'/static/images/qiye.png','name':'工作必备'},
-              {'url':'/static/images/chanpin.png','name':'知识库'}]
+      movies:[{'url':'/static/img/banner.jpg'},{'url':'/static/img/banner.jpg'}],
+      
 
     }
   },
@@ -136,6 +126,8 @@ export default {
 </script>
 
 <style scoped>
-
+swiper{
+  height: 165px;
+}
 
 </style>

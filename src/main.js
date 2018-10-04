@@ -3,7 +3,12 @@ import App from './App'
 
 import './css/weui.css'
 import './css/weui_ext.css'
-import './css/base.css'
+
+import './css/style.css'
+import './css/main.css'
+
+
+
 
 
 Vue.config.productionTip = false

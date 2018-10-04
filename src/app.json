@@ -25,12 +25,17 @@
       "list": [{
         "pagePath": "pages/index/main",
         "text": "首页",
-        "iconPath": "/static/images/shouye.png",
-        "selectedIconPath": "/static/images/shouye.png"},{
+        "iconPath": "/static/img/shouye1.png",
+        "selectedIconPath": "/static/img/shouye2.png"},{
+        "pagePath": "pages/my/main",
+        "text": "商城",
+        "iconPath": "/static/img/shangcheng1.png",
+        "selectedIconPath": "/static/img/shangcheng2.png"
+      },{
         "pagePath": "pages/my/main",
         "text": "我的",
-        "iconPath": "/static/images/xiaoxi.png",
-        "selectedIconPath": "/static/images/xiaoxi.png"
+        "iconPath": "/static/img/wode1.png",
+        "selectedIconPath": "/static/img/wode2.png"
       }]
     },
 
