@@ -6,6 +6,8 @@ import './css/weui_ext.css'
 
 import './css/style.css'
 import './css/main.css'
+import './css/content.css'
+
 
 
 

@@ -29,7 +29,7 @@
     </div>
     <div class="comnav">
 
-        <a  class="left guanxian-box" @click="goUrl('/pages/accidentinfo/main')">
+        <a  class="left guanxian-box" @click="goUrl('/pages/before/city/main')">
           <ul class="pictext">
             <li class="left"><p><img src="/static/img/hypx.png"  class="inconbox"></p></li>
             <li class="right">会议培训</li>
@@ -94,16 +94,17 @@ export default {
   methods: {
     goUrl(path){
       if('/pages/before/main'==path){
-        this.type=wx.getStorageSync('type');
+        this.type=wx.getStorageSync('enterpriseType');
+        console.log("type="+this.type);
         if(this.type==""){
            wx.navigateTo({
-            url: '/pages/company/main'
+            url: '/pages/before/reg/main'
           })
-        }else if(this.type==2){
+        }else if(this.type==3){
            wx.navigateTo({
             url: '/pages/before/js/main'
           })
-        }else if (this.type==1){
+        }else if (this.type==2){
            wx.navigateTo({
             url: '/pages/before/qs/main'
           })

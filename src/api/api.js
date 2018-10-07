@@ -8,8 +8,8 @@ var fly=new Fly
 //let base = ip;
 //let base = 'http://'+ip+'/api/';
 //let base = 'http://www.118-china.com/'
-let base = 'https://xcx.118-china.com/'
-//let base = 'http://127.0.0.1:80';
+//let base = 'https://xcx.118-china.com/'
+let base = 'http://127.0.0.1:80';
 export const url=base;
 export const isExitByTelphone = params => {return fly.post(`${base}/xcx/isExitByTelphone.xcx`,qs.stringify(params)).then(res => res.data);}; 
 export const getSmsCode = params => { return fly.post(`${base}/xcx/getSmsCode.xcx`,qs.stringify(params)).then(res => res.data); }; 
@@ -33,7 +33,22 @@ export const deleteFile = params => { return fly.post(`${base}/xcx/accidentinfo/
 export const getAddressByMap = params => { return fly.post(`${base}/xcx/map/getAddress.xcx`,qs.stringify(params)).then(res => res.data); }; 
 export const getCityByMap = params => { return fly.post(`${base}/xcx/map/getCity.xcx`,qs.stringify(params)).then(res => res.data); }; 
 
+export const applaycityList = params => { return fly.post(`${base}/xcx/login/before/applaycity/list.xcx`,qs.stringify(params)).then(res => res.data); }; 
+export const saveApplaycity = params => { return fly.post(`${base}/xcx/login/before/applaycity/save.xcx`,qs.stringify(params)).then(res => res.data); }; 
+export const exitApplaycity = params => { return fly.post(`${base}/xcx/login/before/applaycity/exit.xcx`,qs.stringify(params)).then(res => res.data); };
+export const getApplaycity = params => { return fly.post(`${base}/xcx/login/before/applaycity/get.xcx`,qs.stringify(params)).then(res => res.data); };
 
+
+export const exitEnterprise = params => { return fly.post(`${base}/xcx/login/before/enterprise/exitByNameAndCity.xcx`,qs.stringify(params)).then(res => res.data); }; 
+export const enterpriseList = params => { return fly.post(`${base}/xcx/login/before/enterprise/list.xcx`,qs.stringify(params)).then(res => res.data); }; 
+export const saveEnterprise = params => { return fly.post(`${base}/xcx/login/before/enterprise/save.xcx`,qs.stringify(params)).then(res => res.data); }; 
+export const addPersonEnterprise = params => { return fly.post(`${base}/xcx/login/before/enterprise/addPerson.xcx`,qs.stringify(params)).then(res => res.data); }; 
+
+export const applayprojectList = params => { return fly.post(`${base}/xcx/login/before/applayproject/list.xcx`,qs.stringify(params)).then(res => res.data); }; 
+export const applayprojectListByOpenId = params => { return fly.post(`${base}/xcx/login/before/applayproject/listByOpenId.xcx`,qs.stringify(params)).then(res => res.data); }; 
+export const saveApplayproject = params => { return fly.post(`${base}/xcx/login/before/applayproject/save.xcx`,qs.stringify(params)).then(res => res.data); }; 
+export const getApplayproject = params => { return fly.post(`${base}/xcx/login/before/applayproject/get.xcx`,qs.stringify(params)).then(res => res.data); };
+export const addApplayproject = params => { return fly.post(`${base}/xcx/login/before/applayproject/add.xcx`,qs.stringify(params)).then(res => res.data); };
 
 
 

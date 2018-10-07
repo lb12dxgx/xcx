@@ -11,8 +11,9 @@
   },
   "dependencies": {
     "flyio": "^0.6.0",
-    "mpvue": "^1.0.11",
-    "qs": "^6.5.2"
+    "mpvue": "^1.0.13",
+    "qs": "^6.5.2",
+    "vue": "^2.5.17"
   },
   "devDependencies": {
     "mpvue-loader": "^1.1.2",

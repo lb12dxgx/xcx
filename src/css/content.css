@@ -1,0 +1,173 @@
+.frome-box{
+  position: absolute; 
+  top:10px; 
+  width:100%;
+  overflow: hidden;
+  }
+.frome-title{
+  font-size:18px;
+  color:#707070;
+  padding:5px 0 15px 20px;
+}
+.frome-content{
+  background-color:#ffffff;
+}
+.text-box{
+  width: 100%;
+  position: relative;
+ 
+    
+}
+
+.text-box label{ 
+  position:absolute; 
+  top:50%; 
+  left:22px; 
+  transform:translate(0,-50%); 
+  transition:all 0.2s; 
+  color:#b4b4b4; 
+  z-index:0; 
+  font-size:18px;
+} 
+.text-box input{ 
+  height:10px; 
+  border: none;
+  border-bottom:2px solid #ddd; 
+  outline:none; 
+  font-size:18px; 
+  padding:25px 20px 20px 20px; 
+ 
+  transition:all 0.2s; 
+  background:none; 
+  z-index:5; 
+  width: 100%;
+} 
+.text-box  .inputfocus{ 
+  border: none;
+  border-bottom:2px solid #d70601; 
+  transition:all 0.2s; 
+  width: 100%;
+} 
+.text-box .lablefocus{ 
+  top:0px; 
+  left:0px; 
+  color:#b4b4b4; 
+  transform:scale(0.8); 
+}
+
+.tj-btn{
+  width: 96%;
+  height: 50px;
+  background: #d70601;
+  border: none;
+  color: #fff;
+  font-size: 18px;
+  display: block;
+  margin: 0 auto;
+  border-radius: 5px;
+  margin-top: 20px;
+}
+
+
+/*反馈页面样式开始*/
+.tab-list{
+	background: #fff;
+	overflow: hidden;
+	zom:1;
+	width: 100%;
+}
+.tab-list ul{
+    width: 100%;
+	overflow: auto;
+	zoom:1;
+	padding: 0;
+	}
+.tab-list ul li{
+	list-style: none;
+	float: left;
+	width: 33%;
+}
+
+.link-on{
+	display: block;
+	width: 100%;
+	text-align: center;
+	height: 50px;
+	line-height: 50px;
+	font-size: 18px;
+	color: #d80702;
+	text-decoration: none;
+	border-bottom: 2px #d80702 solid;
+}
+.link-none{
+	display: block;
+	width: 100%;
+	text-align: center;
+	height: 50px;
+	line-height: 50px;
+	font-size: 18px;
+	color: #b4b4b4;
+	text-decoration: none;
+	border-bottom: 2px #b4b4b4 solid;
+	
+}
+.biaozhu-btn{
+	position: absolute; 
+	right:20px; 
+	top:2px; 
+	display: block; 
+	width: 120px; 
+	height: 50px;  
+	text-align: center;
+	line-height: 50px;  
+	background: #d70601; 
+	color: #fff; 
+	border-radius: 5px; 
+	font-size: 18px; 
+	z-index:80; 
+	text-decoration: none;
+}
+/*列表样式开始*/
+.liebiao-box{
+	margin: 0 auto;
+	background: #fff;
+	height: 100%;
+	width: 88%;
+	padding:5px;
+	padding-bottom: 15px;
+	margin-top: 10px
+	
+}
+
+.list-box-xx{
+	width:98%;
+	font-size: 16px;
+	list-style: none;
+	padding: 0;
+	padding-bottom: 10px;
+    clear: both;
+}
+.list-box-xx .left-box{
+	width:25%;
+	color: #b4b4b4;
+
+}
+.list-box-xx .right-box{
+	 width: 73%;
+     color: #707070;
+	
+}
+
+.gcmc-text{
+	font-size: 18px;
+    color: #333;
+	text-decoration:none;
+	width: 98%;
+	border-bottom: 1px #ddd solid;
+	padding-bottom: 5px;
+	margin-top: 2px;
+	margin-bottom: 5px;
+}
+.liebiao-box a{
+	text-decoration: none;
+}
