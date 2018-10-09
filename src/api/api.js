@@ -51,6 +51,13 @@ export const getApplayproject = params => { return fly.post(`${base}/xcx/login/b
 export const addApplayproject = params => { return fly.post(`${base}/xcx/login/before/applayproject/add.xcx`,qs.stringify(params)).then(res => res.data); };
 
 
+export const saveProjectResult = params => { return fly.post(`${base}/xcx/login/before/result/save.xcx`,qs.stringify(params)).then(res => res.data); }; 
+export const projectresultListByOpenId = params => { return fly.post(`${base}/xcx/login/before/result/list.xcx`,qs.stringify(params)).then(res => res.data); }; 
+export const projectresultListByProject = params => { return fly.post(`${base}/xcx/login/before/result/save.xcx`,qs.stringify(params)).then(res => res.data); }; 
+
+
+
+
 
 fly.interceptors.request.use((request) => {
 	request.headers.Authorization=wx.getStorageSync("openid");

@@ -19,41 +19,41 @@
     <div class="step1" v-if="step1">
             <div class="frome-content">
               <div class="text-box ">
-                <input  type="text" v-model="addForm.projectName" disabled="true" class="inputview" />
+                <input  type="text" v-model="projectForm.projectName" disabled="true" class="inputview" />
                 <label class="lablefocus">工程名称</label>
                </div>
             <div class="text-box ">
-              <input  type="text" v-model="addForm.projectType" disabled="true" class="inputview"/>
+              <input  type="text" v-model="projectForm.projectType" disabled="true" class="inputview"/>
               <label class="lablefocus">工程类别</label>
              
            </div>
            <div class="text-box ">
-              <input  type="text" v-model="addForm.projectStartDate" disabled="true" class="inputview"/>
+              <input  type="text" v-model="projectForm.projectStartDate" disabled="true" class="inputview"/>
               <label class="lablefocus">施工时间</label>
              
            </div>
             <div class="text-box ">
-              <input  type="text" v-model="addForm.projectAddren" disabled="true" class="inputview" />
+              <input  type="text" v-model="projectForm.projectAddren" disabled="true" class="inputview" />
               <label class="lablefocus">工程地点</label>
               
            </div>
            <div class="text-box ">
-              <input  type="text" v-model="addForm.projectStartEnd" disabled="true" class="inputview" />
+              <input  type="text" v-model="projectForm.projectStartEnd" disabled="true" class="inputview" />
               <label class="lablefocus">工程起止点</label>
            </div>
 
            <div class="text-box ">
-              <input  type="text" v-model="addForm.enterpriseName" disabled="true" class="inputview" />
+              <input  type="text" v-model="projectForm.enterpriseName" disabled="true" class="inputview" />
               <label class="lablefocus">企业名称</label>
            </div>
 
            <div class="text-box ">
-              <input  type="text" v-model="addForm.personName" disabled="true" class="inputview" />
+              <input  type="text" v-model="projectForm.personName" disabled="true" class="inputview" />
               <label class="lablefocus">联系人</label>
            </div>
 
            <div class="text-box ">
-              <input  type="text" v-model="addForm.telePhone" disabled="true" class="inputview" />
+              <input  type="text" v-model="projectForm.telePhone" disabled="true" class="inputview" />
               <label class="lablefocus">联系电话</label>
            </div>
 
@@ -90,33 +90,30 @@
 
        <div class="frome-content">
           <div class="text-box ">
-            <picker mode="selector"  :range="typeArray" @change="typeChange">   <input  type="text" v-model="addForm.result"/>
+            <picker mode="selector"  :range="resultArray" @change="resultChange">   <input  type="text" v-model="addForm.result"/>
               <label class="lablefocus">管线情况</label>
             </picker>
           </div>
 
           <div class="text-box ">
-            <picker mode="date" :value="addForm.projectStartDate"  @change="dateChange">    <input  type="text" v-model="addForm.projectName"/>
+            <picker mode="selector"  :range="typeArray" @change="typeChange">   <input  type="text" v-model="addForm.type"/>
+              <label class="lablefocus">管线类型</label>
+            </picker>
+          </div>
+
+          <div class="text-box ">
+            <picker mode="date" :value="addForm.projectStartDate"  @change="dateChange">    <input  type="text" v-model="addForm.resultDate"/>
               <label class="lablefocus">标注时间</label>
             </picker>
           </div>
-          
-          <div class="weui-cells__title">现场标注时间</div>
-      <div class="weui-cell">
-            <div class="weui-cell__bd">
-                <input class="weui-input "   placeholder="标注时间"v-model="addForm.projectCode">
-                  
-            </div>
-     </div>
-     <div class="weui-cells__title">现场标注措施</div>
-      <div class="weui-cell">
-            <div class="weui-cell__bd">
-                <textarea class="weui-textarea" placeholder="请输入文本" rows="3"></textarea>
-                  
-            </div>
-     </div>
 
-      <a  class="weui-btn weui-btn_min weui-btn_primary" style="width:70%;margin-top:20px" @click="saveResult()" >保存</a>
+          <div class="text-box ">
+              <textarea   v-model="addForm.resultSumary" rows="3"/>
+              <label class="lablefocus">标注说明</label>
+           
+          </div>
+          
+          <input type="button" value="保存" class="tj-btn" @click="saveResult()" >
 
     </div>
 
@@ -130,22 +127,26 @@
 
 <script>
 
-import {getAddressByMap,getApplayproject} from '../../../api/api';
+import {getAddressByMap,getApplayproject,saveProjectResult} from '../../../api/api';
 
 export default {
   data () {
      return {
-        items: [
-        {name: '1', value: '无管线',},
-        {name: '2', value: '有管线',checked: 'true'}
-      ],
+        resultArray:['有', '无'],
+        typeArray:['水','燃气','通讯','电力','其他'],
         step1:true,
         step2:false,
         step3:false,
         ismap:false,
-        type:"",
         beforeProjectId:'',
-        addForm:{},
+        addForm:{
+          result:'',
+          type:'',
+          resultDate:'',
+          resultSumary:''
+
+        },
+        projectForm:{},
         centpoint:{
           longitude:'',
           latitude:'',
@@ -161,6 +162,18 @@ export default {
 
 
   methods: {
+
+    resultChange(e){
+      this.addForm.result=this.resultArray[e.mp.detail.value];
+    },
+
+    typeChange(e){
+      this.addForm.type=this.typeArray[e.mp.detail.value];
+    },
+    dateChange(e){
+       this.addForm.resultDate=e.mp.detail.value;
+    },
+
     goStep1(){
       this.step1=true;
       this.step2=false;
@@ -178,6 +191,10 @@ export default {
       this.step3=true;
       this.step1=false;
       this.step2=false;
+    },
+
+    saveResult(){
+      saveProjectResult(this.addForm).then
     },
 
     toXianChang(){
@@ -261,7 +278,7 @@ export default {
     let query=this.$root.$mp.query;
     this.beforeProjectId=query.beforeProjectId;
       getApplayproject({'beforeProjectId':this.beforeProjectId}).then((res)=>{
-        this.addForm=res.retData;
+        this.projectForm=res.retData;
       })
 
   },
