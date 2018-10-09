@@ -1,78 +1,65 @@
 <template>
   
-  <div >
-   <div class="js">
-    <div class="weui-navbar">
-        <div @click="goStep1()" class="weui-navbar__item" :class="step1 ?'weui-bar__item_on' : '' ">
-             项目基本信息
-        </div>
-        <div @click="goStep2()" class="weui-navbar__item" :class="step2 ?'weui-bar__item_on' : '' ">
-             位置信息
-        </div>
-        <div @click="goStep3()" class="weui-navbar__item" :class="step3 ?'weui-bar__item_on' : '' ">
-            结果反馈
-        </div>
+   <div class="frome-box">
+    <div class="tab-list">
+      <ul>
+         <li>
+          <a   :class="step1 ?'link-on' : 'link-none' " @click="goStep1">基本信息</a>
+        </li>
+         <li>
+          <a   :class="step2 ?'link-on' : 'link-none' " @click="goStep2">位置信息</a>
+        </li>
+        <li>
+          <a   :class="step3 ?'link-on' : 'link-none' " @click="goStep3">反馈信息</a>
+        </li>
+      </ul>
     </div>
+   <div class="clear"></div>
 
     <div class="step1" v-if="step1">
-            <div class="weui-cell">
-              <div class="weui-cell__hd">
-                <label class="weui-label" >工程名称</label>
-              </div>
-              <div class="weui-cell__bd">
-                  <input class="weui-input "   placeholder="请输入工程名称"v-model="addForm.projectName">
-              </div>
+            <div class="frome-content">
+              <div class="text-box ">
+                <input  type="text" v-model="addForm.projectName" disabled="true" class="inputview" />
+                <label class="lablefocus">工程名称</label>
+               </div>
+            <div class="text-box ">
+              <input  type="text" v-model="addForm.projectType" disabled="true" class="inputview"/>
+              <label class="lablefocus">工程类别</label>
+             
+           </div>
+           <div class="text-box ">
+              <input  type="text" v-model="addForm.projectStartDate" disabled="true" class="inputview"/>
+              <label class="lablefocus">施工时间</label>
+             
+           </div>
+            <div class="text-box ">
+              <input  type="text" v-model="addForm.projectAddren" disabled="true" class="inputview" />
+              <label class="lablefocus">工程地点</label>
+              
+           </div>
+           <div class="text-box ">
+              <input  type="text" v-model="addForm.projectStartEnd" disabled="true" class="inputview" />
+              <label class="lablefocus">工程起止点</label>
+           </div>
+
+           <div class="text-box ">
+              <input  type="text" v-model="addForm.enterpriseName" disabled="true" class="inputview" />
+              <label class="lablefocus">企业名称</label>
+           </div>
+
+           <div class="text-box ">
+              <input  type="text" v-model="addForm.personName" disabled="true" class="inputview" />
+              <label class="lablefocus">联系人</label>
+           </div>
+
+           <div class="text-box ">
+              <input  type="text" v-model="addForm.telePhone" disabled="true" class="inputview" />
+              <label class="lablefocus">联系电话</label>
+           </div>
+
             </div>
-          
-            <div class="weui-cell">
-              <div class="weui-cell__hd">
-                <label class="weui-label" >工程类别</label>
-              </div>
-              <div class="weui-cell__bd">
-                  <input class="weui-input "   placeholder="请输入工程编号"v-model="addForm.projectCode">
-              </div>
-            </div>
-            <div class="weui-cell">
-              <div class="weui-cell__hd">
-                <label class="weui-label" >工程地点</label>
-              </div>
-              <div class="weui-cell__bd">
-                  <input class="weui-input "   placeholder="请输入工程地点"v-model="addForm.projectAddren">
-              </div>
-            </div>
-            <div class="weui-cell">
-              <div class="weui-cell__hd">
-                <label class="weui-label" >工程起止点</label>
-              </div>
-              <div class="weui-cell__bd">
-                  <input class="weui-input "   placeholder="请输入工程起止点" v-model="addForm.projectCode">
-              </div>
-            </div>
-            <div class="weui-cell">
-              <div class="weui-cell__hd">
-                <label class="weui-label" >施工时间</label>
-              </div>
-              <div class="weui-cell__bd">
-                  <input class="weui-input "   placeholder="请输入施工时间"v-model="addForm.projectCode">
-              </div>
-            </div>
-             <div class="weui-cell">
-              <div class="weui-cell__hd">
-                <label class="weui-label" >联系人</label>
-              </div>
-              <div class="weui-cell__bd">
-                  <input class="weui-input "   placeholder="联系人"v-model="addForm.projectCode">
-              </div>
-            </div>
-             <div class="weui-cell">
-              <div class="weui-cell__hd">
-                <label class="weui-label" >联系电话</label>
-              </div>
-              <div class="weui-cell__bd">
-                  <input class="weui-input "   placeholder="13720052345"v-model="addForm.projectCode">
-              </div>
-            </div>
-            <button type="primary" @tap="calling" >拨打电话</button>
+
+            <input type="button" value="拨打电话" class="tj-btn" @tap="calling" >
              
     </div>
 
@@ -101,15 +88,20 @@
 
     <div class="step3" v-if="step3">
 
-      <div class="weui-cells__title">管线情况</div>
-        <div class="weui-cells ">
-            <radio-group class="radio-group" @change="radioChange">
-                    <div class="radio radioDiv" v-for="(item, index) in items" :key="item.name">
-                      <radio :value="item.name" :checked="item.checked"/> {{item.value}}
-                    </div>
-            </radio-group>
-        </div>
-        <div class="weui-cells__title">现场标注时间</div>
+       <div class="frome-content">
+          <div class="text-box ">
+            <picker mode="selector"  :range="typeArray" @change="typeChange">   <input  type="text" v-model="addForm.result"/>
+              <label class="lablefocus">管线情况</label>
+            </picker>
+          </div>
+
+          <div class="text-box ">
+            <picker mode="date" :value="addForm.projectStartDate"  @change="dateChange">    <input  type="text" v-model="addForm.projectName"/>
+              <label class="lablefocus">标注时间</label>
+            </picker>
+          </div>
+          
+          <div class="weui-cells__title">现场标注时间</div>
       <div class="weui-cell">
             <div class="weui-cell__bd">
                 <input class="weui-input "   placeholder="标注时间"v-model="addForm.projectCode">
@@ -138,7 +130,7 @@
 
 <script>
 
-import {getAddressByMap} from '../../../api/api';
+import {getAddressByMap,getApplayproject} from '../../../api/api';
 
 export default {
   data () {
@@ -152,6 +144,7 @@ export default {
         step3:false,
         ismap:false,
         type:"",
+        beforeProjectId:'',
         addForm:{},
         centpoint:{
           longitude:'',
@@ -265,39 +258,11 @@ export default {
  },
 
   onLoad() {
-    var _this=this;
-    
-
-    wx.getSetting({
-      success(res) {
-       if (!res['scope.userLocation']||!res['scope.userLocation']) {
-          wx.authorize({
-            scope: 'scope.userLocation', 
-            success(res) {
-              console.log(res)
-            },
-            fail(r) { console.log(r)},
-            complete() { }
-          })
-        }
-      }
-    });
-
-    wx.getLocation({
-      type: 'gcj02', 
-        success(res) {
-           _this.centpoint.latitude = res.latitude;
-           _this.centpoint.longitude = res.longitude;
-           _this.pointarray.push( _this.centpoint);
-           _this.addPoint();
-          
-        },
-        fail(re){
-          console.log(re);
-        }
-      });
-     
-      
+    let query=this.$root.$mp.query;
+    this.beforeProjectId=query.beforeProjectId;
+      getApplayproject({'beforeProjectId':this.beforeProjectId}).then((res)=>{
+        this.addForm=res.retData;
+      })
 
   },
 
@@ -308,23 +273,7 @@ export default {
 </script>
 
 <style scoped>
-  .step1{
-    margin-top:50px;
-    background-color: #FFF;
-
-  }
-
-  .step2{
-    margin-top:50px;
-    background-color: #FFF;
-
-  }
-
-  .step3{
-    margin-top:50px;
-    background-color: #FFF;
-
-  }
+  
 
 
 </style>
