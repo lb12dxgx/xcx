@@ -410,6 +410,7 @@ export default {
       this.step1class='link-on';
       this.step2class='link-none';
       this.ismap=false;
+      this.addForm={};
   },
 
   onLoad() {

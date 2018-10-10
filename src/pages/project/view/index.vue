@@ -1,128 +1,137 @@
 <template>
   
-  <div >
-   <div class="js">
-    <div class="weui-navbar">
-        <div @click="goStep1()" class="weui-navbar__item" :class="step1 ?'weui-bar__item_on' : '' ">
-             项目基本信息
-        </div>
-        <div @click="goStep2()" class="weui-navbar__item" :class="step2 ?'weui-bar__item_on' : '' ">
-             位置信息
-        </div>
-        <div @click="goStep3()" class="weui-navbar__item" :class="step3 ?'weui-bar__item_on' : '' ">
-            结果反馈
-        </div>
+   <div class="frome-box">
+    <div class="tab-list">
+      <ul>
+         <li>
+          <a   :class="step1 ?'link-on' : 'link-none' " @click="goStep1">反馈信息</a>
+        </li>
+         <li>
+          <a   :class="step2 ?'link-on' : 'link-none' " @click="goStep2">基本信息</a>
+        </li>
+        <li>
+          <a   :class="step3 ?'link-on' : 'link-none' " @click="goStep3">位置信息</a>
+        </li>
+      </ul>
     </div>
+   <div class="clear"></div>
 
-    <div class="step1" v-if="step1">
-      <div class="weui-cell">
-              <div class="weui-cell__hd">
-                <label class="weui-label" >工程名称</label>
-              </div>
-              <div class="weui-cell__bd">
-                  <input class="weui-input "   placeholder="请输入工程名称"v-model="addForm.projectName">
-              </div>
+   <div class="step1" v-if="step1">
+     
+      <div class="liebiao-box" v-for="(item,index) in list" :key="index">
+       <a>
+         <p class="gcmc-text">{{item.enterpriseName}}</p>
+         <ul class="list-box-xx">
+           <li class="left-box left">有无管线</li>
+           <li class="right-box right">{{item.result}}</li>
+
+         </ul>
+         <ul class="list-box-xx">
+           <li class="left-box left">管线类型</li>
+           <li class="right-box right">{{item.type}}</li>
+
+         </ul>
+         <ul class="list-box-xx">
+           <li class="left-box left">标注时间</li>
+           <li class="right-box right">{{item.resultDate}}</li>
+
+         </ul>
+         <ul class="list-box-xx">
+           <li class="left-box left">标注说明</li>
+           <li class="right-box right">{{item.resultSumary}}</li>
+
+         </ul>
+         <ul class="list-box-xx">
+           <li class="left-box left">企业电话</li>
+           <li class="right-box right">{{item.enttelphone}}</li>
+         </ul>
+         <ul class="list-box-xx">
+           <li class="left-box left">联系人</li>
+           <li class="right-box right">{{item.personName}}</li>
+
+         </ul>
+         <ul class="list-box-xx">
+           <li class="left-box left">联系电话</li>
+           <li class="right-box right">{{item.telePhone}}</li>
+         </ul>
+         
+       </a>
+        </div>
+      </div>
+       
+
+    <div class="step2" v-if="step2">
+            <div class="frome-content">
+              <div class="text-box ">
+                <input  type="text" v-model="projectForm.projectName" disabled="true" class="inputview" />
+                <label class="lablefocus">工程名称</label>
+               </div>
+            <div class="text-box ">
+              <input  type="text" v-model="projectForm.projectType" disabled="true" class="inputview"/>
+              <label class="lablefocus">工程类别</label>
+             
+           </div>
+           <div class="text-box ">
+              <input  type="text" v-model="projectForm.projectStartDate" disabled="true" class="inputview"/>
+              <label class="lablefocus">施工时间</label>
+             
+           </div>
+            <div class="text-box ">
+              <input  type="text" v-model="projectForm.projectAddren" disabled="true" class="inputview" />
+              <label class="lablefocus">工程地点</label>
+              
+           </div>
+           <div class="text-box ">
+              <input  type="text" v-model="projectForm.projectStartEnd" disabled="true" class="inputview" />
+              <label class="lablefocus">工程起止点</label>
+           </div>
+
+           <div class="text-box ">
+              <input  type="text" v-model="projectForm.enterpriseName" disabled="true" class="inputview" />
+              <label class="lablefocus">企业名称</label>
+           </div>
+
+           <div class="text-box ">
+              <input  type="text" v-model="projectForm.personName" disabled="true" class="inputview" />
+              <label class="lablefocus">联系人</label>
+           </div>
+
+           <div class="text-box ">
+              <input  type="text" v-model="projectForm.telePhone" disabled="true" class="inputview" />
+              <label class="lablefocus">联系电话</label>
+           </div>
+
             </div>
-          
-            <div class="weui-cell">
-              <div class="weui-cell__hd">
-                <label class="weui-label" >工程类别</label>
-              </div>
-              <div class="weui-cell__bd">
-                  <input class="weui-input "   placeholder="请输入工程编号"v-model="addForm.projectCode">
-              </div>
-            </div>
-            <div class="weui-cell">
-              <div class="weui-cell__hd">
-                <label class="weui-label" >工程地点</label>
-              </div>
-              <div class="weui-cell__bd">
-                  <input class="weui-input "   placeholder="请输入工程地点"v-model="addForm.projectAddren">
-              </div>
-            </div>
-            <div class="weui-cell">
-              <div class="weui-cell__hd">
-                <label class="weui-label" >工程起止点</label>
-              </div>
-              <div class="weui-cell__bd">
-                  <input class="weui-input "   placeholder="请输入工程起止点" v-model="addForm.projectCode">
-              </div>
-            </div>
-            <div class="weui-cell">
-              <div class="weui-cell__hd">
-                <label class="weui-label" >施工时间</label>
-              </div>
-              <div class="weui-cell__bd">
-                  <input class="weui-input "   placeholder="请输入施工时间"v-model="addForm.projectCode">
-              </div>
-            </div>
+
+            <input type="button" value="拨打联系人电话" class="tj-btn" @tap="calling" >
+            <input type="button" value="拨打企业电话" class="tj-btn" @tap="callingEmp" >
+             
     </div>
 
     <div class="step3" v-if="step3">
         <div class="weui-cells weui-cells_form" >
-         <div class="projectDesc" v-if="!ismap">
-
-            <div class="weui-cell">
-              <div class="weui-cell__hd">
-                <label class="weui-label" >工程名称</label>
-              </div>
+         
+          <div class="weui-cell">
+              
               <div class="weui-cell__bd">
-                  <input class="weui-input "   placeholder="请输入工程名称"v-model="addForm.projectName">
+                 经度：{{centpoint.longitude}} 维度：{{centpoint.latitude}}
               </div>
-            </div>
-          
-            <div class="weui-cell">
-              <div class="weui-cell__hd">
-                <label class="weui-label" >工程类别</label>
-              </div>
-              <div class="weui-cell__bd">
-                  <input class="weui-input "   placeholder="请输入工程编号"v-model="addForm.projectCode">
-              </div>
-            </div>
-            <div class="weui-cell">
-              <div class="weui-cell__hd">
-                <label class="weui-label" >工程地点</label>
-              </div>
-              <div class="weui-cell__bd">
-                  <input class="weui-input "   placeholder="请输入工程地点"v-model="addForm.projectAddren">
-              </div>
-            </div>
-            <div class="weui-cell">
-              <div class="weui-cell__hd">
-                <label class="weui-label" >工程起止点</label>
-              </div>
-              <div class="weui-cell__bd">
-                  <input class="weui-input "   placeholder="请输入工程起止点" v-model="addForm.projectCode">
-              </div>
-            </div>
-            <div class="weui-cell">
-              <div class="weui-cell__hd">
-                <label class="weui-label" >施工时间</label>
-              </div>
-              <div class="weui-cell__bd">
-                  <input class="weui-input "   placeholder="请输入施工时间"v-model="addForm.projectCode">
-              </div>
-            </div>
-
-            <a  class="weui-btn weui-btn_min weui-btn_primary" style="width:70%;margin-top:20px" @click="showMap" >下一步</a> 
-
-        </div>
-
-          <div class="projectMap" v-if="ismap">
+        </div> 
+          <div class="projectMap">
 
             <map id="map" :longitude="centpoint.longitude" :latitude="centpoint.latitude" scale="17"   :markers="markers"  :polyline="polyline"  show-location style="width: 100%; height: 70vh;"
             >
             </map>
-              <a  class="weui-btn weui-btn_min weui-btn_primary" style="width:40%;margin-top:20px" @click="setMyPoint">标注位置</a> 
-              <a  class="weui-btn weui-btn_min weui-btn_primary" style="width:40%;margin-top:20px" @click="saveMyPoint">返回</a> 
+
+             <a  class="weui-btn weui-btn_min weui-btn_primary" style="width:70%;margin-top:20px" @click="toXianChang()" >导航到现场</a> 
+             
           </div>
 
       </div>
 
     </div>
 
-
-   </div>   
+      
 
   </div>
  
@@ -131,17 +140,18 @@
 
 <script>
 
-import {getAddressByMap} from '../../../api/api';
+import {getAddressByMap,getApplayproject,projectresultListByProject} from '../../../api/api';
 
 export default {
   data () {
      return {
+        list:[],
         step1:true,
         step2:false,
         step3:false,
         ismap:false,
-        type:"",
-        addForm:{},
+        beforeProjectId:'',
+        projectForm:{},
         centpoint:{
           longitude:'',
           latitude:'',
@@ -157,16 +167,34 @@ export default {
 
 
   methods: {
+
+    resultChange(e){
+      this.addForm.result=this.resultArray[e.mp.detail.value];
+    },
+
+    typeChange(e){
+      this.addForm.type=this.typeArray[e.mp.detail.value];
+    },
+    dateChange(e){
+       this.addForm.resultDate=e.mp.detail.value;
+    },
+
     goStep1(){
       this.step1=true;
       this.step2=false;
       this.step3=false;
+      projectresultListByProject({'beforeProjectId':this.beforeProjectId}).then((res)=>{
+        this.list=res.retData;
+      })
     },
 
     goStep2(){
       this.step2=true;
       this.step1=false;
       this.step3=false;
+     getApplayproject({'beforeProjectId':this.beforeProjectId}).then((res)=>{
+        this.projectForm=res.retData;
+      })
     },
 
 
@@ -174,6 +202,35 @@ export default {
       this.step3=true;
       this.step1=false;
       this.step2=false;
+    },
+
+    saveResult(){
+       var params = Object.assign({beforeProjectId:this.beforeProjectId}, this.addForm);
+
+      saveProjectResult(params).then((res)=>{
+          wx.navigateTo({
+            url: '/pages/before/qs/main'
+          })
+      });
+
+    },
+
+    toXianChang(){
+       wx.navigateTo({
+            url: '/pages/project/maproute/main'
+          })
+       
+    },
+    calling(){
+      wx.makePhoneCall({
+      phoneNumber: this.projectForm.telePhone //仅为示例，并非真实的电话号码
+      })
+    },
+
+    callingEmp(){
+      wx.makePhoneCall({
+        phoneNumber: this.projectForm.enttelphone //仅为示例，并非真实的电话号码
+      })
     },
 
     showMap(){
@@ -234,41 +291,17 @@ export default {
    
     
  },
+  onUnload(){
+      this.step1=true;
+      this.step2=false;
+      this.step3=false;
+  },
 
   onLoad() {
-    var _this=this;
-    
-
-    wx.getSetting({
-      success(res) {
-       if (!res['scope.userLocation']||!res['scope.userLocation']) {
-          wx.authorize({
-            scope: 'scope.userLocation', 
-            success(res) {
-              console.log(res)
-            },
-            fail(r) { console.log(r)},
-            complete() { }
-          })
-        }
-      }
-    });
-
-    wx.getLocation({
-      type: 'gcj02', 
-        success(res) {
-           _this.centpoint.latitude = res.latitude;
-           _this.centpoint.longitude = res.longitude;
-           _this.pointarray.push( _this.centpoint);
-           _this.addPoint();
-          
-        },
-        fail(re){
-          console.log(re);
-        }
-      });
+    let query=this.$root.$mp.query;
+    this.beforeProjectId=query.beforeProjectId;
+    this.goStep1();
      
-      
 
   },
 
@@ -279,11 +312,7 @@ export default {
 </script>
 
 <style scoped>
-  .step1{
-    margin-top:50px;
-    background-color: #FFF;
-
-  }
+  
 
 
 </style>

@@ -59,7 +59,8 @@
 
             </div>
 
-            <input type="button" value="拨打电话" class="tj-btn" @tap="calling" >
+             <input type="button" value="拨打联系人电话" class="tj-btn" @tap="calling" >
+            <input type="button" value="拨打企业电话" class="tj-btn" @tap="callingEmp" >
              
     </div>
 
@@ -90,19 +91,19 @@
 
        <div class="frome-content">
           <div class="text-box ">
-            <picker mode="selector"  :range="resultArray" @change="resultChange">   <input  type="text" v-model="addForm.result"/>
+            <picker mode="selector"  :range="resultArray" @change="resultChange">   <input  type="text" v-model="addForm.result" disabled="true"/>
               <label class="lablefocus">管线情况</label>
             </picker>
           </div>
 
           <div class="text-box ">
-            <picker mode="selector"  :range="typeArray" @change="typeChange">   <input  type="text" v-model="addForm.type"/>
+            <picker mode="selector"  :range="typeArray" @change="typeChange">   <input  type="text" v-model="addForm.type" disabled="true"/>
               <label class="lablefocus">管线类型</label>
             </picker>
           </div>
 
           <div class="text-box ">
-            <picker mode="date" :value="addForm.projectStartDate"  @change="dateChange">    <input  type="text" v-model="addForm.resultDate"/>
+            <picker mode="date" :value="addForm.projectStartDate"  @change="dateChange">    <input  type="text" v-model="addForm.resultDate" disabled="true"/>
               <label class="lablefocus">标注时间</label>
             </picker>
           </div>
@@ -110,10 +111,10 @@
           <div class="text-box ">
               <textarea   v-model="addForm.resultSumary" rows="3"/>
               <label class="lablefocus">标注说明</label>
-           
-          </div>
+           </div>
           
-          <input type="button" value="保存" class="tj-btn" @click="saveResult()" >
+          <input type="button" value="保存" class="tj-btn" 
+          @click="saveResult()" >
 
     </div>
 
@@ -194,7 +195,14 @@ export default {
     },
 
     saveResult(){
-      saveProjectResult(this.addForm).then
+       var params = Object.assign({beforeProjectId:this.beforeProjectId}, this.addForm);
+
+      saveProjectResult(params).then((res)=>{
+          wx.navigateTo({
+            url: '/pages/before/qs/main'
+          })
+      });
+
     },
 
     toXianChang(){
@@ -205,15 +213,15 @@ export default {
     },
     calling(){
       wx.makePhoneCall({
-      phoneNumber: '13720053036' //仅为示例，并非真实的电话号码
+      phoneNumber: this.projectForm.telePhone //仅为示例，并非真实的电话号码
       })
     },
 
-    saveResult(){
-       wx.navigateTo({
-            url: '/pages/before/qs/main'
-          })
-     },
+    callingEmp(){
+      wx.makePhoneCall({
+        phoneNumber: this.projectForm.enttelphone //仅为示例，并非真实的电话号码
+      })
+    },
 
     showMap(){
       this.ismap=true;
@@ -273,6 +281,11 @@ export default {
    
     
  },
+  onUnload(){
+      this.step1=true;
+      this.step2=false;
+      this.step3=false;
+  },
 
   onLoad() {
     let query=this.$root.$mp.query;

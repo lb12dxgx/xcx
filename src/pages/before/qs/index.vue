@@ -18,7 +18,7 @@
     <div v-if="step1">
       <div>  
       <div class="liebiao-box" v-for="(item,index) in list" :key="index">
-       <a  @click="viewProject(item.beforeProjectId)">
+       <a  @click="handleProject(item.beforeProjectId)">
          <p class="gcmc-text">{{item.projectName}}</p>
          <ul class="list-box-xx">
            <li class="left-box left">工程地点</li>
@@ -61,7 +61,7 @@
     <div v-if="step2">
     <div>
       <div class="liebiao-box" v-for="(item,index) in list" :key="index">
-       <a  >
+       <a  @click="viewProject(item.beforeProjectId)">
          <p class="gcmc-text">{{item.projectName}}</p>
          <ul class="list-box-xx">
            <li class="left-box left">工程地点</li>
@@ -194,7 +194,7 @@
 import formitem from '../../../components/formitem.vue';
 import formitemedit from '../../../components/formitemedit.vue';
 
-import {getAddressByMap,applayprojectList,saveApplayproject,addApplayproject,deleteFile,url} from '../../../api/api';
+import {getAddressByMap,applayprojectListByCityId,applayprojectListFinshByOpenId,saveApplayproject,addApplayproject,deleteFile,url} from '../../../api/api';
 
 export default {
 
@@ -261,7 +261,7 @@ export default {
       this.step1class='link-on';
       this.step2class='link-none';
       this.step3class='link-none';
-      applayprojectList().then((res)=>{
+      applayprojectListByCityId().then((res)=>{
         this.list=res.retData;
         console.log(res.retData);
       });
@@ -274,7 +274,7 @@ export default {
       this.step1class='link-none';
       this.step2class='link-on';
       this.step3class='link-none';
-      applayprojectList().then((res)=>{
+      applayprojectListFinshByOpenId().then((res)=>{
         this.list=res.retData;
         console.log(res.retData);
       });
@@ -296,6 +296,12 @@ export default {
     },
 
     viewProject(beforeProjectId){
+       wx.navigateTo({
+            url: '/pages/project/view/main?beforeProjectId='+beforeProjectId
+      })
+    },
+
+    handleProject(beforeProjectId){
        wx.navigateTo({
             url: '/pages/project/handle/main?beforeProjectId='+beforeProjectId
       })
@@ -499,6 +505,7 @@ export default {
       this.step2class='link-none';
       this.step3class='link-none';
       this.ismap=false;
+      this.addForm={};
   },
 
   onLoad() {

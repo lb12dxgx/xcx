@@ -44,16 +44,17 @@ export const enterpriseList = params => { return fly.post(`${base}/xcx/login/bef
 export const saveEnterprise = params => { return fly.post(`${base}/xcx/login/before/enterprise/save.xcx`,qs.stringify(params)).then(res => res.data); }; 
 export const addPersonEnterprise = params => { return fly.post(`${base}/xcx/login/before/enterprise/addPerson.xcx`,qs.stringify(params)).then(res => res.data); }; 
 
-export const applayprojectList = params => { return fly.post(`${base}/xcx/login/before/applayproject/list.xcx`,qs.stringify(params)).then(res => res.data); }; 
+export const applayprojectListByCityId = params => { return fly.post(`${base}/xcx/login/before/applayproject/listByCityId.xcx`,qs.stringify(params)).then(res => res.data); }; 
 export const applayprojectListByOpenId = params => { return fly.post(`${base}/xcx/login/before/applayproject/listByOpenId.xcx`,qs.stringify(params)).then(res => res.data); }; 
+export const applayprojectListFinshByOpenId = params => { return fly.post(`${base}/xcx/login/before/applayproject/listFinshByOpenId.xcx`,qs.stringify(params)).then(res => res.data); }; 
 export const saveApplayproject = params => { return fly.post(`${base}/xcx/login/before/applayproject/save.xcx`,qs.stringify(params)).then(res => res.data); }; 
 export const getApplayproject = params => { return fly.post(`${base}/xcx/login/before/applayproject/get.xcx`,qs.stringify(params)).then(res => res.data); };
 export const addApplayproject = params => { return fly.post(`${base}/xcx/login/before/applayproject/add.xcx`,qs.stringify(params)).then(res => res.data); };
 
 
-export const saveProjectResult = params => { return fly.post(`${base}/xcx/login/before/result/save.xcx`,qs.stringify(params)).then(res => res.data); }; 
-export const projectresultListByOpenId = params => { return fly.post(`${base}/xcx/login/before/result/list.xcx`,qs.stringify(params)).then(res => res.data); }; 
-export const projectresultListByProject = params => { return fly.post(`${base}/xcx/login/before/result/save.xcx`,qs.stringify(params)).then(res => res.data); }; 
+export const saveProjectResult = params => { return fly.post(`${base}/xcx/login/before/result/save.xcx`,qs.stringify(params)).then(res => res.data); };
+export const projectresultListByProject = params => { return fly.post(`${base}/xcx/login/before/result/listbyProject.xcx`,qs.stringify(params)).then(res => res.data); }; 
+
 
 
 
