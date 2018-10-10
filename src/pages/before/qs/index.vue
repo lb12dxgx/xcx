@@ -488,7 +488,8 @@ export default {
           });
           return false;
        };
-
+        var jsonStr=JSON.stringify(this.pointarray);
+        this.addForm.mapJson=jsonStr;
         saveApplayproject(this.addForm);
         this.goStep2();
     }

@@ -90,6 +90,10 @@
               <input  type="text" v-model="projectForm.enterpriseName" disabled="true" class="inputview" />
               <label class="lablefocus">企业名称</label>
            </div>
+            <div class="text-box ">
+              <input  type="text" v-model="projectForm.enttelphone" disabled="true" class="inputview" />
+              <label class="lablefocus">企业电话</label>
+           </div>
 
            <div class="text-box ">
               <input  type="text" v-model="projectForm.personName" disabled="true" class="inputview" />
@@ -192,9 +196,7 @@ export default {
       this.step2=true;
       this.step1=false;
       this.step3=false;
-     getApplayproject({'beforeProjectId':this.beforeProjectId}).then((res)=>{
-        this.projectForm=res.retData;
-      })
+     
     },
 
 
@@ -202,6 +204,7 @@ export default {
       this.step3=true;
       this.step1=false;
       this.step2=false;
+      this.showMap();
     },
 
     saveResult(){
@@ -217,7 +220,7 @@ export default {
 
     toXianChang(){
        wx.navigateTo({
-            url: '/pages/project/maproute/main'
+            url: '/pages/project/maproute/main?centpoint='+JSON.stringify(this.centpoint)
           })
        
     },
@@ -235,38 +238,16 @@ export default {
 
     showMap(){
       this.ismap=true;
-      
-
-    },
-
-    setMyPoint(){
-      var _this=this;
-      wx.getLocation({
-      type: 'gcj02', 
-        success(res) {
-           var point={};
-           point.latitude = res.latitude+(0.01*_this.pointarray.length);
-           point.longitude = res.longitude+(0.01*_this.pointarray.length);
-           _this.pointarray.push(point);
-           _this.addPoint();
-         },
-        fail(re){
-          console.log(re);
-        }
-      });
-     
-    },
-    saveMyPoint(){
-      if(this.pointarray.length>=1){
-        var centpoint=this.pointarray[0];
-        getAddressByMap({'longitude':centpoint.longitude,'latitude':centpoint.latitude}).then((res)=>{
-          this.addForm.projectAddren=res.retData;
-          this.ismap=false;
-       });
+      console.log(this.projectForm.mapJson);
+      if(this.projectForm.mapJson!=""){
+        this.pointarray=JSON.parse(this.projectForm.mapJson);
+        this.centpoint= this.pointarray[0];
+        this.mapLine();
       }
     },
 
-    addPoint(){
+    
+    mapLine(){
         this.polyline= [{
             points: this.pointarray,
             color:"#FF0000DD",
@@ -300,6 +281,9 @@ export default {
   onLoad() {
     let query=this.$root.$mp.query;
     this.beforeProjectId=query.beforeProjectId;
+    getApplayproject({'beforeProjectId':this.beforeProjectId}).then((res)=>{
+        this.projectForm=res.retData;
+      })
     this.goStep1();
      
 

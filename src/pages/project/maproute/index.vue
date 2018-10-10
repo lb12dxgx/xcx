@@ -12,7 +12,7 @@
 
 <script>
 
-import {getAddressByMap} from '../../../api/api';
+import {getAddressByMap,getApplayproject} from '../../../api/api';
 
 let plugin = requirePlugin("mapPlugin")
 
@@ -23,8 +23,8 @@ export default {
         startLat: 39.80469, 
         startLng: 116.30717, 
         startName: "我的位置",   // 起点名称 选填
-        endLat: 39.80469,    // 终点纬度必传
-        endLng: 116.30717,  //终点经度 必传
+        endLat: '',    // 终点纬度必传
+        endLng: '',  //终点经度 必传
         endName: "施工位置",  //终点名称 必传
         mode: "car"  //算路方式 选填
         }
@@ -42,7 +42,7 @@ export default {
     
  },
 
-  onShow() {
+  onLoad() {
     var _this=this;
 
       wx.getSetting({
@@ -71,7 +71,11 @@ export default {
         }
       });
      
-
+      let query=this.$root.$mp.query;
+      let centpoint=JSON.parse(query.centpoint);
+      this.routeInfo.endLat=centpoint.latitude;
+      this.routeInfo.endLng=centpoint.longitude;
+      console.log(this.routeInfo);
 
       
 
