@@ -3,11 +3,11 @@
   <div>
     <div class="my">
       <div class="my-head">
-         <div >
-          <img :src="avatarUrl" />
+         <div class="myAvatar">
+           <open-data type="userAvatarUrl"></open-data>
          </div>
          <div class="my-name">
-           {{nickName}}
+           <open-data type="userNickName"></open-data> 
          </div> 
       </div>
        <div class="weui-cells weui-cells_form" >
@@ -188,11 +188,20 @@ export default {
   }
   .my-head{
      background-color: #fff;
+     display: flex;
+     flex-direction: column;
+     align-items: center;
   }
-  .my img{
+  
+  .myAvatar{
     width: 100px;
     height: 100px;
     border-radius:50%;
+    overflow:hidden;
+    display: block;
+    border: 2px solid #fff;
+    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
+
     -webkit-border-radius:50%;
     -moz-border-radius:50%
    }

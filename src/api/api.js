@@ -8,8 +8,8 @@ var fly=new Fly
 //let base = ip;
 //let base = 'http://'+ip+'/api/';
 //let base = 'http://www.118-china.com/'
-//let base = 'https://xcx.118-china.com/'
-let base = 'http://127.0.0.1:80';
+let base = 'https://xcx.118-china.com/'
+//let base = 'http://127.0.0.1:80';
 export const url=base;
 export const isExitByTelphone = params => {return fly.post(`${base}/xcx/isExitByTelphone.xcx`,qs.stringify(params)).then(res => res.data);}; 
 export const getSmsCode = params => { return fly.post(`${base}/xcx/getSmsCode.xcx`,qs.stringify(params)).then(res => res.data); }; 
@@ -28,6 +28,7 @@ export const saveAccidentinfo = params => { return fly.post(`${base}/xcx/login/a
 export const getAccidentinfo = params => { return fly.post(`${base}/xcx/login/accidentinfo/get.xcx`,qs.stringify(params)).then(res => res.data); }; 
 
 export const deleteFile = params => { return fly.post(`${base}/xcx/accidentinfo/deleteFile.xcx`,qs.stringify(params)).then(res => res.data); }; 
+export const getFileList = params => { return fly.post(`${base}/xcx/accidentinfo/getFileList.xcx`,qs.stringify(params)).then(res => res.data); }; 
 
 
 export const getAddressByMap = params => { return fly.post(`${base}/xcx/map/getAddress.xcx`,qs.stringify(params)).then(res => res.data); }; 

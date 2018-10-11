@@ -3,13 +3,16 @@
   <div >
     <div class="step" v-if="step1">
         <div class="weui-cells__title">所在城市</div>
+        <block v-if="city!=''">
         <div class="weui-cells ">
             {{province}}{{city}}{{district}}
+
             <span v-if="exitCity">已开通</span>
             <span v-if="!exitCity">未开通</span>
         </div>
          <input type="button" value="下一步" class="tj-btn" @click="toStep1()" v-if="exitCity">
          <input type="button" value="城市开通" class="tj-btn" @click="addCity()" v-if="!exitCity" >
+       </block>
       
     </div>
 
@@ -200,14 +203,18 @@ export default {
             _this.province=province;
            }
          
-          _this.city=res.retData.city;
-           _this.district=res.retData.district;
+          var city=res.retData.city;
+           var district=res.retData.district;
 
-           exitApplaycity({cityName:_this.city}).then((res)=>{
+           exitApplaycity({cityName:city}).then((res)=>{
               _this.exitCity=res.retData;
-              getApplaycity({cityName:_this.city}).then((res)=>{
-                 _this.applyCityId=res.retData.applyCityId;
-              })
+              _this.city=city;
+              _this.district=district;
+              if(_this.exitCity){
+                getApplaycity({cityName:city}).then((res)=>{
+                   _this.applyCityId=res.retData.applyCityId;
+                })
+              }
            })
        });
           

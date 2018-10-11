@@ -61,6 +61,12 @@
               <label class="lablefocus">联系电话</label>
            </div>
 
+            <block v-for="(item,index) in fileList" :key="index">
+                <div class="listImg"  :id="item" @click="previewImage" >
+                  <image style="width:95%;height:100%" :src="item"  />
+                </div>
+            </block>
+
             </div>
 
              <input type="button" value="拨打联系人电话" class="tj-btn" @tap="calling" >
@@ -132,7 +138,7 @@
 
 <script>
 
-import {getAddressByMap,getApplayproject,saveProjectResult} from '../../../api/api';
+import {getAddressByMap,getApplayproject,saveProjectResult,getFileList,url} from '../../../api/api';
 
 export default {
   data () {
@@ -144,6 +150,7 @@ export default {
         step3:false,
         ismap:false,
         beforeProjectId:'',
+        fileList:[],
         addForm:{
           result:'',
           type:'',
@@ -208,6 +215,16 @@ export default {
       });
 
     },
+
+    previewImage: function (e) {
+      var _this=this;
+      var current = e.target.dataset.src;
+      wx.previewImage({
+        current: current, // 当前显示图片的http链接  
+        urls: _this.fileList // 需要预览的图片http链接列表  
+        })
+    },   
+
     toXianChang(){
        wx.navigateTo({
             url: '/pages/project/maproute/main?centpoint='+JSON.stringify(this.centpoint)
@@ -272,7 +289,13 @@ export default {
     this.beforeProjectId=query.beforeProjectId;
       getApplayproject({'beforeProjectId':this.beforeProjectId}).then((res)=>{
         this.projectForm=res.retData;
-        console.log(res.retData);
+        getFileList({bussinessId:this.projectForm.picId}).then((res)=>{
+          var arr=res.retData;
+          for(let ele of arr) {  
+            this.fileList.push(url+"/"+ele.fileWebPath);
+          };
+          
+        })
         
       })
 

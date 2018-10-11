@@ -17,7 +17,11 @@
    <div class="clear"></div>
 
    <div class="step1" v-if="step1">
-     
+      
+      <div class="liebiao-box" v-if="list.length==0">
+         无反馈信息
+      </div>
+      
       <div class="liebiao-box" v-for="(item,index) in list" :key="index">
        <a>
          <p class="gcmc-text">{{item.enterpriseName}}</p>
@@ -104,6 +108,12 @@
               <input  type="text" v-model="projectForm.telePhone" disabled="true" class="inputview" />
               <label class="lablefocus">联系电话</label>
            </div>
+              <block v-for="(item,index) in fileList" :key="index">
+                <div class="listImg"  :id="item" @click="previewImage" >
+                  <image style="width:95%;height:100%" :src="item"  />
+                </div>
+              </block>
+           
 
             </div>
 
@@ -144,7 +154,7 @@
 
 <script>
 
-import {getAddressByMap,getApplayproject,projectresultListByProject} from '../../../api/api';
+import {getAddressByMap,getApplayproject,projectresultListByProject,getFileList,url} from '../../../api/api';
 
 export default {
   data () {
@@ -156,6 +166,7 @@ export default {
         ismap:false,
         beforeProjectId:'',
         projectForm:{},
+        fileList:[],
         centpoint:{
           longitude:'',
           latitude:'',
@@ -217,6 +228,15 @@ export default {
       });
 
     },
+
+    previewImage: function (e) {
+      var _this=this;
+      var current = e.target.dataset.src;
+      wx.previewImage({
+        current: current, // 当前显示图片的http链接  
+        urls: _this.fileList // 需要预览的图片http链接列表  
+        })
+    } ,   
 
     toXianChang(){
        wx.navigateTo({
@@ -283,6 +303,13 @@ export default {
     this.beforeProjectId=query.beforeProjectId;
     getApplayproject({'beforeProjectId':this.beforeProjectId}).then((res)=>{
         this.projectForm=res.retData;
+        getFileList({bussinessId:this.projectForm.picId}).then((res)=>{
+          var arr=res.retData;
+          for(let ele of arr) {  
+            this.fileList.push(url+"/"+ele.fileWebPath);
+          };
+          
+        })
       })
     this.goStep1();
      
@@ -296,7 +323,11 @@ export default {
 </script>
 
 <style scoped>
-  
+  .listImg{
+    width: 100%;
+    height:100px;
+    padding: 10px;
+  }
 
 
 </style>

@@ -84,8 +84,8 @@ export default {
       senddis:false,
       isLogin:true,
       openid:'',
-      telphone:'13720053036',
-      smscode:'6956',
+      telphone:'',
+      smscode:'',
       sendMsg:'发送验证码'
     
     }
@@ -185,10 +185,8 @@ export default {
         regUser({'telphone':this.telphone}) .then((res)=>{
             console.log("openid"+res.retData.openid);
             wx.setStorageSync("openid",this.openid);
-            
-           wx.switchTab({
-              url: '/pages/index/main'
-            })
+            this.goPerson();
+          
             /*wx.switchTab({
               url: '/pages/index/main'
             })*/

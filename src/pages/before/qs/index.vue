@@ -137,7 +137,7 @@
            <div class="weui-uploader__bd th-backwhite clearfix">
             <div class="weui-uploader__files" id="uploaderFiles">
               <block v-for="(item,index) in files" :key="index">
-                <div class="weui-uploader__file posi-rela" @click="predivImage" :id="item">
+                <div class="weui-uploader__file posi-rela" :id="item">
                   <icon type="cancel" size="20" class="th-icon-cancel" @click.stop="deletImg(index,item.fileInfoId)"/>
                   <image class="weui-uploader__file" :src="item.webPath" mode="aspectFill" />
                 </div>
@@ -353,11 +353,17 @@ export default {
     },
     deletImg(index,fileInfoId){
      deleteFile({'fileInfoId':fileInfoId,'openIdMd5':this.addForm.openid}).then((res)=>{
-      console.log("index=="+index);
-      this.files.splice(0,1);
-      console.log(this.files);
-     })
-      
+        var retfileArray=res.retData;
+        var fileArray=[];       
+        for(file of retfileArray){
+          var fileJson={};
+          fileJson.webPath=url+"/"+file.retData.fileWebPath;
+          fileJson.fileInfoId=file.retData.fileInfoId;
+         fileArray.push(fileJson);
+        }
+        this.files=fileArray;
+        
+      })
     },
 
     getLocation(){
@@ -490,8 +496,12 @@ export default {
        };
         var jsonStr=JSON.stringify(this.pointarray);
         this.addForm.mapJson=jsonStr;
-        saveApplayproject(this.addForm);
-        this.goStep2();
+        saveApplayproject(this.addForm).then((res)=>{
+          this.addForm={};
+          this.files=[];
+          this.goStep2();
+        })
+        
     }
 
    
@@ -510,7 +520,7 @@ export default {
   },
 
   onLoad() {
-     this. goStep1();
+     this.goStep1();
   },
 
 

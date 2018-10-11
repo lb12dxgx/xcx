@@ -85,7 +85,7 @@
     <div v-if="step2">
     <div>
       <div class="liebiao-box" v-for="(item,index) in list" :key="index">
-       <a  >
+       <a  @click="viewProject(item.beforeProjectId)" >
          <p class="gcmc-text">{{item.projectName}}</p>
          <ul class="list-box-xx">
            <li class="left-box left">工程地点</li>
@@ -212,6 +212,12 @@ export default {
         this.list=res.retData;
         console.log(res.retData);
       });
+    },
+
+    viewProject(beforeProjectId){
+       wx.navigateTo({
+            url: '/pages/project/view/main?beforeProjectId='+beforeProjectId
+      })
     },
 
     chooseImage(e) {
@@ -395,9 +401,13 @@ export default {
           });
           return false;
        };
-
-        saveApplayproject(this.addForm);
-        this.goStep2();
+        var jsonStr=JSON.stringify(this.pointarray);
+        this.addForm.mapJson=jsonStr;
+        saveApplayproject(this.addForm).then((res)=>{
+          this.addForm={};
+          this.files=[];
+          this.goStep2();
+        })
     }
 
    

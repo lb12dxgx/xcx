@@ -93,6 +93,15 @@ export default {
 
   methods: {
     goUrl(path){
+      var openid=wx.getStorageSync('openid');
+      console.log("openid="+openid);
+      if(openid==''){
+        wx.switchTab({
+          url: '/pages/my/main'
+        });
+        return;
+      }
+
       if('/pages/before/main'==path){
         this.type=wx.getStorageSync('enterpriseType');
         console.log("type="+this.type);

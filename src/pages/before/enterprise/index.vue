@@ -2,10 +2,10 @@
   <div class="frome-box" >
     <div class="frome-title">企业申请</div>
     <div class="frome-content">
-      <formitem labelName="企业名称" itemName="enterpriseName" @inputvalue="setFormValue" :value="addForm.enterpriseName" />
+      <formitemedit labelName="企业名称" itemName="enterpriseName" @inputvalue="setFormValue" :value="addForm.enterpriseName" />
       <formitem labelName="企业电话" itemName="enttelphone" @inputvalue="setFormValue" :value="addForm.enttelphone"/>
-      <formitem labelName="联系人" itemName="lxName" @inputvalue="setFormValue" :value="addForm.lxName"/>
-      <formitem labelName="联系电话" itemName="telphone" @inputvalue="setFormValue" :value="addForm.telphone"/>
+      <formitemedit labelName="联系人" itemName="lxName" @inputvalue="setFormValue" :value="addForm.lxName"/>
+      <formitemedit labelName="联系电话" itemName="telphone" @inputvalue="setFormValue" :value="addForm.telphone"/>
     </div>
        <input type="button" value="提交申请" class="tj-btn" @click="save()" >
   </div>
@@ -13,14 +13,15 @@
 </template>
 
 <script>
-import {exitEnterprise,saveEnterprise,addPersonEnterprise} from '../../../api/api';
+import {exitEnterprise,saveEnterprise,addPersonEnterprise,getPersonByOpenid} from '../../../api/api';
 
 import formitem from '../../../components/formitem.vue';
-
+import formitemedit from '../../../components/formitemedit.vue';
 
 export default {
   components: {
-      formitem
+      formitem,
+      formitemedit
   }, 
 
   data () {
@@ -71,7 +72,11 @@ export default {
     let query=this.$root.$mp.query;
     this.addForm.enterpriseType=query.enterpriseType;
      this.addForm.applyCityId= query.applyCityId;
-    //this.addForm.cityName="2334";
+    getPersonByOpenid().then((res)=>{
+      this.addForm.enterpriseName=res.retData.enterpriseName;
+      this.addForm.telphone=res.retData.telePhone;
+      this.addForm.lxName=res.retData.personName
+    })
     
   }
 
