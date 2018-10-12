@@ -119,7 +119,7 @@
              </picker>
            </div>
            <div class="text-box ">
-             <picker mode="date" :value="addForm.projectStartDate"  @change="dateChange"> 
+             <picker mode="date"  @change="dateChange"> 
               <input  type="text" v-model="addForm.projectStartDate" disabled="true"/>
               <label class="lablefocus">施工时间</label>
              </picker>
@@ -246,11 +246,11 @@ export default {
       this.addForm[formJson.name]=formJson.value;
     },
     typeChange : function (e) {
-        console.log('picker发送选择改变，携带值为',  e.mp.detail.value)
+        //console.log('picker发送选择改变，携带值为',  e.mp.detail.value)
          this.addForm.projectType=this.typeArray[e.mp.detail.value];
     },
     dateChange: function (e) {
-        console.log('picker发送选择改变，携带值为',  e.mp.detail.value)
+        //console.log('picker发送选择改变，携带值为',  e.mp.detail.value)
          this.addForm.projectStartDate=e.mp.detail.value;
     },
 
@@ -263,7 +263,7 @@ export default {
       this.step3class='link-none';
       applayprojectListByCityId().then((res)=>{
         this.list=res.retData;
-        console.log(res.retData);
+        
       });
     },
 
@@ -276,7 +276,7 @@ export default {
       this.step3class='link-none';
       applayprojectListFinshByOpenId().then((res)=>{
         this.list=res.retData;
-        console.log(res.retData);
+        
       });
     },
 
@@ -337,15 +337,15 @@ export default {
 
         },
         fail: function () {
-          console.log('fail');
+         
         },
         complete: function () {
-          console.log('commplete');
+         
         }
       })
     },
     predivImage(e) {
-      console.log(e);
+     
       wx.previewImage({
         current: e.currentTarget.id, // 当前显示图片的http链接
         urls: this.files // 需要预览的图片http链接列表
@@ -377,9 +377,9 @@ export default {
           wx.authorize({
             scope: 'scope.userLocation', 
             success(res) {
-              console.log(res)
+             
             },
-            fail(r) { console.log(r)},
+            fail(r) { },
             complete() { }
           })
         }
@@ -396,7 +396,7 @@ export default {
           
         },
         fail(re){
-          console.log(re);
+        
         }
       });
     },
@@ -418,7 +418,7 @@ export default {
            _this.addPoint();
          },
         fail(re){
-          console.log(re);
+        
         }
       });
      

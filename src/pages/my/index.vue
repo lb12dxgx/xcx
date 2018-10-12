@@ -28,16 +28,15 @@
                   <input class="weui-input" type="number" pattern="[0-9]*" placeholder="请输入验证码" v-model="smscode">
               </div>
               <div class="weui-cell__ft">
-                  <a  class="weui-btn weui-btn_mini weui-btn_primary" @click="sendSms"  >{{sendMsg}}</a>
+                  <a  class="weui-btn weui-btn_mini weui-btn_primary" @click="sendSms" style="background: #d70601;" >{{sendMsg}}</a>
+
               </div>  
         </div>
         
       </div>
 
-     
-           
-      <a  class="weui-btn weui-btn_min weui-btn_primary" style="width:70%;margin-top:20px" @click="regUser" v-if="isLogin">登录</a> 
-      <a  class="weui-btn weui-btn_min weui-btn_primary" style="width:70%;margin-top:20px" @click="logOut" v-if="!isLogin">注销</a> 
+     <input type="button" value="登录" class="tj-btn"  @click="regUser" v-if="isLogin" >
+     <input type="button" value="注销" class="tj-btn"  @click="logOut" v-if="!isLogin" >
      
      </div>
 
@@ -84,8 +83,8 @@ export default {
       senddis:false,
       isLogin:true,
       openid:'',
-      telphone:'',
-      smscode:'',
+      telphone:'13720053036',
+      smscode:'7405',
       sendMsg:'发送验证码'
     
     }

@@ -33,7 +33,8 @@
      <div class="step21" v-if="step31">
         <div class="weui-cells__title" style="height:55px">
         请选择权属单位
-          <input type="button" value="新增" class="biaozhu-btn" @click="addQS()" style="width:30%"> 
+        <input type="button" value="新增" class="biaozhu-btn" @click="addQS()" style="width:30%"> 
+        <!--   <input type="button"  class="zengjia-btn" @click="addQS()">  -->
         </div>
 
         <div class="weui-cells ">

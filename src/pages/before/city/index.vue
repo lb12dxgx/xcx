@@ -1,13 +1,34 @@
 <template>
   <div class="frome-box" >
-    <div class="frome-title">企业申请</div>
+    <div class="frome-title">城市申请</div>
     <div class="frome-content">
-      <formitemedit labelName="城市名称" itemName="cityName" @inputvalue="setFormValue" :value="addForm.cityName" />
-      <formitemedit labelName="申请单位" itemName="applyCompany" @inputvalue="setFormValue" :value="addForm.applyCompany"/>
-      <formitemedit labelName="联系人" itemName="person" @inputvalue="setFormValue" :value="addForm.person"/>
-      <formitemedit labelName="联系电话" itemName="telphone" @inputvalue="setFormValue" :value="addForm.telphone"/>
+        <div class="text-box ">
+          <input  type="text" data-name='cityName' @focus="handlefocus($event)" @blur="handleblur($event)" 
+          :class="inputClassJson.cityName" v-model="addForm.cityName"/>
+           <label class="lablefocus">城市名称</label>
+        </div>
+        <div class="text-box ">
+          <input  type="text" data-name="applyCompany" @focus="handlefocus($event)" @blur="handleblur($event)" 
+          :class="inputClassJson.applyCompany" v-model="addForm.applyCompany"/>
+           <label class="lablefocus">申请单位</label>
+        </div>
+        <div class="text-box ">
+          <input  type="text" data-name="enttelphone" @focus="handlefocus($event)" @blur="handleblur($event)" 
+          :class="inputClassJson.enttelphone" v-model="addForm.enttelphone"/>
+           <label class="lablefocus">单位电话</label>
+        </div>
+        <div class="text-box ">
+          <input  type="text" data-name="person" @focus="handlefocus($event)" @blur="handleblur($event)" 
+          :class="inputClassJson.person" v-model="addForm.person"/>
+           <label class="lablefocus">联系人</label>
+        </div>
+         <div class="text-box ">
+          <input  type="text" data-name="telphone" @focus="handlefocus($event)" @blur="handleblur($event)" 
+          :class="inputClassJson.telphone" v-model="addForm.telphone"/>
+           <label class="lablefocus">联系电话</label>
+        </div>
     </div>
-       <input type="button" value="提交申请" class="tj-btn" @click="addCity()" v-if="!exitCity" >
+       <input type="button" class="tj-btn" value="提交申请" @click="addCity()" v-if="!exitCity" >
   </div>
       
 </template>
@@ -15,14 +36,10 @@
 <script>
 import {getPersonByOpenid,saveApplaycity} from '../../../api/api';
 
-import formitem from '../../../components/formitem.vue';
-import formitemedit from '../../../components/formitemedit.vue';
+
 
 export default {
-  components: {
-      formitem,
-      formitemedit
-  }, 
+ 
 
   data () {
     return { 
@@ -31,6 +48,15 @@ export default {
         provinceName:'',
         cityName:'',
         applyCompany:'',
+        enttelphone:'',
+        person:'',
+        telphone:'',
+      },
+
+      inputClassJson:{
+        cityName:'',
+        applyCompany:'',
+        enttelphone:'',
         person:'',
         telphone:'',
       }
@@ -42,10 +68,15 @@ export default {
   
 
   methods: {
-    setFormValue(formJson){
-      this.addForm[formJson.name]=formJson.value;
+    handlefocus(e){
+     var name=e.currentTarget.dataset.name;
+      this.inputClassJson[name]='inputfocus';
     },
-
+    handleblur(e){
+      var name=e.currentTarget.dataset.name;
+      this.inputClassJson[name]='';
+    },
+    
     addCity(){
       saveApplaycity(this.addForm).then((res)=>{
         var query="?step=1";

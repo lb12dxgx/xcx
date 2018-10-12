@@ -74,7 +74,11 @@
         </div>
       </div>
       <div class="projectMap" v-if="ismap">
-           <map id="map" :longitude="centpoint.longitude" :latitude="centpoint.latitude" scale="17"   :markers="markers"  :polyline="polyline"  show-location style="width: 100%; height: 70vh;"
+           <map id="map" :longitude="centpoint.longitude" 
+           :latitude="centpoint.latitude" scale="17"   :markers="markers"  :polyline="polyline"  show-location 
+           style="width: 100%; height: 70vh;" 
+           @regionchange="regionchange"  @end="regionchange" 
+           @begin="regionchange"
             >
             </map>
                <input type="button" value="标注位置" class="tj-btn" @click="setMyPoint" >
@@ -187,11 +191,11 @@ export default {
       this.addForm[formJson.name]=formJson.value;
     },
     typeChange : function (e) {
-        console.log('picker发送选择改变，携带值为',  e.mp.detail.value)
+       
          this.addForm.projectType=this.typeArray[e.mp.detail.value];
     },
     dateChange: function (e) {
-        console.log('picker发送选择改变，携带值为',  e.mp.detail.value)
+       
          this.addForm.projectStartDate=e.mp.detail.value;
     },
 
@@ -210,7 +214,7 @@ export default {
       this.step2class='link-on';
       applayprojectListByOpenId().then((res)=>{
         this.list=res.retData;
-        console.log(res.retData);
+        
       });
     },
 
@@ -250,15 +254,15 @@ export default {
 
         },
         fail: function () {
-          console.log('fail');
+          
         },
         complete: function () {
-          console.log('commplete');
+          
         }
       })
     },
     predivImage(e) {
-      console.log(e);
+    
       wx.previewImage({
         current: e.currentTarget.id, // 当前显示图片的http链接
         urls: this.files // 需要预览的图片http链接列表
@@ -266,9 +270,9 @@ export default {
     },
     deletImg(index,fileInfoId){
      deleteFile({'fileInfoId':fileInfoId,'openIdMd5':this.addForm.openid}).then((res)=>{
-      console.log("index=="+index);
+      
       this.files.splice(0,1);
-      console.log(this.files);
+      
      })
       
     },
@@ -284,9 +288,9 @@ export default {
           wx.authorize({
             scope: 'scope.userLocation', 
             success(res) {
-              console.log(res)
+              
             },
-            fail(r) { console.log(r)},
+            fail(r) { },
             complete() { }
           })
         }
@@ -303,7 +307,7 @@ export default {
           
         },
         fail(re){
-          console.log(re);
+          
         }
       });
     },
@@ -325,7 +329,7 @@ export default {
            _this.addPoint();
          },
         fail(re){
-          console.log(re);
+          
         }
       });
      
@@ -408,11 +412,39 @@ export default {
           this.files=[];
           this.goStep2();
         })
-    }
+    },
 
-   
+    regionchange(e){
+  var _this=this;
+  
+  if(e.type == 'end'){
+          var mapCtx = wx.createMapContext("map");
+          mapCtx.getCenterLocation({
+            success: function(res){
+              
+              _this.centpoint.latitude = res.latitude;
+              _this.centpoint.longitude = res.longitude;
+              
+              var marker={
+                iconPath: "/static/images/timg.jpg", 
+                id: 0,
+                latitude: 23.099994,
+                longitude: 113.324520,
+                width: 50,
+                height: 50
+              };
+              marker.latitude= res.latitude;
+              marker.longitude= res.longitude;
+              _this.markers.push(marker);
+        }})
+
+      }
+ },
     
  },
+
+
+
 
   onUnload(){
       this.step1=true;

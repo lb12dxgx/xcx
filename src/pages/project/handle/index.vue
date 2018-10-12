@@ -196,6 +196,7 @@ export default {
       this.step2=true;
       this.step1=false;
       this.step3=false;
+      this.showMap();
     },
 
 
@@ -245,6 +246,7 @@ export default {
 
     showMap(){
       this.ismap=true;
+      console.log(this.projectForm.mapJson);
       if(this.projectForm.mapJson!=""){
         this.pointarray=JSON.parse(this.projectForm.mapJson);
         this.centpoint= this.pointarray[0];
@@ -282,6 +284,7 @@ export default {
       this.step1=true;
       this.step2=false;
       this.step3=false;
+      this.addForm={};
   },
 
   onShow() {

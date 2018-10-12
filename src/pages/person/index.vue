@@ -64,12 +64,8 @@
 
        </div>
 
-     
-           
-      <a  class="weui-btn weui-btn_min weui-btn_primary" style="width:70%;margin-top:20px" @click="savePerson" >保存</a> 
-      
-     
-     </div>
+     <input type="button" value="保存" class="tj-btn"  @click="savePerson"/>
+    </div>
 
    
  </div>
