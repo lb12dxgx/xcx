@@ -5,11 +5,21 @@
         <div class="weui-cells__title">所在城市</div>
         <block v-if="city!=''">
         <div class="weui-cells ">
-            {{province}}{{city}}{{district}}
-
-            <span v-if="exitCity">已开通</span>
-            <span v-if="!exitCity">未开通</span>
-        </div>
+          <picker mode="selector"  :range="cityArray" @change="cityChange">
+            <a  class="weui-cell weui-cell_access" >
+              <div class="weui-cell__bd">
+                <p>
+                  {{city}}
+                  <span v-if="exitCity">已开通</span>
+                  <span v-if="!exitCity">未开通</span>
+                </p> 
+               
+              </div>
+              <div class="weui-cell__ft">
+              </div>
+            </a>
+          </picker>
+          </div>
          <input type="button" value="下一步" class="tj-btn" @click="toStep1()" v-if="exitCity">
          <input type="button" value="城市开通" class="tj-btn" @click="addCity()" v-if="!exitCity" >
        </block>
@@ -75,7 +85,7 @@
 </template>
 
 <script>
-import {getCityByMap,exitApplaycity,getApplaycity,enterpriseList,addPersonEnterprise} from '../../../api/api';
+import {getCityByMap,exitApplaycity,getApplaycity,enterpriseList,addPersonEnterprise,applaycityList} from '../../../api/api';
 
 
 
@@ -89,6 +99,7 @@ export default {
       ],
       qsitems: [],
       jsitems: [],
+      cityArray:[],
       province:'',
       city:'',
       district:'',
@@ -118,6 +129,10 @@ export default {
        wx.navigateTo({
         url: '/pages/before/city/main'+query
      })
+    },
+
+    cityChange(e){
+      this.city=this.cityArray[e.mp.detail.value];
     },
 
 
@@ -235,11 +250,19 @@ export default {
 	    this.step2=false;
 	    this.step32=false;
 	    this.step31=false;
+      this.cityArray=[];
 	},
 
   onLoad() {
       
       this.getLocationAddr();
+
+      applaycityList().then((res)=>{
+        var citylist=res.retData;
+        for(var city of citylist){
+          this.cityArray.push(city.cityName);
+        }
+      })
     
 
       let step=this.$root.$mp.query.step;
