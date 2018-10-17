@@ -1,127 +1,148 @@
 <template>
   
-  <div>
-    <div class="my">
-     
-       <div class="weui-cells weui-cells_form" >
-         <div class="weui-cell  ">
-                    <div class="weui-cell__hd">
-                        <label class="weui-label" :class="error_personName">事故名称</label>
-                    </div>
-                    <div class="weui-cell__bd">
-                        <input class="weui-input "   placeholder="请输入事故名称" v-model="addForm.personName">
-                    </div>
-                    
-        </div>
-        <div class="weui-cell ">
-              <div class="weui-cell__hd">
-                  <label class="weui-label " :class="error_userCode" >事故地点</label>
-              </div>
-              <div class="weui-cell__bd">
-                  <input class="weui-input" placeholder="事故地点" v-model="addForm.userCode">
-              </div>
-             
-        </div>
-      
-         <div class="weui-cell ">
-              <div class="weui-cell__hd">
-                  <label class="weui-label">事故时间</label>
-              </div>
-              <div class="weui-cell__bd">
-                 <input class="weui-input"   placeholder="请输入事故时间" v-model="addForm.enterpriseName">
-              </div>
-              
-         </div>
-         <div class="weui-cell ">
-              <div class="weui-cell__hd">
-                  <label class="weui-label">事故描述</label>
-              </div>
-             
-              
-         </div>
-          <div class="weui-cell ">
-             
-              <div class="weui-cell__bd">
-               <textarea class="weui-textarea" placeholder="请输入事故描述" rows="1" style="height:100px"></textarea>
-              </div>
-              
-         </div>
+<div class="frome-content">
+  <div class="tab-list">
+        <ul>
+          <li style="width:48%">
+            <a   :class="step1 ?'link-on' : 'link-none' " @click="goStep1">事故上报</a>
+          </li>
+           <li style="width:48%">
+            <a   :class="step2 ?'link-on' : 'link-none' " @click="goStep2">我的事故</a>
+          </li>
+        </ul>
+  </div>
+  <div class="clear"></div>
+  <div v-if="step1">
+    <div class="text-box ">
+      <input  type="text" v-model="addForm.accidentName" data-name='accidentName' @focus="handlefocus($event)" @blur="handleblur($event)" 
+            :class="inputClassJson.accidentName"/>
+      <label class="lablefocus">事故名称</label>
+    </div>
+     <div class="text-box ">
+      <input  type="text" v-model="addForm.accidentPlace" data-name='accidentPlace' @focus="handlefocus($event)" @blur="handleblur($event)" 
+            :class="inputClassJson.accidentPlace"/>
+      <label class="lablefocus">事故地点</label>
+    </div>
+    <div class="text-box ">
+      <input  type="text" v-model="addForm.accidentDate" data-name='accidentDate' @focus="handlefocus($event)" @blur="handleblur($event)" 
+            :class="inputClassJson.accidentDate"/>
+      <label class="lablefocus">事故时间</label>
+    </div>
+    <div class="text-box ">
+      <textarea   v-model="addForm.accidentDesc" rows="3" data-name='accidentDesc' @focus="handlefocus($event)" @blur="handleblur($event)" 
+            :class="inputClassJson.accidentDesc"/>
+      <label class="lablefocus">事故描述</label>
+    </div>
 
-        <div class="weui-cell ">
-              <div class="weui-cell__hd">
-                  <label class="weui-label">事故图片</label>
-              </div>
-        </div>
-       <div class="weui-uploader__bd th-backwhite clearfix">
-        <div class="weui-uploader__files" id="uploaderFiles">
-          <block v-for="(item,index) in files" :key="index">
-            <div class="weui-uploader__file posi-rela" @click="predivImage" :id="item">
-              <icon type="cancel" size="20" class="th-icon-cancel" @click.stop="deletImg(index,item.fileInfoId)"/>
+    <div class="weui-cells__title" v-if="files.length!=0" >事故图片</div>
+    <div class="weui-uploader__files" id="uploaderFiles">
+      <block v-for="(item,index) in files" :key="index">
+        <div class="weui-uploader__file posi-rela" @click="predivImage" :id="item">
+          <icon type="cancel" size="20" class="th-icon-cancel" @click.stop="deletImg(index,item.fileInfoId)"/>
               <image class="weui-uploader__file" :src="item.webPath" mode="aspectFill" />
-            </div>
-          </block>
         </div>
-        <div class="weui-uploader__input-box">
-          <div class="weui-uploader__input" @click="chooseImage"></div>
-        </div>
-     </div>
+      </block>
+    </div>
 
-     <div class="weui-cell ">
-              <div class="weui-cell__hd">
-                  <label class="weui-label">事故视频</label>
-              </div>
-        </div>
-       <div class="weui-uploader__bd th-backwhite clearfix">
-       
+    <div class="weui-cells__title" v-if="viedoFiles.length!=0">事故视频</div>
+    <div class="weui-uploader__files">
          <block v-for="(item,index) in viedoFiles" :key="index">
-            <video   :src="item.webPath" controls />
-            <a  class="weui-btn weui-btn_min weui-btn_primary" style="width:70%;margin:20px" @click="delVideo(index,item.fileInfoId)" >删除</a> 
-        </block>
-        
-        <div class="weui-uploader__input-box">
-          <div class="weui-uploader__input" @click="chooseVideo"></div>
+              <video   :src="item.webPath" controls />
+              <a  class="weui-btn weui-btn_min weui-btn_primary" style="width:70%;margin:20px" @click="delVideo(index,item.fileInfoId)" >删除</a> 
+          </block>
+     </div>
+
+    <div class="weui-cells__title">现场情况</div>
+    <div class="weui-cells ">
+      <a  class="weui-cell weui-cell_access" @click="chooseImage()">
+        <div class="weui-cell__bd">
+           <p>照片</p>
+         </div>
+        <div class="weui-cell__ft">
         </div>
-     </div>
-
-   </div>
-       
-
-     
-           
-      <a  class="weui-btn weui-btn_min weui-btn_primary" style="width:70%;margin-top:20px" @click="savePerson" >保存</a> 
-      
-     
-     </div>
-
-   
+      </a>
+      <a  class="weui-cell weui-cell_access" @click="chooseVideo()">
+         <div class="weui-cell__bd">
+           <p>视频</p>
+        </div>
+        <div class="weui-cell__ft">
+        </div>
+      </a>
+    </div>
+      <input type="button" value="提交" class="tj-btn" @click="save">
  </div>
- 
+ <div v-if="step2dv">
+ </div>
+  
 
-</template>
+  </div>
+
+  </template>
 
 <script>
 
 
-import {addAccidentinfo,saveAccidentinfo,deleteFile,url} from '../../api/api';
+import {addAccidentinfo,saveAccidentinfo,deleteFile,url,accidentinfoList} from '../../api/api';
 
 
 export default {
   data () {
     return {
-       files: [],
-       viedoFiles:[],
-      
-       addForm:{
-         accidentPicId:'',
-         accidentVideoId:'',
-         openid:''
-       }
+      step1:true,
+      step2:false,
+      list:[],
+      files: [],
+      viedoFiles:[],
+      addForm:{
+        accidentPicId:'',
+        accidentVideoId:'',
+        openid:'',
+        accidentName:'',
+        accidentDesc:'',
+        accidentPlace:'',
+        accidentDate:''
+       },
+
+
+      inputClassJson:{
+        accidentName:'',
+        accidentDesc:'',
+        accidentPlace:'',
+        accidentDate:''
+        }
     }
      
   },
 
 
   methods: {
+
+    goStep1(){
+      this.step1=true;
+      this.step2=false;
+      addAccidentinfo().then((res)=>{
+        this.addForm.accidentPicId=res.retData.accidentPicId;
+        this.addForm.accidentVideoId=res.retData.accidentVideoId;
+        this.addForm.openid=wx.getStorageSync('openid');
+      });
+    },
+
+    goStep2(){
+      this.step1=false;
+      this.step2=true;
+      accidentinfoList().then((res)=>{
+        this.list=res.retData;
+      });
+    },
+
+    handlefocus(e){
+     var name=e.currentTarget.dataset.name;
+      this.inputClassJson[name]='inputfocus';
+    },
+    handleblur(e){
+      var name=e.currentTarget.dataset.name;
+      this.inputClassJson[name]='';
+    },
 
     chooseImage(e) {
       var _this = this;
@@ -219,11 +240,7 @@ export default {
   },
 
   onShow() {
-    addAccidentinfo() .then((res)=>{
-        this.addForm.accidentPicId=res.retData.accidentPicId;
-        this.addForm.accidentVideoId=res.retData.accidentVideoId;
-         this.addForm.openid=wx.getStorageSync('openid');
-      })
+    this. goStep1();
    }
 }
 

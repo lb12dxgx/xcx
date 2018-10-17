@@ -170,11 +170,27 @@
         </div>
       </div>
       <div class="projectMap" v-if="ismap">
-           <map id="map" :longitude="centpoint.longitude" :latitude="centpoint.latitude" scale="17"   :markers="markers"  :polyline="polyline"  show-location style="width: 100%; height: 70vh;"
+          <map id="map" :longitude="centpoint.longitude" 
+           :latitude="centpoint.latitude" scale="17"   :markers="markers"  :polyline="polyline"   
+           style="width: 100%; height: 100vh;" 
+           @regionchange="regionchange"  @end="regionchange" 
+           @begin="regionchange" 
             >
+
+            <cover-view class="controls">
+              <cover-view class="play">
+                <button type="primary" class="circle"  @click="setMyPoint"> 标注 </button>
+              </cover-view>
+              <cover-view class="play"  >
+                <button type="warn"    @click="saveMyPoint"> 保存 </button>
+              </cover-view>
+              <cover-view class="play">
+                <button type="primary" class="circle" @click="delMyPoint" > 删除 </button>
+              </cover-view>
+           </cover-view>
             </map>
-               <input type="button" value="标注位置" class="tj-btn" @click="setMyPoint" >
-               <input type="button" value="保存" class="tj-btn" @click="saveMyPoint" >
+              <!--  <input type="button" value="标注位置" class="tj-btn" @click="setMyPoint" >
+               <input type="button" value="保存" class="tj-btn" @click="saveMyPoint" > -->
              
       </div>
     </div>
@@ -225,10 +241,26 @@ export default {
         picId:'',
         mapJson:''
         },
-      
+        controls:[
+        {
+          id:1,
+          position:{left:10,top:0},
+          iconPath:'../../../static/img/err.png',
+          clickable:true
+
+        }
+        ],
         centpoint:{
           longitude:'',
           latitude:'',
+        },
+        centmarker:{
+          iconPath: "/static/img/dw.png", 
+          id: 0,
+          latitude: 23.099994,
+          longitude: 113.324520,
+          width: 30,
+          height: 30
         },
         pointarray:[],
         markers: [],
@@ -242,16 +274,12 @@ export default {
 
 
   methods: {
-    setFormValue(formJson){
-      this.addForm[formJson.name]=formJson.value;
-    },
+   
     typeChange : function (e) {
-        //console.log('picker发送选择改变，携带值为',  e.mp.detail.value)
-         this.addForm.projectType=this.typeArray[e.mp.detail.value];
+        this.addForm.projectType=this.typeArray[e.mp.detail.value];
     },
     dateChange: function (e) {
-        //console.log('picker发送选择改变，携带值为',  e.mp.detail.value)
-         this.addForm.projectStartDate=e.mp.detail.value;
+        this.addForm.projectStartDate=e.mp.detail.value;
     },
 
     goStep1(){
@@ -377,7 +405,7 @@ export default {
           wx.authorize({
             scope: 'scope.userLocation', 
             success(res) {
-             
+              
             },
             fail(r) { },
             complete() { }
@@ -391,34 +419,39 @@ export default {
         success(res) {
            _this.centpoint.latitude = res.latitude;
            _this.centpoint.longitude = res.longitude;
-           _this.pointarray.push( _this.centpoint);
-           _this.addPoint();
+          _this.centmarker.latitude = res.latitude;
+          _this.centmarker.longitude = res.longitude;
+          _this.markers.push(_this.centmarker);
           
         },
         fail(re){
-        
+          
         }
       });
     },
 
     showMap(){
       this.ismap=true;
-      this. getLocation();
+      this.pointarray=[];
+      this.markers=[];
+      this.polyline=[];
+      this.getLocation();
     },
 
     setMyPoint(){
       var _this=this;
-      wx.getLocation({
+      var mapCtx = wx.createMapContext("map");
+      mapCtx.getCenterLocation({
       type: 'gcj02', 
         success(res) {
            var point={};
-           point.latitude = res.latitude+(0.01*_this.pointarray.length);
-           point.longitude = res.longitude+(0.01*_this.pointarray.length);
-           _this.pointarray.push(point);
-           _this.addPoint();
+           point.latitude = res.latitude;
+           point.longitude = res.longitude;
+          
+           _this.addPoint(point);
          },
         fail(re){
-        
+          
         }
       });
      
@@ -429,30 +462,41 @@ export default {
         getAddressByMap({'longitude':centpoint.longitude,'latitude':centpoint.latitude}).then((res)=>{
           this.addForm.projectAddren=res.retData;
           this.ismap=false;
+
        });
       }
     },
 
-    addPoint(){
+    addPoint(point){
+       
+          this.markers[0].latitude=point.latitude;
+         this.markers[0].longitude=point.longitude+0.0005;
+         this.centpoint.latitude=point.latitude;
+         this.centpoint.longitude=point.longitude+0.0005;
+
+       this.pointarray.push(point);
         this.polyline= [{
             points: this.pointarray,
             color:"#FF0000DD",
             width: 2,
             dottedLine: true
         }];
-       for (var i = 0; i < this.pointarray.length; i++) {
+      
           var marker={
-          iconPath: "/static/images/timg.jpg", 
-          id: 0,
-          latitude: 23.099994,
-          longitude: 113.324520,
-          width: 50,
-          height: 50
+          iconPath: "/static/img/view.png", 
+          id: this.pointarray.length+1,
+          latitude:point.latitude,
+          longitude: point.longitude,
+          width:30,
+          height:30
         };
-        marker.latitude= this.pointarray[i].latitude;
-        marker.longitude= this.pointarray[i].longitude;
+
+
         this.markers.push(marker);
-       }
+
+       
+       
+       
     },
     save(){
         if(this.addForm.projectName==''){
@@ -502,7 +546,59 @@ export default {
           this.goStep2();
         })
         
-    }
+    },
+
+    delMyPoint(){
+      this.pointarray=[];
+      this.markers.splice(1,this.markers.length-1)
+      this.polyline=[];
+    },
+
+    regionchange(e){
+      var _this=this;
+    
+  
+  if(e.type == 'end'){
+          var mapCtx = wx.createMapContext("map");
+          mapCtx.getCenterLocation({
+            success: function(res){
+              
+             mapCtx.translateMarker({
+                markerId:0,
+                destination:{latitude:res.latitude,longitude:res.longitude},
+                autoRotate:true,
+                rotate:0,
+                success:function(){
+                 
+                }
+              })
+             
+             
+              
+             /* var marker={
+                iconPath: "/static/images/timg.jpg", 
+                id: 0,
+                latitude: 23.099994,
+                longitude: 113.324520,
+                width: 50,
+                height: 50
+              };
+              marker.latitude= res.latitude;
+              marker.longitude= res.longitude;
+              _this.markers.push(marker);*/
+             
+        }})
+
+
+      }
+
+      if(e.type == 'begin'){
+      
+        
+      }
+ },
+
+ 
 
    
     
@@ -516,7 +612,15 @@ export default {
       this.step2class='link-none';
       this.step3class='link-none';
       this.ismap=false;
-      this.addForm={};
+      this.addForm={
+        projectName:'',
+        projectType:'',
+        projectStartDate:'',
+        projectAddren:'',
+        projectStartEnd:'',
+        picId:'',
+        mapJson:''
+        };
   },
 
   onLoad() {
@@ -534,6 +638,29 @@ export default {
     margin-top:50px;
 
   }
+  .controls{
+    position: relative;
+    top: 82%;
+    height: 120px;
+    display: block;
+  }
+  .circle{
+    width: 50px;
+    height: 50px;
+    border: 0 solid #ffffff;
+    border-radius: 450px;
+    box-shadow: 4px 1px 1px #cccccc;
+
+  }
+
+
+  .play{
+    flex: 1;
+    height: 100px;
+    width:100px;
+    display: inline-block;
+}
+
 
 
 </style>

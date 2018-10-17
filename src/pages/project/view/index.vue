@@ -135,9 +135,17 @@
 
             <map id="map" :longitude="centpoint.longitude" :latitude="centpoint.latitude" scale="17"   :markers="markers"  :polyline="polyline"  show-location style="width: 100%; height: 70vh;"
             >
+              <cover-view class="controls">
+               
+                <cover-view class="play"  >
+                  <button type="warn"  @click="toXianChang()"> 导航到现场 </button>
+                </cover-view>
+               
+             </cover-view>
+
             </map>
 
-             <a  class="weui-btn weui-btn_min weui-btn_primary" style="width:70%;margin-top:20px" @click="toXianChang()" >导航到现场</a> 
+           
              
           </div>
 
@@ -207,6 +215,16 @@ export default {
       this.step2=true;
       this.step1=false;
       this.step3=false;
+      getApplayproject({'beforeProjectId':this.beforeProjectId}).then((res)=>{
+        this.projectForm=res.retData;
+        getFileList({bussinessId:this.projectForm.picId}).then((res)=>{
+          var arr=res.retData;
+          for(let ele of arr) {  
+            this.fileList.push(url+"/"+ele.fileWebPath);
+          };
+          
+        })
+      })
      
     },
 
@@ -215,7 +233,12 @@ export default {
       this.step3=true;
       this.step1=false;
       this.step2=false;
-      this.showMap();
+      getApplayproject({'beforeProjectId':this.beforeProjectId}).then((res)=>{
+        this.projectForm=res.retData;
+         this.showMap();
+       
+      })
+     
     },
 
     saveResult(){
@@ -257,12 +280,13 @@ export default {
     },
 
     showMap(){
-      this.ismap=true;
-      console.log(this.projectForm.mapJson);
+      
+     // console.log(this.projectForm.mapJson);
       if(this.projectForm.mapJson!=""){
         this.pointarray=JSON.parse(this.projectForm.mapJson);
         this.centpoint= this.pointarray[0];
         this.mapLine();
+        this.ismap=true;
       }
     },
 
@@ -276,12 +300,12 @@ export default {
         }];
        for (var i = 0; i < this.pointarray.length; i++) {
           var marker={
-          iconPath: "/static/images/timg.jpg", 
-          id: 0,
-          latitude: 23.099994,
-          longitude: 113.324520,
-          width: 50,
-          height: 50
+          iconPath: "../../../static/img/view.png", 
+          id: i+1,
+          latitude:this.pointarray[i].latitude,
+          longitude: this.pointarray[i].longitude,
+          width:40,
+          height:40
         };
         marker.latitude= this.pointarray[i].latitude;
         marker.longitude= this.pointarray[i].longitude;
@@ -296,21 +320,13 @@ export default {
       this.step1=true;
       this.step2=false;
       this.step3=false;
+      this.fileList=[];
   },
 
-  onLoad() {
+  onShow() {
     let query=this.$root.$mp.query;
     this.beforeProjectId=query.beforeProjectId;
-    getApplayproject({'beforeProjectId':this.beforeProjectId}).then((res)=>{
-        this.projectForm=res.retData;
-        getFileList({bussinessId:this.projectForm.picId}).then((res)=>{
-          var arr=res.retData;
-          for(let ele of arr) {  
-            this.fileList.push(url+"/"+ele.fileWebPath);
-          };
-          
-        })
-      })
+    
     this.goStep1();
      
 
@@ -329,5 +345,29 @@ export default {
     padding: 10px;
   }
 
+.controls{
+    position: relative;
+    top: 85%;
+    height: 120px;
+    display: block;
+    text-align: center;
+
+  }
+  .circle{
+    width: 50px;
+    height: 50px;
+    border: 0 solid #ffffff;
+    border-radius: 450px;
+    box-shadow: 4px 1px 1px #cccccc;
+
+  }
+
+
+  .play{
+    flex: 1;
+    height: 100px;
+    width:150px;
+    display: inline-block;
+}
 
 </style>

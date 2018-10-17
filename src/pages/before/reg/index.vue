@@ -158,7 +158,7 @@ export default {
     toStepJs(enterpriseId){
       addPersonEnterprise({enterpriseId:enterpriseId}).then((res)=>{
        wx.setStorageSync("enterpriseType",this.addForm.type);
-          wx.navigateTo({
+         wx.redirectTo({
           url: '/pages/before/js/main'
           })
       })
@@ -167,7 +167,7 @@ export default {
     toStepQs(enterpriseId){
       addPersonEnterprise({enterpriseId:enterpriseId}).then((res)=>{
        wx.setStorageSync("enterpriseType",this.addForm.type);
-          wx.navigateTo({
+          wx.redirectTo({
           url: '/pages/before/qs/main'
           })
       })
