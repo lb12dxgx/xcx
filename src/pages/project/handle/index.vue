@@ -80,9 +80,9 @@
           <div class="weui-cell">
               
               <div class="weui-cell__bd">
-                 经度：{{centpoint.longitude}} 维度：{{centpoint.latitude}}
+                 经度：{{centpoint.longitude}}  维度1：{{centpoint.latitude}}
               </div>
-        </div> 
+        </div>   
           <div class="projectMap">
 
             <map id="map" :longitude="centpoint.longitude" :latitude="centpoint.latitude" scale="17"   :markers="markers"  :polyline="polyline"  show-location style="width: 100%; height: 70vh;"
