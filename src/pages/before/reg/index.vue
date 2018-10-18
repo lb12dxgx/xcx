@@ -253,15 +253,18 @@ export default {
       this.cityArray=[];
 	},
 
-  onLoad() {
+  onShow() {
       
       this.getLocationAddr();
 
       applaycityList().then((res)=>{
         var citylist=res.retData;
+        var cArray=[]
         for(var city of citylist){
-          this.cityArray.push(city.cityName);
+          console.log(city.cityName);
+          cArray.push(city.cityName);
         }
+        this.cityArray=cArray;
       })
     
 

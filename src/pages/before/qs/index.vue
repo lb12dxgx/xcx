@@ -16,7 +16,16 @@
     </div>
    <div class="clear"></div>
     <div v-if="step1">
-      <div>  
+      <div>
+        <div class="weui-cells ">
+          <a  class="weui-cell weui-cell_access" @click="showMap()">
+                <div class="weui-cell__bd">
+                    <p>关注网格</p>
+                </div>
+                <div class="weui-cell__ft">
+                </div>
+          </a>
+      </div>  
       <div class="liebiao-box" v-for="(item,index) in list" :key="index">
        <a  @click="handleProject(item.beforeProjectId)">
          <p class="gcmc-text">{{item.projectName}}</p>
