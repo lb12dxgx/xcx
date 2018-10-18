@@ -4,7 +4,7 @@
     <div class="tab-list">
       <ul>
          <li>
-          <a   :class="step1 ?'link-on' : 'link-none' " @click="goStep1">基本信息</a>
+          <a  :class="step1 ?'link-on' : 'link-none' " @click="goStep1">基本信息</a>
         </li>
          <li>
           <a   :class="step2 ?'link-on' : 'link-none' " @click="goStep2">位置信息</a>

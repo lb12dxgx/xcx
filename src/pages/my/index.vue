@@ -57,7 +57,7 @@
             </a>
             <a class="weui-cell weui-cell_access" href="javascript:;">
                 <div class="weui-cell__bd">
-                    <p>我的申请</p>
+                    <p>我的 申请</p>
                 </div>
                 <div class="weui-cell__ft">
                 </div>

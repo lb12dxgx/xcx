@@ -9,7 +9,7 @@
            <li style="width:48%">
             <a   :class="step2 ?'link-on' : 'link-none' " @click="goStep2">我的事故</a>
           </li>
-        </ul>
+        </ul>  
   </div>
   <div class="clear"></div>
   <div v-if="step1">

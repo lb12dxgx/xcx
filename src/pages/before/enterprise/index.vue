@@ -1,6 +1,6 @@
 <template>
   <div class="frome-box" >
-    <div class="frome-title">企业申请</div>
+    <div class="frome-title">企业 申请</div>
     <div class="frome-content">
       <div class="text-box ">
         <input  type="text" data-name='enterpriseName' @focus="handlefocus($event)" @blur="handleblur($event)" 

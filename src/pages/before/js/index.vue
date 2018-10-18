@@ -3,7 +3,7 @@
    <div class="frome-box">
     <div class="tab-list">
       <ul>
-         <li style="width:49%"><a   :class="step1class" @click="goStep1">挖掘申请</a></li>
+         <li style="width:49%"><a :class="step1class" @click="goStep1">挖掘申请</a></li>
          <li style="width:49%"><a   :class="step2class" @click="goStep2">已申请</a></li>
       </ul>
     </div>

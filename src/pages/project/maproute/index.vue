@@ -2,7 +2,7 @@
   
   <div>
    
-   <map-route :route-info="routeInfo"></map-route>
+   <map-route :route-info="routeInfo"> </map-route>
 
             
   </div>
