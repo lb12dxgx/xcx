@@ -13,7 +13,7 @@
        <div class="weui-cells weui-cells_form" >
          <div class="weui-cell  ">
                     <div class="weui-cell__hd">
-                        <label class="weui-label" :class="error_personName">姓名 </label>
+                        <label class="weui-label" :class="error_personName">姓名</label>
                     </div>
                     <div class="weui-cell__bd">
                         <input class="weui-input "   placeholder="请输入姓名" v-model="addForm.personName">

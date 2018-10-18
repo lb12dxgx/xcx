@@ -2,7 +2,7 @@
   
   <div >
     <div class="step" v-if="step1">
-        <div class="weui-cells__title">所在 城市</div>
+        <div class="weui-cells__title">所在城市</div>
         <block v-if="city!=''">
         <div class="weui-cells ">
           <picker mode="selector"  :range="cityArray" @change="cityChange">

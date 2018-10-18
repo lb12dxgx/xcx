@@ -4,7 +4,7 @@ var Fly=require("flyio/dist/npm/wx")
 var fly=new Fly
 
  
-
+  
 //let base = ip;
 //let base = 'http://'+ip+'/api/';
 //let base = 'http://www.118-china.com/'

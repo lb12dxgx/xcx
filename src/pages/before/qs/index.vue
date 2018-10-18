@@ -4,7 +4,7 @@
     <div class="tab-list">
       <ul>
          <li>
-          <a  :class="step1class" @click="goStep1">待反馈</a>
+          <a :class="step1class" @click="goStep1">待反馈</a>
         </li>
          <li>
           <a   :class="step2class" @click="goStep2">已反馈</a>
