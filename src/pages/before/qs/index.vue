@@ -18,9 +18,9 @@
     <div v-if="step1">
       <div>
         <div class="weui-cells ">
-          <a  class="weui-cell weui-cell_access" @click="showMap()">
+          <a  class="weui-cell weui-cell_access" @click="showArea()">
                 <div class="weui-cell__bd">
-                    <p>关注网格</p>
+                    <p>关注地区</p>
                 </div>
                 <div class="weui-cell__ft">
                 </div>
@@ -331,6 +331,10 @@ export default {
 
       
     },
+
+    showArea(){
+      
+    }
 
     viewProject(beforeProjectId){
        wx.navigateTo({
