@@ -9,6 +9,7 @@
     "pages/project/maproute/main",
     "pages/before/qs/main", 
     "pages/before/city/main", 
+    "pages/before/area/main", 
     "pages/before/reg/main",
     "pages/before/enterprise/main", 
     "pages/person/main",

@@ -40,6 +40,13 @@ export const exitApplaycity = params => { return fly.post(`${base}/xcx/login/bef
 export const getApplaycity = params => { return fly.post(`${base}/xcx/login/before/applaycity/get.xcx`,qs.stringify(params)).then(res => res.data); };
 
 
+export const getAreaByOpenId = params => { return fly.post(`${base}/xcx/login/before/cityarea/getAreaByOpenId.xcx`,qs.stringify(params)).then(res => res.data); };
+export const saveArea = params => { return fly.post(`${base}/xcx/login/before/cityarea/save.xcx`,qs.stringify(params,{arrayFormat:'repeat'})).then(res => res.data); };
+export const getDistrictByOpenId = params => { return fly.post(`${base}/xcx/login/before/citydistrict/getDistrictByOpenId.xcx`,qs.stringify(params)).then(res => res.data); };
+export const saveDistrict = params => { return fly.post(`${base}/xcx/login/before/citydistrict/saveDistrict.xcx`,qs.stringify(params,{arrayFormat:'repeat'})).then(res => res.data); };
+
+
+
 export const exitEnterprise = params => { return fly.post(`${base}/xcx/login/before/enterprise/exitByNameAndCity.xcx`,qs.stringify(params)).then(res => res.data); }; 
 export const enterpriseList = params => { return fly.post(`${base}/xcx/login/before/enterprise/list.xcx`,qs.stringify(params)).then(res => res.data); }; 
 export const saveEnterprise = params => { return fly.post(`${base}/xcx/login/before/enterprise/save.xcx`,qs.stringify(params)).then(res => res.data); }; 

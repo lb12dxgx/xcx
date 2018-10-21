@@ -84,7 +84,7 @@ export default {
       isLogin:true,
       openid:'',
       telphone:'13720053036',
-      smscode:'',
+      smscode:'5707',
       sendMsg:'发送验证码'
     
     }

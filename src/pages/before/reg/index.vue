@@ -5,7 +5,7 @@
         <div class="weui-cells__title">所在城市</div>
         <block v-if="city!=''">
         <div class="weui-cells ">
-          <picker mode="selector"  :range="cityArray" @change="cityChange">
+          <picker mode="selector"  :range="cityArray" range-key="cityName" @change="cityChange">
             <a  class="weui-cell weui-cell_access" >
               <div class="weui-cell__bd">
                 <p>
@@ -132,7 +132,8 @@ export default {
     },
 
     cityChange(e){
-      this.city=this.cityArray[e.mp.detail.value];
+      this.city=this.cityArray[e.mp.detail.value].cityName;
+      this.applyCityId=this.cityArray[e.mp.detail.value].applyCityId;
     },
 
 
@@ -262,7 +263,7 @@ export default {
         var cArray=[]
         for(var city of citylist){
           console.log(city.cityName);
-          cArray.push(city.cityName);
+          cArray.push(city);
         }
         this.cityArray=cArray;
       })

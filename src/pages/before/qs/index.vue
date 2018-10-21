@@ -333,8 +333,11 @@ export default {
     },
 
     showArea(){
+       wx.navigateTo({
+            url: '/pages/before/area/main'
+      })
       
-    }
+    },
 
     viewProject(beforeProjectId){
        wx.navigateTo({
