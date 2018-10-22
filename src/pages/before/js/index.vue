@@ -22,23 +22,18 @@
               <label class="lablefocus">工程类别</label>
              </picker>
            </div>
+           
+            <div class="text-box ">
+                <picker mode="multiSelector" :value="multiIndex" :range="multiArray" range-key="name"  @change="areaChange" @columnchange="districtChange">
+                  <input  type="text" v-model="addForm.projectArea" />
+                  <label class="lablefocus">所属地区</label>
+                </picker>
+            </div>
            <div class="text-box ">
              <picker mode="date" :value="addForm.projectStartDate"  @change="dateChange"> 
               <input  type="text" v-model="addForm.projectStartDate" disabled="true"/>
               <label class="lablefocus">施工时间</label>
              </picker>
-           </div>
-           <div class="text-box ">
-            <picker mode="selector" :range="districtArray" @change="districtChange"  > 
-                <input  type="text" v-model="addForm.projectDistrict" />
-                <label class="lablefocus">所属区县</label>
-            </picker>
-           </div>
-            <div class="text-box ">
-              <picker mode="selector" :range="areaArray" @change="areaChange">
-                <input  type="text" v-model="addForm.projectArea" />
-                <label class="lablefocus">所属地区</label>
-              </picker>
            </div>
 
             <div class="text-box ">
@@ -163,7 +158,7 @@
 import formitem from '../../../components/formitem.vue';
 import formitemedit from '../../../components/formitemedit.vue';
 
-import {getAddressByMap,applayprojectListByOpenId,saveApplayproject,addApplayproject,deleteFile,url} from '../../../api/api';
+import {getAreaByOpenId,getAddressByMap,applayprojectListByOpenId,saveApplayproject,addApplayproject,deleteFile,url} from '../../../api/api';
 
 export default {
 
@@ -183,8 +178,8 @@ export default {
         typeArray:['水利工程', '燃气工程', '交通工程', '通讯工程', '其他工程'],
         type:"",
         list:[],
-        districtList:[],
-        areaList:[],
+        multiArray: [['无脊柱动物', '脊柱动物'], ['扁性动物', '线形动物', '环节动物', '软体动物', '节肢动物']],
+        multiIndex: [0, 0],
         addForm:{
         projectName:'',
         projectType:'',
@@ -229,6 +224,28 @@ export default {
        
          this.addForm.projectStartDate=e.mp.detail.value;
     },
+
+    districtChange:function(e){
+      console.log(e);
+      var column=this.multiIndex[0];
+      var aArray=[];
+      console.log(column);
+      var list=this.multiArray[column].list;
+        for(var i=0;i<list.length;i++){
+           var option={"id":list[i].cityAreaId,"name":list[i].areaName}
+            aArray[i]=option;
+            
+        };
+      this.multiArray[1]=aArray;
+      this.multiIndex=[column,0];
+
+
+    },
+
+    areaChange:function(e){
+
+    },
+
 
     goStep1(){
       this.step1=true;
@@ -535,12 +552,33 @@ export default {
   },
 
   onLoad() {
-    
-     
-      addApplayproject() .then((res)=>{
+
+    addApplayproject() .then((res)=>{
         this.addForm.picId=res.retData.picId;
         this.addForm.openid=wx.getStorageSync('openid');
         
+      });
+
+    getAreaByOpenId().then((res)=>{
+        var districtList=res.retData;
+        
+        var mArray=[[],[]];
+        for(var i=0;i<districtList.length;i++){
+          var option={"id":districtList[i].cityDistrictId,"name":districtList[i].districtName,"list":districtList[i].list}
+          mArray[0][i]=option;
+          console.log(option);
+            
+        };
+        var list=districtList[0].list;
+        for(var i=0;i<list.length;i++){
+           var option={"id":list[i].cityAreaId,"name":list[i].areaName}
+            mArray[1][i]=option;
+            
+        };
+       
+       this.multiArray=mArray;
+
+
       })
 
   },
