@@ -24,7 +24,7 @@
         <checkbox-group @change="checkDistrict">
           <label class="weui-cell weui-check__label" v-for="(item,index) in districtList" :key="index" >
             <div class="weui-cell__hd">
-              <checkbox :value="item.cityDistrictId" checked=""/>
+              <checkbox :data-name="index" :value="item.cityDistrictId" :checked="item.checked" @change="checkedDistrict" />
             </div>
             <div class="weui-cell__bd">
               <p>{{item.districtName}}</p>
@@ -40,7 +40,7 @@
           <div class="weui-cells__title" v-if="item.list.length>0">{{item.districtName}}</div>
           <label class="weui-cell weui-check__label" v-for="(it,ide) in item.list"  :key="ide">
             <div class="weui-cell__hd">
-              <checkbox :value="it.cityAreaId" checked=""/>
+              <checkbox :value="it.cityAreaId" :checked="it.checked"/>
             </div>
             <div class="weui-cell__bd">
               <p>{{it.areaName}}</p>
@@ -97,18 +97,41 @@ export default {
     this.step2=false;
     this.step3=true;
     getAreaByOpenId().then((res)=>{
-      console.log(res.retData);
       this.areaList=res.retData;
     })
   },
 
   checkDistrict(e){
     this.cityDistrictIdList=e.mp.detail.value;
+    for(var district of this.districtList){
+      var flag=false;
+      for(var id of this.cityDistrictIdList){
+        if(district.cityDistrictId==id){
+            flag=true;
+        }
+      }
+      district.checked=flag;
+    }
+
   },
 
   checkArea(e){
     this.cityAreaIdList=e.mp.detail.value;
+    console.log(e.mp.detail.value);
+    for(var distrrict of this.areaList){
+      for(var cityArea of distrrict.list){
+        var flag=false;
+        for(var id of this.cityAreaIdList){
+         
+            if(cityArea.cityAreaId==id){
+                flag=true;
+            }
+          }
+        cityArea.checked=flag;
+      }
+    }
   },
+ 
   handleSaveDistrict(){
     saveDistrict({'cityDistrictIdList':this.cityDistrictIdList}).then((res)=>{
        wx.redirectTo({

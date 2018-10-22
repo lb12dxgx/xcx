@@ -28,11 +28,23 @@
               <label class="lablefocus">施工时间</label>
              </picker>
            </div>
+           <div class="text-box ">
+            <picker mode="selector" :range="districtArray" @change="districtChange"  > 
+                <input  type="text" v-model="addForm.projectDistrict" />
+                <label class="lablefocus">所属区县</label>
+            </picker>
+           </div>
+            <div class="text-box ">
+              <picker mode="selector" :range="areaArray" @change="areaChange">
+                <input  type="text" v-model="addForm.projectArea" />
+                <label class="lablefocus">所属地区</label>
+              </picker>
+           </div>
+
             <div class="text-box ">
               <input  type="text" v-model="addForm.projectAddren" />
               <label class="lablefocus">工程地点</label>
-              
-           </div>
+            </div>
            <div class="text-box ">
               <input  type="text" v-model="addForm.projectStartEnd" />
               <label class="lablefocus">工程起止点</label>
@@ -171,6 +183,8 @@ export default {
         typeArray:['水利工程', '燃气工程', '交通工程', '通讯工程', '其他工程'],
         type:"",
         list:[],
+        districtList:[],
+        areaList:[],
         addForm:{
         projectName:'',
         projectType:'',
