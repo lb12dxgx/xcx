@@ -30,15 +30,19 @@
        <a  @click="handleProject(item.beforeProjectId)">
          <p class="gcmc-text">{{item.projectName}}</p>
          <ul class="list-box-xx">
+           <li class="left-box left">所属区县</li>
+           <li class="right-box right">{{item.projectDistrict}}</li>
+         </ul>
+         <ul class="list-box-xx">
+           <li class="left-box left">所属地区</li>
+           <li class="right-box right">{{item.projectArea}}</li>
+         </ul>
+         <ul class="list-box-xx">
            <li class="left-box left">工程地点</li>
            <li class="right-box right">{{item.projectAddren}}</li>
 
          </ul>
-         <ul class="list-box-xx">
-           <li class="left-box left">工程起止点</li>
-           <li class="right-box right">{{item.projectStartEnd}}</li>
-
-         </ul>
+         
          <ul class="list-box-xx">
            <li class="left-box left">工程时间</li>
            <li class="right-box right">{{item.projectStartDate}}</li>
@@ -46,7 +50,7 @@
          </ul>
          <ul class="list-box-xx">
            <li class="left-box left">工程类别</li>
-           <li class="right-box right">{{item.projectStartDate}}</li>
+           <li class="right-box right">{{item.projectType}}</li>
 
          </ul>
          <ul class="list-box-xx">
@@ -72,14 +76,17 @@
       <div class="liebiao-box" v-for="(item,index) in list" :key="index">
        <a  @click="viewProject(item.beforeProjectId)">
          <p class="gcmc-text">{{item.projectName}}</p>
+          <ul class="list-box-xx">
+           <li class="left-box left">所属区县</li>
+           <li class="right-box right">{{item.projectDistrict}}</li>
+         </ul>
+         <ul class="list-box-xx">
+           <li class="left-box left">所属地区</li>
+           <li class="right-box right">{{item.projectArea}}</li>
+         </ul>
          <ul class="list-box-xx">
            <li class="left-box left">工程地点</li>
            <li class="right-box right">{{item.projectAddren}}</li>
-
-         </ul>
-         <ul class="list-box-xx">
-           <li class="left-box left">工程起止点</li>
-           <li class="right-box right">{{item.projectStartEnd}}</li>
 
          </ul>
          <ul class="list-box-xx">
@@ -89,7 +96,7 @@
          </ul>
          <ul class="list-box-xx">
            <li class="left-box left">工程类别</li>
-           <li class="right-box right">{{item.projectStartDate}}</li>
+           <li class="right-box right">{{item.projectType}}</li>
 
          </ul>
          <ul class="list-box-xx">
@@ -133,6 +140,19 @@
               <label class="lablefocus">施工时间</label>
              </picker>
            </div>
+            <div class="text-box">
+            <picker mode="selector"  :range="districtArray" range-key="name"  @change="districtChange">
+              <input  type="text" v-model="addForm.projectDistrict" disabled="true" />
+              <label class="lablefocus">所属区县</label>
+            </picker>
+          </div>
+
+          <div class="text-box" v-if="areaArray.length>0">
+            <picker mode="selector"  :range="areaArray" range-key="areaName"  @change="areaChange">
+              <input  type="text" v-model="addForm.projectArea" disabled="true" />
+              <label class="lablefocus">所属地区</label>
+            </picker>
+          </div>
             <div class="text-box ">
               <input  type="text" v-model="addForm.projectAddren" />
               <label class="lablefocus">工程地点</label>
@@ -219,7 +239,7 @@
 import formitem from '../../../components/formitem.vue';
 import formitemedit from '../../../components/formitemedit.vue';
 
-import {getAddressByMap,applayprojectListByCityId,applayprojectListFinshByOpenId,saveApplayproject,addApplayproject,deleteFile,url} from '../../../api/api';
+import {getAreaByOpenId,getAddressByMap,applayprojectListByCityId,applayprojectListFinshByOpenId,saveApplayproject,addApplayproject,deleteFile,url} from '../../../api/api';
 
 export default {
 
@@ -241,9 +261,15 @@ export default {
         typeArray:['水利工程', '燃气工程', '交通工程', '通讯工程', '其他工程'],
         type:"",
         list:[],
+        districtArray: [],
+        areaArray: [],
         addForm:{
         projectName:'',
         projectType:'',
+        cityDistrictId:'',
+        projectDistrict:'',
+        cityAreaId:'',
+        projectArea:'',
         projectStartDate:'',
         projectAddren:'',
         projectStartEnd:'',
@@ -291,6 +317,18 @@ export default {
         this.addForm.projectStartDate=e.mp.detail.value;
     },
 
+
+    districtChange:function(e){
+      this.addForm.projectDistrict=this.districtArray[e.mp.detail.value].name;
+      this.addForm.cityDistrictId=this.districtArray[e.mp.detail.value].id;
+      this.areaArray=this.districtArray[e.mp.detail.value].list
+    },
+
+    areaChange:function(e){
+      this.addForm.projectArea=this.areaArray[e.mp.detail.value].areaName;
+      this.addForm.cityAreaId=this.areaArray[e.mp.detail.value].cityAreaId;
+    },
+
     goStep1(){
       this.step1=true;
       this.step2=false;
@@ -327,7 +365,20 @@ export default {
       addApplayproject() .then((res)=>{
         this.addForm.picId=res.retData.picId;
         this.addForm.openid=wx.getStorageSync('openid');
-       })
+       });
+
+    getAreaByOpenId().then((res)=>{
+        var districtList=res.retData;
+        var mArray=[];
+        for(var i=0;i<districtList.length;i++){
+          var option={"id":districtList[i].cityDistrictId,"name":districtList[i].districtName,"list":districtList[i].list}
+          mArray[i]=option;
+        };
+        this.districtArray=mArray;
+
+
+      })
+
 
       
     },
@@ -509,10 +560,6 @@ export default {
 
 
         this.markers.push(marker);
-
-       
-       
-       
     },
     save(){
         if(this.addForm.projectName==''){
@@ -534,6 +581,23 @@ export default {
        if(this.addForm.projectStartDate==''){
           wx.showToast({
             title: '请选择施工时间',
+            duration: 2000
+          });
+          return false;
+       };
+
+
+       if(this.addForm.projectDistrict==''){
+          wx.showToast({
+            title: '请选择所属区县',
+            duration: 2000
+          });
+          return false;
+       };
+
+       if(this.addForm.projectArea==''&&this.areaArray.length>0){
+          wx.showToast({
+            title: '请选择所属地区',
             duration: 2000
           });
           return false;
@@ -574,11 +638,11 @@ export default {
       var _this=this;
     
   
-  if(e.type == 'end'){
+      if(e.type == 'end'){
           var mapCtx = wx.createMapContext("map");
           mapCtx.getCenterLocation({
             success: function(res){
-              
+             
              mapCtx.translateMarker({
                 markerId:0,
                 destination:{latitude:res.latitude,longitude:res.longitude},
@@ -631,12 +695,18 @@ export default {
       this.addForm={
         projectName:'',
         projectType:'',
+        cityDistrictId:'',
+        projectDistrict:'',
+        cityAreaId:'',
+        projectArea:'',
         projectStartDate:'',
         projectAddren:'',
         projectStartEnd:'',
         picId:'',
         mapJson:''
-        };
+      };
+      this.districtArray=[];
+      this.areaArray=[];
   },
 
   onLoad() {

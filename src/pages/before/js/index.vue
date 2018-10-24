@@ -23,12 +23,20 @@
              </picker>
            </div>
            
-            <div class="text-box ">
-                <picker mode="multiSelector" :value="multiIndex" :range="multiArray" range-key="name"  @change="areaChange" @columnchange="districtChange">
-                  <input  type="text" v-model="addForm.projectArea" />
-                  <label class="lablefocus">所属地区</label>
-                </picker>
-            </div>
+          <div class="text-box">
+            <picker mode="selector"  :range="districtArray" range-key="name"  @change="districtChange">
+              <input  type="text" v-model="addForm.projectDistrict"  disabled="true" />
+              <label class="lablefocus">所属区县</label>
+            </picker>
+          </div>
+
+          <div class="text-box">
+            <picker mode="selector"  :range="areaArray" range-key="areaName"  @change="areaChange">
+          <input  type="text" v-model="addForm.projectArea" disabled="true" />
+              <label class="lablefocus">所属地区</label>
+            </picker>
+          </div>
+
            <div class="text-box ">
              <picker mode="date" :value="addForm.projectStartDate"  @change="dateChange"> 
               <input  type="text" v-model="addForm.projectStartDate" disabled="true"/>
@@ -40,10 +48,7 @@
               <input  type="text" v-model="addForm.projectAddren" />
               <label class="lablefocus">工程地点</label>
             </div>
-           <div class="text-box ">
-              <input  type="text" v-model="addForm.projectStartEnd" />
-              <label class="lablefocus">工程起止点</label>
-           </div>
+           
 
            <div class="weui-uploader__bd th-backwhite clearfix">
             <div class="weui-uploader__files" id="uploaderFiles">
@@ -108,24 +113,27 @@
       <div class="liebiao-box" v-for="(item,index) in list" :key="index">
        <a  @click="viewProject(item.beforeProjectId)" >
          <p class="gcmc-text">{{item.projectName}}</p>
+          <ul class="list-box-xx">
+           <li class="left-box left">所属区县</li>
+           <li class="right-box right">{{item.projectDistrict}}</li>
+         </ul>
+         <ul class="list-box-xx">
+           <li class="left-box left">所属地区</li>
+           <li class="right-box right">{{item.projectArea}}</li>
+         </ul>
          <ul class="list-box-xx">
            <li class="left-box left">工程地点</li>
            <li class="right-box right">{{item.projectAddren}}</li>
 
          </ul>
-         <ul class="list-box-xx">
-           <li class="left-box left">工程起止点</li>
-           <li class="right-box right">{{item.projectStartEnd}}</li>
-
-         </ul>
-         <ul class="list-box-xx">
+        <ul class="list-box-xx">
            <li class="left-box left">工程时间</li>
            <li class="right-box right">{{item.projectStartDate}}</li>
 
          </ul>
          <ul class="list-box-xx">
            <li class="left-box left">工程类别</li>
-           <li class="right-box right">{{item.projectStartDate}}</li>
+           <li class="right-box right">{{item.projectType}}</li>
 
          </ul>
          <ul class="list-box-xx">
@@ -178,11 +186,15 @@ export default {
         typeArray:['水利工程', '燃气工程', '交通工程', '通讯工程', '其他工程'],
         type:"",
         list:[],
-        multiArray: [['无脊柱动物', '脊柱动物'], ['扁性动物', '线形动物', '环节动物', '软体动物', '节肢动物']],
-        multiIndex: [0, 0],
+        districtArray: [],
+        areaArray: [],
         addForm:{
         projectName:'',
         projectType:'',
+        cityDistrictId:'',
+        projectDistrict:'',
+        cityAreaId:'',
+        projectArea:'',
         projectStartDate:'',
         projectAddren:'',
         projectStartEnd:'',
@@ -226,24 +238,14 @@ export default {
     },
 
     districtChange:function(e){
-      console.log(e);
-      var column=this.multiIndex[0];
-      var aArray=[];
-      console.log(column);
-      var list=this.multiArray[column].list;
-        for(var i=0;i<list.length;i++){
-           var option={"id":list[i].cityAreaId,"name":list[i].areaName}
-            aArray[i]=option;
-            
-        };
-      this.multiArray[1]=aArray;
-      this.multiIndex=[column,0];
-
-
+      this.addForm.projectDistrict=this.districtArray[e.mp.detail.value].name;
+      this.addForm.cityDistrictId=this.districtArray[e.mp.detail.value].id;
+      this.areaArray=this.districtArray[e.mp.detail.value].list;
     },
-
+ 
     areaChange:function(e){
-
+      this.addForm.projectArea=this.areaArray[e.mp.detail.value].areaName;
+      this.addForm.cityAreaId=this.areaArray[e.mp.detail.value].cityAreaId;
     },
 
 
@@ -252,6 +254,24 @@ export default {
       this.step2=false;
       this.step1class='link-on';
       this.step2class='link-none';
+
+      addApplayproject() .then((res)=>{
+        this.addForm.picId=res.retData.picId;
+        this.addForm.openid=wx.getStorageSync('openid');
+        
+      });
+
+    getAreaByOpenId().then((res)=>{
+        var districtList=res.retData;
+        var mArray=[];
+        for(var i=0;i<districtList.length;i++){
+          var option={"id":districtList[i].cityDistrictId,"name":districtList[i].districtName,"list":districtList[i].list}
+          mArray[i]=option;
+        };
+        this.districtArray=mArray;
+
+
+      });
       
     },
 
@@ -454,6 +474,30 @@ export default {
           return false;
        };
 
+       if(this.addForm.projectDistrict==''){
+          wx.showToast({
+            title: '请选择所属区县',
+            duration: 2000
+          });
+          return false;
+       };
+
+       if(this.addForm.projectArea==''){
+          wx.showToast({
+            title: '请选择所属地区',
+            duration: 2000
+          });
+          return false;
+       };
+
+       if(this.addForm.projectAddren==''&&this.areaArray.length>0){
+          wx.showToast({
+            title: '请选择工程地点',
+            duration: 2000
+          });
+          return false;
+       };
+
        if(this.addForm.projectAddren==''){
           wx.showToast({
             title: '请选择工程地点',
@@ -462,14 +506,8 @@ export default {
           return false;
        };
 
-        if(this.addForm.projectStartEnd==''){
-          wx.showToast({
-            title: '请填写工程起止点',
-            duration: 2000
-          });
-          return false;
-       };
-        var jsonStr=JSON.stringify(this.pointarray);
+        
+      var jsonStr=JSON.stringify(this.pointarray);
         this.addForm.mapJson=jsonStr;
         saveApplayproject(this.addForm).then((res)=>{
           this.addForm={};
@@ -542,45 +580,23 @@ export default {
       this.addForm={
         projectName:'',
         projectType:'',
+        cityDistrictId:'',
+        projectDistrict:'',
+        cityAreaId:'',
+        projectArea:'',
         projectStartDate:'',
         projectAddren:'',
         projectStartEnd:'',
         picId:'',
         mapJson:''
         };
+      this.districtArray=[];
+      this.areaArray=[];
       
   },
 
   onLoad() {
-
-    addApplayproject() .then((res)=>{
-        this.addForm.picId=res.retData.picId;
-        this.addForm.openid=wx.getStorageSync('openid');
-        
-      });
-
-    getAreaByOpenId().then((res)=>{
-        var districtList=res.retData;
-        
-        var mArray=[[],[]];
-        for(var i=0;i<districtList.length;i++){
-          var option={"id":districtList[i].cityDistrictId,"name":districtList[i].districtName,"list":districtList[i].list}
-          mArray[0][i]=option;
-          console.log(option);
-            
-        };
-        var list=districtList[0].list;
-        for(var i=0;i<list.length;i++){
-           var option={"id":list[i].cityAreaId,"name":list[i].areaName}
-            mArray[1][i]=option;
-            
-        };
-       
-       this.multiArray=mArray;
-
-
-      })
-
+      this.goStep1();
   },
 
 

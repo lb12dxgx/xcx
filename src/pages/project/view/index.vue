@@ -80,15 +80,24 @@
               <label class="lablefocus">施工时间</label>
              
            </div>
+
+           <div class="text-box">
+            <input  type="text" v-model="projectForm.projectDistrict"  disabled="true" class="inputview" />
+              <label class="lablefocus">所属区县</label>
+           </div>
+
+          <div class="text-box">
+           <input  type="text" v-model="projectForm.projectArea" disabled="true" class="inputview"/>
+            <label class="lablefocus">所属地区</label>
+           
+          </div>
+
             <div class="text-box ">
               <input  type="text" v-model="projectForm.projectAddren" disabled="true" class="inputview" />
               <label class="lablefocus">工程地点</label>
               
            </div>
-           <div class="text-box ">
-              <input  type="text" v-model="projectForm.projectStartEnd" disabled="true" class="inputview" />
-              <label class="lablefocus">工程起止点</label>
-           </div>
+          
 
            <div class="text-box ">
               <input  type="text" v-model="projectForm.enterpriseName" disabled="true" class="inputview" />
