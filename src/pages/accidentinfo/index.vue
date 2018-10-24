@@ -21,7 +21,7 @@
      <div class="text-box ">
       <input  type="text" v-model="addForm.accidentPlace" data-name='accidentPlace' @focus="handlefocus($event)" @blur="handleblur($event)" 
             :class="inputClassJson.accidentPlace"/>
-      <label class="lablefocus">事故地点</label>
+      <label class="lablefocus">事故地点11</label>
     </div>
     <div class="text-box ">
       <input  type="text" v-model="addForm.accidentDate" data-name='accidentDate' @focus="handlefocus($event)" @blur="handleblur($event)" 
