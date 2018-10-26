@@ -14,23 +14,20 @@
   <div class="clear"></div>
   <div v-if="step1">
     <div class="text-box ">
-      <input  type="text" v-model="addForm.accidentName" data-name='accidentName' @focus="handlefocus($event)" @blur="handleblur($event)" 
-            :class="inputClassJson.accidentName"/>
+      <input  type="text" v-model="addForm.accidentName"/>
       <label class="lablefocus">事故名称</label>
     </div>
-     <div class="text-box ">
-      <input  type="text" v-model="addForm.accidentPlace" data-name='accidentPlace' @focus="handlefocus($event)" @blur="handleblur($event)" 
-            :class="inputClassJson.accidentPlace"/>
-      <label class="lablefocus">事故地点11</label>
+    <div class="text-box ">
+      <input  type="text" v-model="addForm.accidentPlace" />
+      <label class="lablefocus">事故地点</label>
     </div>
     <div class="text-box ">
-      <input  type="text" v-model="addForm.accidentDate" data-name='accidentDate' @focus="handlefocus($event)" @blur="handleblur($event)" 
-            :class="inputClassJson.accidentDate"/>
+      <picker mode="date" :value="addForm.accidentDate"  @change="dateChange">  <input  type="text" v-model="addForm.accidentDate" disabled="true"/>
+      </picker>
       <label class="lablefocus">事故时间</label>
     </div>
     <div class="text-box ">
-      <textarea   v-model="addForm.accidentDesc" rows="3" data-name='accidentDesc' @focus="handlefocus($event)" @blur="handleblur($event)" 
-            :class="inputClassJson.accidentDesc"/>
+      <textarea   v-model="addForm.accidentDesc" />
       <label class="lablefocus">事故描述</label>
     </div>
 
@@ -102,14 +99,6 @@ export default {
         accidentPlace:'',
         accidentDate:''
        },
-
-
-      inputClassJson:{
-        accidentName:'',
-        accidentDesc:'',
-        accidentPlace:'',
-        accidentDate:''
-        }
     }
      
   },
@@ -134,14 +123,8 @@ export default {
         this.list=res.retData;
       });
     },
-
-    handlefocus(e){
-     var name=e.currentTarget.dataset.name;
-      this.inputClassJson[name]='inputfocus';
-    },
-    handleblur(e){
-      var name=e.currentTarget.dataset.name;
-      this.inputClassJson[name]='';
+    dateChange: function (e) {
+      this.addForm.accidentDate=e.mp.detail.value;
     },
 
     chooseImage(e) {
