@@ -73,7 +73,7 @@
 
     <div v-if="step2">
     <div>
-      <div class="liebiao-box" v-for="(item,index) in list" :key="index">
+      <div class="liebiao-box" v-for="(item,index) in finshlist" :key="index">
        <a  @click="viewProject(item.beforeProjectId)">
          <p class="gcmc-text">{{item.projectName}}</p>
           <ul class="list-box-xx">
@@ -261,6 +261,7 @@ export default {
         typeArray:['水利工程', '燃气工程', '交通工程', '通讯工程', '其他工程'],
         type:"",
         list:[],
+        finshlist:[],
         districtArray: [],
         areaArray: [],
         addForm:{
@@ -350,7 +351,7 @@ export default {
       this.step2class='link-on';
       this.step3class='link-none';
       applayprojectListFinshByOpenId().then((res)=>{
-        this.list=res.retData;
+        this.finshlist=res.retData;
         
       });
     },
@@ -707,6 +708,8 @@ export default {
       };
       this.districtArray=[];
       this.areaArray=[];
+      this.list=[];
+      this.finshlist=[];
   },
 
   onLoad() {

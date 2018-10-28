@@ -2,7 +2,11 @@
   "pages": [
     "pages/index/main",
     "pages/my/main",
-    "pages/accidentinfo/main",
+    "pages/meet/plan/main",
+    "pages/meet/list/main",
+    "pages/meet/view/main",
+    "pages/accidentinfo/list/main",
+    "pages/accidentinfo/view/main",
     "pages/before/js/main", 
     "pages/project/view/main",
     "pages/project/handle/main",

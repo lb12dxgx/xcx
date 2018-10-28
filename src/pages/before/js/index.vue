@@ -592,6 +592,7 @@ export default {
         };
       this.districtArray=[];
       this.areaArray=[];
+      this.list=[];
       
   },
 

@@ -1,6 +1,6 @@
 <template>
   
-<div class="frome-content">
+<div class="frome-box">
   <div class="tab-list">
         <ul>
           <li style="width:48%">
@@ -12,7 +12,7 @@
         </ul>  
   </div>
   <div class="clear"></div>
-  <div v-if="step1">
+  <div v-if="step1" class="frome-content">
     <div class="text-box ">
       <input  type="text" v-model="addForm.accidentName"/>
       <label class="lablefocus">事故名称</label>
@@ -30,15 +30,16 @@
       <textarea   v-model="addForm.accidentDesc" />
       <label class="lablefocus">事故描述</label>
     </div>
-
-    <div class="weui-cells__title" v-if="files.length!=0" >事故图片</div>
-    <div class="weui-uploader__files" id="uploaderFiles">
-      <block v-for="(item,index) in files" :key="index">
-        <div class="weui-uploader__file posi-rela" @click="predivImage" :id="item">
-          <icon type="cancel" size="20" class="th-icon-cancel" @click.stop="deletImg(index,item.fileInfoId)"/>
-              <image class="weui-uploader__file" :src="item.webPath" mode="aspectFill" />
-        </div>
-      </block>
+    <div class="weui-uploader__bd th-backwhite clearfix" v-if="files.length!=0">
+      <div class="weui-cells__title"  >事故图片</div>
+      <div class="weui-uploader__files" id="uploaderFiles">
+        <block v-for="(item,index) in files" :key="index">
+          <div class="weui-uploader__file posi-rela" @click="predivImage" :id="item">
+            <icon type="cancel" size="20" class="th-icon-cancel" @click.stop="deletImg(index,item.fileInfoId)"/>
+                <image class="weui-uploader__file" :src="item.webPath" mode="aspectFill" />
+          </div>
+        </block>
+      </div>
     </div>
 
     <div class="weui-cells__title" v-if="viedoFiles.length!=0">事故视频</div>
@@ -66,20 +67,38 @@
         </div>
       </a>
     </div>
-      <input type="button" value="提交" class="tj-btn" @click="save">
+      <input type="button" value="提交" class="tj-btn" @click="save()">
  </div>
- <div v-if="step2dv">
- </div>
-  
-
+ <div v-if="step2">
+   <div>
+    <div class="liebiao-box" v-for="(item,index) in list" :key="index">
+      <a  @click="handle(item.accidentInfoId)">
+         <p class="gcmc-text">{{item.accidentName}}</p>
+         <ul class="list-box-xx">
+           <li class="left-box left">事故地点</li>
+           <li class="right-box right">{{item.accidentPlace}}</li>
+         </ul>
+         <ul class="list-box-xx">
+           <li class="left-box left">事故时间</li>
+           <li class="right-box right">{{item.accidentDate}}</li>
+         </ul>
+         <ul class="list-box-xx">
+           <li class="left-box left">是否采用</li>
+           <li class="right-box right">{{stateMap[item.state]}}</li>
+         </ul>
+      </a>
+    </div>
   </div>
+</div>
+  
+</div>
 
   </template>
 
 <script>
 
 
-import {addAccidentinfo,saveAccidentinfo,deleteFile,url,accidentinfoList} from '../../api/api';
+import {addAccidentinfo,saveAccidentinfo,deleteFile,url,accidentinfoList} from '../../../api/api';
 
 
 export default {
@@ -99,6 +118,12 @@ export default {
         accidentPlace:'',
         accidentDate:''
        },
+
+       stateMap:{
+          0:'待采用',
+          1:'已采用',
+          2:'不采用 '
+       },
     }
      
   },
@@ -109,6 +134,8 @@ export default {
     goStep1(){
       this.step1=true;
       this.step2=false;
+      this.files=[];
+      this.viedoFiles=[];
       addAccidentinfo().then((res)=>{
         this.addForm.accidentPicId=res.retData.accidentPicId;
         this.addForm.accidentVideoId=res.retData.accidentVideoId;
@@ -142,11 +169,17 @@ export default {
               'accidentPicId':_this.addForm.accidentPicId
             },
             success: function(res){
-             var file=JSON.parse(res.data);
-              var fileJson={};
-              fileJson.webPath=url+"/"+file.retData.fileWebPath
-              fileJson.fileInfoId=file.retData.fileInfoId
-              _this.files = _this.files.concat(fileJson);
+             var fileArray=JSON.parse(res.data);
+             var fileJsonArray=[];
+             for(var file of fileArray.retData){
+                var fileJson={};
+                fileJson.webPath=url+"/"+file.fileWebPath
+                fileJson.fileInfoId=file.fileInfoId
+                fileJsonArray.push(fileJson);
+                
+            }
+
+              _this.files=fileJsonArray;
             }
         })
 
@@ -173,7 +206,14 @@ export default {
     },
     deletImg(index,fileInfoId){
      deleteFile({'fileInfoId':fileInfoId,'openIdMd5':this.addForm.openid}).then((res)=>{
-      this.files.splice(index,1);
+              var fileJsonArray=[];
+             for(var file of res.retData){
+                var fileJson={};
+                fileJson.webPath=url+"/"+file.fileWebPath
+                fileJson.fileInfoId=file.fileInfoId
+                fileJsonArray.push(fileJson);
+              }
+          this.files=fileJsonArray;
      })
       
     },
@@ -196,11 +236,15 @@ export default {
               'accidentVideoId':_this.addForm.accidentVideoId
             },
             success: function(res){
-             var file=JSON.parse(res.data);
-              var fileJson={};
-              fileJson.webPath=url+"/"+file.retData.fileWebPath
-              fileJson.fileInfoId=file.retData.fileInfoId
-              _this.viedoFiles = _this.viedoFiles.concat(fileJson);
+             var fileArray=JSON.parse(res.data);
+             var fileJsonArray=[];
+             for(var file of fileArray.retData){
+                var fileJson={};
+                fileJson.webPath=url+"/"+file.fileWebPath
+                fileJson.fileInfoId=file.fileInfoId
+                fileJsonArray.push(fileJson);
+             }
+              _this.viedoFiles=fileJsonArray;
             }
           })
           
@@ -211,9 +255,65 @@ export default {
 
     delVideo(index,fileInfoId){
       deleteFile({'fileInfoId':fileInfoId,'openIdMd5':this.addForm.openid}).then((res)=>{
-        this.viedoFiles.splice(index,1)
+         var fileJsonArray=[];
+             for(var file of res.retData){
+                var fileJson={};
+                fileJson.webPath=url+"/"+file.fileWebPath
+                fileJson.fileInfoId=file.fileInfoId
+                fileJsonArray.push(fileJson);
+              }
+          this.viedoFiles=fileJsonArray;
+
      })
        
+    },
+
+    handle(accidentInfoId){
+     wx.navigateTo({
+            url: '/pages/accidentinfo/view/main?accidentInfoId='+accidentInfoId
+      })
+
+    },
+
+    save(){
+      if(this.addForm.accidentName==''){
+          wx.showToast({
+            title: '请填写事故名称',
+            duration: 2000
+          });
+          return false;
+       };
+
+       if(this.addForm.accidentPlace==''){
+          wx.showToast({
+            title: '请填写事故地点',
+            duration: 2000
+          });
+          return false;
+       };
+
+
+       if(this.addForm.accidentDate==''){
+          wx.showToast({
+            title: '请填写事故时间',
+            duration: 2000
+          });
+          return false;
+       };
+
+       if(this.addForm.accidentDesc==''){
+          wx.showToast({
+            title: '请填写事故描述',
+            duration: 2000
+          });
+          return false;
+       };
+
+      saveAccidentinfo(this.addForm).then((res)=>{
+          this.addForm={};
+          this.goStep2();
+      })
+     
     }
 
 
@@ -222,80 +322,21 @@ export default {
     
   },
 
-  onShow() {
-    this. goStep1();
+  onReachBottom() {
+   console.log("adddd");
+},
+
+ 
+
+  onLoad() {
+    this.goStep1();
    }
 }
 
 </script>
 
 <style scoped>
-  .my{
-    margin-top:5px;
-    text-align: center;
-   
-  }
-  .my-head{
-     background-color: #fff;
-  }
-  .my img{
-    width: 100px;
-    height: 100px;
-    border-radius:50%;
-    -webkit-border-radius:50%;
-    -moz-border-radius:50%
-   }
-  .my .my-name{
-    font-size: 16px;
-    margin: 0px 10px;
-    padding:10px 10px;
-  /*  border-bottom:1px solid #ccc;*/
-  }
-  .my-reg{
-    margin-top:10px; 
-    background-color: #fff;
-  }
-
-
-  .th-icon-cancel{
-  position: absolute;
-  background-color: #fff;
-  border-radius: 50%;
-  right: -14rpx;
-  top: -14rpx;
-}
-.weui-uploader__input-box{
-  margin-right: 0;
-}
-.weui-uploader__bd{
-  margin-bottom: 0;
-}
-.posi-rela{
-  position: relative;
-  overflow: visible;
-}
-.weui-uploader__file:nth-child(4n){
-  margin-right: 0;
-}
-.th-backwhite{
-  width: 750rpx;
-  padding: 20rpx 30rpx;
-  box-sizing: border-box;
-  background-color: #fff;
-  border-bottom:4rpx solid #f5f5f5;
-}
-/* 绿色贯穿按钮 */
-.th-submit-btn{
-  width: 690rpx;
-  height: 90rpx;
-  line-height: 90rpx;
-  background-color: #18c136;
-  margin: 50rpx auto;
-  color: #fff;
-  font-size: 34rpx;
-  text-align: center;
-  border-radius: 6rpx;
-}
+  
 
 
 </style>
