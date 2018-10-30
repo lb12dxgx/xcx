@@ -73,6 +73,7 @@ export const getMeetPlan = params => { return fly.post(`${base}/xcx/login/meet/p
 export const giftList = params => { return fly.post(`${base}/xcx/login/mail/giftList.xcx`,qs.stringify(params)).then(res => res.data); }; 
 export const getGift = params => { return fly.post(`${base}/xcx/login/mail/getGift.xcx`,qs.stringify(params)).then(res => res.data); }; 
 export const exchangeGift = params => { return fly.post(`${base}/xcx/login/mail/exchangeGift.xcx`,qs.stringify(params)).then(res => res.data); }; 
+export const exchangeList = params => { return fly.post(`${base}/xcx/login/mail/exchangeList.xcx`,qs.stringify(params)).then(res => res.data); }; 
 
 
 fly.interceptors.request.use((request) => {

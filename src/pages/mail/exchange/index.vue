@@ -11,7 +11,7 @@
               <h4 class="weui-media-box__title">{{gift.name}}</h4>
               <p class="weui-media-box__desc">{{gift.price}}</p>
               <p class="weui-media-box__desc">{{gift.spec}}</p>
-              <p class="weui-media-box__desc">{{gift.num}}</p>
+              <p class="weui-media-box__desc">库存数量: {{gift.num}}</p>
              </div>
           </a>
       </div>
@@ -30,7 +30,7 @@
         <div class="weui-cells">
             <div class="weui-cell">
               <div class="weui-cell__bd">
-                <input class="weui-input" type="text"  v-model="addren"
+                <input class="weui-input" type="text"  v-model="postAddren"
                       placeholder="请输入邮寄地址">
               </div>
             </div>
@@ -39,7 +39,7 @@
         <div class="weui-cells">
             <div class="weui-cell">
                 <div class="weui-cell__bd">
-                      <input class="weui-input" type="telphone"  v-model="num"
+                      <input class="weui-input" type="telphone"  v-model="telePhone"
                       placeholder="请输入联系电话">
                 </div>
             </div>
@@ -81,8 +81,8 @@ export default {
       },
      score:'',
      num:1,
-     addren:'',
-     telphone:''
+     postAddren:'',
+     telePhone:''
 
     }
      
@@ -114,14 +114,14 @@ export default {
         return false;
       };
 
-      exchangeGift({'giftId':this.gift.giftId,'num':this.num,'addren':this.addren,'telphone':this.telphone}).then((res)=>{
+      exchangeGift({'giftId':this.gift.giftId,'num':this.num,'postAddren':this.postAddren,'telphone':this.telphone}).then((res)=>{
         if(res.state==0){
           wx.showToast({
             title: '数量不合法',
             duration: 2000
           });
         }else{
-          wx.redirectTo({url:'pages/index/main'});
+          wx.redirectTo({url:'/pages/index/main'});
         }
       })
 

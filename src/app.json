@@ -5,6 +5,7 @@
     "pages/mail/list/main",
     "pages/mail/view/main",
     "pages/mail/exchange/main",
+    "pages/mail/myexchange/main",
     "pages/meet/plan/main",
     "pages/meet/list/main",
     "pages/meet/view/main",
