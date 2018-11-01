@@ -108,7 +108,7 @@ export default {
 
       if(this.money>this.score){
         wx.showToast({
-            title: '大于本人积分',
+            title: '积分不足',
             duration: 2000
         });
         return false;
@@ -121,7 +121,7 @@ export default {
             duration: 2000
           });
         }else{
-          wx.redirectTo({url:'/pages/index/main'});
+          wx.redirectTo({url:'/pages/mail/myexchange/main'});
         }
       })
 

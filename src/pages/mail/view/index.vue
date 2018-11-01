@@ -55,7 +55,7 @@ export default {
   methods: {
 
     handleSave(){
-      wx.navigateTo({
+      wx.redirectTo({
         url: '/pages/mail/exchange/main?giftId='+this.gift.giftId
       })
     }
