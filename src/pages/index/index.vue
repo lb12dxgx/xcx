@@ -37,7 +37,7 @@
         </a>
 
 
-        <a class="right sgsb-box" @click="goUrl('/pages/accidentinfo/main')">
+        <a class="right sgsb-box" @click="goUrl('/pages/sns/submitProblem/main')">
           <ul class="pictext">
             <li class="left"><p><img src="/static/img/gxbbb.png"  class="inconbox"></p></li>
             <li class="right">管线帮帮帮</li>

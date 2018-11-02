@@ -48,20 +48,15 @@
                 <div class="weui-cell__ft">
                 </div>
             </a>
-            <a class="weui-cell weui-cell_access" href="javascript:;">
+
+            <a class="weui-cell weui-cell_access" @click="goGift">
                 <div class="weui-cell__bd">
-                    <p>我的事故</p>
+                    <p>我的礼物</p>
                 </div>
                 <div class="weui-cell__ft">
                 </div>
             </a>
-            <a class="weui-cell weui-cell_access" href="javascript:;">
-                <div class="weui-cell__bd">
-                    <p>我的申请</p>
-                </div>
-                <div class="weui-cell__ft">
-                </div>
-            </a>
+            
             <a class="weui-cell weui-cell_access" href="javascript:;">
                 <div class="weui-cell__bd">
                     <p>我的提问</p>
@@ -69,6 +64,7 @@
                 <div class="weui-cell__ft">
                 </div>
             </a>
+            
       </div>
  </div>
  
@@ -201,6 +197,12 @@ export default {
     url: '/pages/person/main'
   })
  },
+
+ goGift(){
+  wx.navigateTo({
+    url: '/pages/mail/myexchange/main'
+  })
+ }
 
 },
   onShow() {
