@@ -76,6 +76,12 @@ export const exchangeGift = params => { return fly.post(`${base}/xcx/login/mail/
 export const exchangeList = params => { return fly.post(`${base}/xcx/login/mail/exchangeList.xcx`,qs.stringify(params)).then(res => res.data); }; 
 
 
+export const myProblem = params => { return fly.post(`${base}/xcx/login/sns/myProblem.xcx`,qs.stringify(params)).then(res => res.data); }; 
+export const addProblem = params => { return fly.post(`${base}/xcx/login/sns/addProblem.xcx`,qs.stringify(params)).then(res => res.data); }; 
+export const saveProblem = params => { return fly.post(`${base}/xcx/login/sns/saveProblem.xcx`,qs.stringify(params)).then(res => res.data); }; 
+
+
+
 fly.interceptors.request.use((request) => {
 	request.headers.Authorization=wx.getStorageSync("openid");
 	wx.showLoading({

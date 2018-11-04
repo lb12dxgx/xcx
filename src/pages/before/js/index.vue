@@ -307,11 +307,15 @@ export default {
               'picId':_this.addForm.picId
             },
             success: function(res){
-             var file=JSON.parse(res.data);
-              var fileJson={};
-              fileJson.webPath=url+"/"+file.retData.fileWebPath
-              fileJson.fileInfoId=file.retData.fileInfoId
-              _this.files = _this.files.concat(fileJson);
+             var fileArray=JSON.parse(res.data);
+             var fileJsonArray=[];
+             for(var file of fileArray.retData){
+                var fileJson={};
+                fileJson.webPath=url+"/"+file.fileWebPath
+                fileJson.fileInfoId=file.fileInfoId
+                fileJsonArray.push(fileJson);
+             }
+              _this.files=fileJsonArray;
             }
         })
 
@@ -338,8 +342,14 @@ export default {
     },
     deletImg(index,fileInfoId){
      deleteFile({'fileInfoId':fileInfoId,'openIdMd5':this.addForm.openid}).then((res)=>{
-      
-      this.files.splice(0,1);
+      var fileJsonArray=[];
+        for(var file of res.retData){
+          var fileJson={};
+          fileJson.webPath=url+"/"+file.fileWebPath
+          fileJson.fileInfoId=file.fileInfoId
+          fileJsonArray.push(fileJson);
+        }
+      this.files=fileJsonArray;
       
      })
       
