@@ -15,6 +15,7 @@
       <video   :src="meetPlan.videoUrl" controls style="margin-left:10px" :poster="meetPlan.picUrl"/>
     </div>    
   </div>
+  
 </div>
 
   </template>
