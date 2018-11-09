@@ -80,6 +80,8 @@ export const myProblem = params => { return fly.post(`${base}/xcx/login/sns/myPr
 export const addProblem = params => { return fly.post(`${base}/xcx/login/sns/addProblem.xcx`,qs.stringify(params)).then(res => res.data); }; 
 export const saveProblem = params => { return fly.post(`${base}/xcx/login/sns/saveProblem.xcx`,qs.stringify(params)).then(res => res.data); }; 
 
+export const wxPay = params => { return fly.post(`${base}/xcx/login/pay/wxPay.xcx`,qs.stringify(params)).then(res => res.data); }; 
+
 
 
 fly.interceptors.request.use((request) => {

@@ -98,7 +98,7 @@
 </template>
 
 <script>
-import {giftList,deleteFile,addProblem,saveProblem,url} from '../../../api/api';
+import {giftList,deleteFile,addProblem,saveProblem,url,wxPay} from '../../../api/api';
 
 
 export default {
@@ -114,6 +114,12 @@ data () {
           dayNum:3,
           picId:''
         },
+        rechargeRecord:{
+          businessType:1,
+          businessContent:"",
+          money:""
+        },
+
         files:[],
         price:'',
         list:[],
@@ -241,7 +247,34 @@ data () {
 
     save(){
       saveProblem(this.addForm).then((res)=>{
-
+         let businessContent = res.retData.problemId;
+         let money = res.retData.money;
+         this.rechargeRecord.businessContent=businessContent;
+         //this.rechargeRecord.money=money;
+         this.rechargeRecord.money=0.01;
+         wxPay(this.rechargeRecord).then((res)=>{
+           var _this=this;
+            wx.requestPayment({
+                    timeStamp: res.retData.timeStamp,
+                    nonceStr: res.retData.nonceStr,
+                    package: res.retData.package,
+                    signType: 'MD5',
+                    paySign: res.retData.paySign,
+                    success: function (res) {
+                      // success
+                      console.log(res);
+                      _this.goStep2();
+                    },
+                    fail: function (res) {
+                      // fail
+                      console.log(res);
+                    },
+                    complete: function (res) {
+                      // complete
+                      console.log(res);
+                    }
+                  })
+         })
       })
     }
 
