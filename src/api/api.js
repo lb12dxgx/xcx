@@ -79,6 +79,9 @@ export const exchangeList = params => { return fly.post(`${base}/xcx/login/mail/
 export const myProblem = params => { return fly.post(`${base}/xcx/login/sns/myProblem.xcx`,qs.stringify(params)).then(res => res.data); }; 
 export const addProblem = params => { return fly.post(`${base}/xcx/login/sns/addProblem.xcx`,qs.stringify(params)).then(res => res.data); }; 
 export const saveProblem = params => { return fly.post(`${base}/xcx/login/sns/saveProblem.xcx`,qs.stringify(params)).then(res => res.data); }; 
+export const getProblem = params => { return fly.post(`${base}/xcx/login/sns/getProblem.xcx`,qs.stringify(params)).then(res => res.data); }; 
+
+
 
 export const wxPay = params => { return fly.post(`${base}/xcx/login/pay/wxPay.xcx`,qs.stringify(params)).then(res => res.data); }; 
 

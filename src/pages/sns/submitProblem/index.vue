@@ -252,7 +252,10 @@ data () {
          this.rechargeRecord.businessContent=businessContent;
          //this.rechargeRecord.money=money;
          this.rechargeRecord.money=0.01;
-         wxPay(this.rechargeRecord).then((res)=>{
+         wx.redirectTo({
+            url: '/pages/sns/shareProblem/main?problemId='+businessContent
+        })
+         /*wxPay(this.rechargeRecord).then((res)=>{
            var _this=this;
             wx.requestPayment({
                     timeStamp: res.retData.timeStamp,
@@ -274,7 +277,7 @@ data () {
                       console.log(res);
                     }
                   })
-         })
+         })*/
       })
     }
 
