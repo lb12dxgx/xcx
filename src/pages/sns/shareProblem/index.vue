@@ -27,8 +27,8 @@
          </div>
 
          <div class="problemNum">
-            <span class="viewNum">{{addForm.viewNum}}围观</span>
-            <span class="answerNum">{{addForm.answerNum}}回答</span>
+            <span class="viewNum">{{addForm.viewNum}}  围观</span>
+            <span class="answerNum">{{addForm.answerNum}}  回答</span>
          </div>
 
         
@@ -52,9 +52,9 @@
              </div>    
           </div>
 
-        <div >
-        <button type="primary" open-type="share" class="shareButton"> 分享给朋友 </button>
-        <button type="primary" class="shareButton"> 分享朋友圈 </button>
+        <div class="problemButton">
+        <button type="primary" open-type="share" class="shareLButton"> 分享给朋友 </button>
+        <button type="primary" class="shareRButton"> 分享朋友圈 </button>
         </div>
     </div>
 
@@ -112,7 +112,7 @@ data () {
 
   onLoad() {
      let query=this.$root.$mp.query;
-     query.problemId="a282732d-1b68-4a2a-a4db-010e46091fc8";
+     query.problemId="f1861019-4248-4e2c-bcfe-4b44f1ea5c19";
      console.log(query.problemId);
   
     getProblem({'problemId':query.problemId}).then((res)=>{
@@ -132,35 +132,114 @@ data () {
 <style scoped>
 .problemPersonName{
   text-align: center;
-  font-size: 18px;
+  font-size: 16px;
   font-weight: bold;
-  padding: 10px;
 }
 .problemEnterpriseName{
   text-align: center;
-  font-size: 16px;
-  padding: 5px;
+  font-size: 12px;
 }
 .problemTitle{
   text-align: center;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: bold;
-  padding: 5px;
 }
 .problemContent{
   font-size: 14px;
-  padding: 5px;
+  padding: 10px;
 }
 .problemEndTime{
+   line-height: 30px;
    font-size: 14px;
    color:red;
-   background-color:#333333;
-   margin: 0 10px; 
+   background-color:#f3f3f3;
+   text-align: center;
+   margin: 10px 30px; 
 }
- .shareButton{
-  width:40%;
+
+.problemNum{
+  border-bottom: 1px solid #f3f3f3;
+  padding-bottom:10px;
+  font-size: 14px;
+  width: 100%
+}
+
+.problemNum .viewNum{
+  margin-left: 20px;
+}
+
+.problemNum .answerNum{
+  float: right;
+  margin-right:60px;
+}
+.gift{
+   border: 1px solid #f3f3f3;
+   padding: 10px;
+}
+
+.gift .giftTitle{
+   font-size: 16px;
+   font-weight: bold;
+}
+.gift .giftContent{
+  text-align: center;
+}
+
+.gift .giftContent .giftMoney{
+  margin-top: 80px;
+  font-size: 16px;
+  color: red;
+}
+
+.gift .giftContent .giftName{
+  font-size: 12px;
+ 
+}
+
+.giftBottom{
+  margin-top: 100px;
+}
+
+.giftBottom .giftBottomMoney{
+  text-align: center;
+  color: red;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.giftBottom .giftBottomMoney .answerMoney{
+  margin-right: 120px;
+}
+
+.giftBottom .giftBottomMoney .shareMoney{
+  margin-left: 120px;
+}
+
+
+.giftBottom .giftBottomDesc{
+  text-align: center;
+}
+
+.giftBottom .giftBottomDesc .answerDesc{
+  margin-right: 100px;
+}
+
+.giftBottom .giftBottomDesc .shareDesc{
+  margin-left: 100px;
+}
+
+.problemButton{
+  margin-top:10px;
+}
+
+ .problemButton .shareLButton{
   float:left;
-  margin-left:10px
+  margin-left:40px
+ }
+
+ .problemButton .shareRButton{
+  float:right;
+  margin-right:40px
  }
 
 </style>

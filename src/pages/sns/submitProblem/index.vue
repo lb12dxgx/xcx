@@ -168,7 +168,7 @@ data () {
     },
 
    sliderchange(e){
-    this.stepvalue=e.mp.detail.value;
+    this.addForm.dayNum=e.mp.detail.value;
    },
    hiddenPop(){
     this.popContainer="";
