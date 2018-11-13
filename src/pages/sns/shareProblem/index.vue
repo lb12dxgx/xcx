@@ -34,7 +34,7 @@
         
           <div class="gift">
              <div class="giftTitle">
-                悬赏礼品
+                悬赏礼品  <span class="giftName">{{addForm.giftName}}</span>
              </div>
              <div class="giftContent">
                 <div class="giftMoney">{{addForm.money}}</div>
@@ -180,6 +180,12 @@ data () {
 .gift .giftTitle{
    font-size: 16px;
    font-weight: bold;
+}
+
+.gift .giftTitle .giftMoney{
+   font-size: 16px;
+   font-weight: bold;
+   color: red;
 }
 .gift .giftContent{
   text-align: center;

@@ -252,10 +252,8 @@ data () {
          this.rechargeRecord.businessContent=businessContent;
          //this.rechargeRecord.money=money;
          this.rechargeRecord.money=0.01;
-         wx.redirectTo({
-            url: '/pages/sns/shareProblem/main?problemId='+businessContent
-        })
-         /*wxPay(this.rechargeRecord).then((res)=>{
+        
+         wxPay(this.rechargeRecord).then((res)=>{
            var _this=this;
             wx.requestPayment({
                     timeStamp: res.retData.timeStamp,
@@ -265,8 +263,9 @@ data () {
                     paySign: res.retData.paySign,
                     success: function (res) {
                       // success
-                      console.log(res);
-                      _this.goStep2();
+                      wx.redirectTo({
+                        url: '/pages/sns/shareProblem/main?problemId='+businessContent
+                      })
                     },
                     fail: function (res) {
                       // fail
@@ -277,7 +276,7 @@ data () {
                       console.log(res);
                     }
                   })
-         })*/
+         })
       })
     }
 
