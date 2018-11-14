@@ -2,6 +2,7 @@
   "pages": [
     "pages/index/main",
     "pages/my/main",
+    "pages/sns/viewProblem/main",
     "pages/sns/shareProblem/main",
     "pages/sns/myProblem/main",
     "pages/sns/submitProblem/main",

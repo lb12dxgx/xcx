@@ -35,8 +35,8 @@
             <li class="right">会议培训</li>
           </ul>
         </a>
-        <a class="right sgsb-box" @click="goUrl('/pages/sns/submitProblem/main')"> 
-       <!-- <a class="right sgsb-box" @click="goUrl('/pages/sns/shareProblem/main?problemId=1')">   -->
+       <!--  <a class="right sgsb-box" @click="goUrl('/pages/sns/submitProblem/main')">  -->
+       <a class="right sgsb-box" @click="goUrl('/pages/sns/shareProblem/main?problemId=1')">  
           <ul class="pictext">
             <li class="left"><p><img src="/static/img/gxbbb.png"  class="inconbox"></p></li>
             <li class="right">管线帮帮帮</li>

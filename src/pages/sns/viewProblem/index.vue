@@ -53,8 +53,8 @@
           </div>
 
         <div class="problemButton">
-        <button type="primary" open-type="share" class="shareLButton"> 分享给朋友 </button>
-        <button type="primary" class="shareRButton" @click="showPop"> 分享朋友圈 </button>
+        <button type="primary" open-type="share" class="shareLButton"> 解决问题 </button>
+        <button type="primary" class="shareRButton" @click="showPop"> 分享 </button>
         </div>
     </div>
 
@@ -109,17 +109,16 @@ data () {
   
  },
 
-onShareAppMessage: function (e) {
-   console.log("share");
+onShareAppMessage: function () {
     return {
-      title: '地下管线',
-      path: '/pages/sns/viewProblem/shareId='+wx.getStorageSync('openid')+"&problemId="+this.problemId,
+      title: '微信小程序联盟',
+      desc: '最具人气的小程序开发联盟!',
+      path: '/page/user?id=123'
     }
   },
-
+  
   onUnload(){
      this.addForm={
-          problemId:'',
           title:'',
           content:'',
           giftId:'',
