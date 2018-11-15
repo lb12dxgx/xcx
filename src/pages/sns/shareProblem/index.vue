@@ -62,7 +62,7 @@
   </div>
   <div :class="popPick" v-if="popPick!=''" >
     <div class="popImg">
-      <img :src="popImgUrl" style="width:300px;height:400px"></img>
+      <img :src="popImgUrl" style="width:100%;height:400px"></img>
     </div>
     <button type="primary" @click="downLoadJpg" style="width:30%;margin-top:10px;margin-bottom:10px">下载</button>
   </div>
@@ -71,7 +71,7 @@
 </template>
 
 <script>
-import {getProblem,getFileList} from '../../../api/api';
+import {getProblem,getFileList,createShareImg,url} from '../../../api/api';
 
 export default {
 
@@ -85,11 +85,13 @@ data () {
           giftName:'',
           giftNum:'',
           dayNum:3,
-          picId:''
+          picId:'',
+          shareCode:''
         },
         files:[],
         popContainer:'',
-        popPick:''
+        popPick:'',
+        popImgUrl:''
 
     }
    
@@ -100,20 +102,59 @@ data () {
    hiddenPop(){
     this.popContainer="";
     this.popPick="";
+    his.popImgUrl="";
    },
+
    showPop(){
     this.popContainer="popContainer";
     this.popPick="popPick";
+    
+    let sharePath='pages/sns/viewProblem/main';
+    var imgCreate={'shareCode':this.addForm.shareCode,'problemId':this.addForm.problemId,'sharePath':sharePath};
+    createShareImg(imgCreate).then((res)=>{
+      this.popImgUrl=url+res.retData;
+    });
+   
    },
+
+   downLoadJpg(){
+       var _this=this;
+      wx.downloadFile({
+        url:this.popImgUrl,
+        success: function(res) {
+          if (res.statusCode === 200) {
+            let img = res.tempFilePath;
+            wx.saveImageToPhotosAlbum({
+                filePath: img,
+                success(res) {
+                  _this.hiddenPop();
+                  wx.showToast({
+                    title: '保存成功',
+                    icon: 'success',
+                    duration: 2000
+                  });
+                },
+                fail(res) {
+                  wx.showToast({
+                    title: '保存失败',
+                    icon: 'success',
+                    duration: 2000
+                  });
+                }
+            });
+          }
+        }
+
+      });
+   }
 
   
  },
 
 onShareAppMessage: function (e) {
-   console.log("share");
     return {
       title: '地下管线',
-      path: '/pages/sns/viewProblem/shareId='+wx.getStorageSync('openid')+"&problemId="+this.problemId,
+      path: '/pages/sns/viewProblem/main/?preOpenId='+wx.getStorageSync('openid')+"&problemId="+this.problemId,
     }
   },
 
