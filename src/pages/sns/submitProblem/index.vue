@@ -33,10 +33,7 @@
             <input  type="text" v-model="addForm.giftName" disabled="true"/>
             <label class="lablefocus">礼物用于解决问题和传播的人</label>
         </div>
-        <div class="text-box" v-if="addForm.giftNum!=''">
-          <input  type="text" v-model="addForm.giftNum"/>
-          <label class="lablefocus">数量</label>
-        </div>
+        
         <div class="weui-cells__title">问题有效期{{addForm.dayNum}}天</div>
          <div class="weui-cells ">
             <slider @change="sliderchange" step="1" min="1" max="5" :value="addForm.dayNum" />
@@ -56,7 +53,7 @@
             
         </div>
        
-          <div class="weui-cells ">
+         <!--  <div class="weui-cells ">
             <a  class="weui-cell weui-cell_access" @click="chooseImage">
               <div class="weui-cell__bd">
                 <p>图片</p>
@@ -64,7 +61,7 @@
                 <div class="weui-cell__ft">
               </div>
             </a>
-          </div>
+          </div> -->
           <div class="tj-btn" @click="save" 
           style="text-align:center;line-height:50px">
             {{btnstr}}
@@ -110,7 +107,7 @@ data () {
           content:'',
           giftId:'',
           giftName:'',
-          giftNum:'',
+          giftNum:1,
           dayNum:3,
           picId:''
         },

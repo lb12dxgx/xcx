@@ -17,13 +17,20 @@
           </ul>
       </div>
       <div class="clear"></div>
-      <div class="pxhy-box" v-for="(item,index) in list" :key="index">
-          <a  class="zhengwen" @click="view(item.meetId)">
-            <div class="garybt">{{item.title}}</div>
-            <div class="garyzw">{{item.giftName}}</div>
-            <div class="garyzw">{{item.money}}</div>
-            <div class="garyzw">{{item.dayNum}}</div>
-            <div class="garyzsj juyou">{{item.createDate}}</div>
+      <div class="problem-item" v-for="(item,index) in list" :key="index">
+          <a @click="view(item.meetId)">
+            <div class="problem-head">
+              <span class="problem-personName">{{item.personName}}</span>
+              <span class="problem-createDate">{{item.createDate}}</span>
+              <span class="problem-state">{{item.state}}</span>
+            </div>
+            <div class="problem-title">{{item.title}}</div>
+            <div class="problem-content">{{item.content}}</div>
+            <div class="problem-bottom">
+              <span class="problem-viewNum">围观：{{item.viewNum}}</span>
+              <span class="problem-answerNum">回答：{{item.answerNum}}</span>
+              <span class="problem-giftName">{{item.giftName}}</span>
+            </div>
           </a>
       </div>
   </div>
@@ -45,6 +52,7 @@ export default {
     }
      
   },
+
   
   methods: {
     view(meetId){
@@ -116,6 +124,69 @@ export default {
 
 .link-none{
   font-size: 16px
+}
+
+.problem-item a{
+  text-decoration: none;
+  font-size: 12px;
+  margin-top: 10px;
+  float: left;
+  width: 100%;
+  background-color:#ffffff;
+  
+}
+
+.problem-item .problem-head{
+  line-height: 20px;
+  padding:5px;
+  color: #b4b4b4;
+}
+
+.problem-createDate{
+  float: left;
+  margin-left:10px;
+}
+.problem-personName{
+  float: left;
+  margin-left:10px;
+}
+.problem-state{
+  float: right;
+  margin-right:20px;
+  color: red;
+}
+
+.problem-title{
+  padding:5px;
+  float: left;
+  width: 100%;
+  margin-left:10px;
+}
+
+.problem-content{
+  float: left;
+  width: 100%;
+  margin-left:10px;
+  border-bottom:0.5px solid #ddd
+}
+
+.problem-item .problem-bottom{
+  padding:5px;
+  color: #b4b4b4;
+}
+
+.problem-viewNum{
+  float: left;
+  margin-left:10px;
+}
+
+.problem-answerNum{
+   float: left;
+  margin-left:10px;
+}
+.problem-giftName{
+  float: right;
+  margin-right:20px;
 }
 
 </style>

@@ -53,8 +53,8 @@
           </div>
 
         <div class="problemButton">
-        <button type="primary" open-type="share" class="shareLButton"> 解决问题 </button>
-        <button type="primary" class="shareRButton" @click="showPop"> 分享 </button>
+          <button type="primary"  class="shareLButton" @click="handle"> 解决问题 </button>
+          <button type="primary" class="shareRButton" @click="showPop" >分享</button>
         </div>
     </div>
 
@@ -62,16 +62,18 @@
   </div>
   <div :class="popPick" v-if="popPick!=''" >
     <div class="popImg">
-      <img :src="popImgUrl" style="width:300px;height:400px"></img>
+      <img :src="popImgUrl" style="width:298px;height:400px"></img>
     </div>
-    <button type="primary" @click="downLoadJpg" style="width:30%;margin-top:10px;margin-bottom:10px">下载</button>
+   
+      <button type="primary" class="shareLButton" open-type="share"  > 分享好友 </button>
+      <button type="primary" class="shareRButton" @click="downLoadJpg" > 分享朋友圈 </button>
   </div>
 
 </div>
 </template>
 
 <script>
-import {getProblem,getFileList} from '../../../api/api';
+import {getProblemByShareCode,getFileList,createShareImg,url} from '../../../api/api';
 
 export default {
 
@@ -85,11 +87,14 @@ data () {
           giftName:'',
           giftNum:'',
           dayNum:3,
-          picId:''
+          picId:'',
+          shareCode:''
         },
         files:[],
         popContainer:'',
-        popPick:''
+        popPick:'',
+        popButPick:'',
+        popImgUrl:''
 
     }
    
@@ -100,21 +105,82 @@ data () {
    hiddenPop(){
     this.popContainer="";
     this.popPick="";
+    this.popImgUrl="";
    },
+
+   hiddenPopButton(){
+     this.popContainer="";
+     this.popButPick="";
+     this.onShareAppMessage();
+   },
+
+   showPopButton(){
+     this.popContainer="popContainer";
+     this.popButPick="popButPick";
+   },
+
    showPop(){
     this.popContainer="popContainer";
     this.popPick="popPick";
+    let sharePath='pages/sns/viewProblem/main';
+    var imgCreate={'shareCode':this.addForm.shareCode,'problemId':this.addForm.problemId,'sharePath':sharePath};
+    createShareImg(imgCreate).then((res)=>{
+      this.popImgUrl=url+res.retData;
+    });
+   
    },
+
+   downLoadJpg(){
+       var _this=this;
+      wx.downloadFile({
+        url:this.popImgUrl,
+        success: function(res) {
+          if (res.statusCode === 200) {
+            let img = res.tempFilePath;
+            wx.saveImageToPhotosAlbum({
+                filePath: img,
+                success(res) {
+                  _this.hiddenPop();
+                  wx.showToast({
+                    title: '保存成功',
+                    icon: 'success',
+                    duration: 2000
+                  });
+                },
+                fail(res) {
+                  wx.showToast({
+                    title: '保存失败',
+                    icon: 'success',
+                    duration: 2000
+                  });
+                }
+            });
+          }
+        }
+
+      });
+   },
+   handle(){
+     wx.navigateTo({
+            url: '/pages/sns/handleProblem/main?problemId='+this.addForm.problemId
+      })
+   }
 
   
  },
 
-onShareAppMessage: function () {
+onShareAppMessage: function (e) {
+    this.popButPick="";
     return {
       title: '地下管线',
-      path: '/pages/sns/viewProblem/main?preOpenId='+wx.getStorageSync('openid')+"&problemId="+this.problemId,
+      path: '/pages/sns/viewProblem/main?shareCode='+this.addForm.shareCode,
+      imageUrl:this.popImgUrl,
+      success:(res) => {
+        console.log("转发成功", res);
+      },
     }
   },
+
   
   onUnload(){
      this.addForm={
@@ -132,10 +198,14 @@ onShareAppMessage: function () {
 
   onLoad() {
      let query=this.$root.$mp.query;
-     query.problemId="f1861019-4248-4e2c-bcfe-4b44f1ea5c19";
-     console.log(query.problemId);
+     let shareCode="";
+     if(query.shareCode!=""){
+        shareCode=query.shareCode;
+     }else{
+        shareCode=decodeURIComponent(query.scene)
+     }
   
-    getProblem({'problemId':query.problemId}).then((res)=>{
+    getProblemByShareCode({'shareCode':shareCode}).then((res)=>{
       this.addForm=res.retData;
       getFileList({'bussinessId':query.problemId}).then((res)=>{
         this.files=res.retData;
@@ -282,7 +352,7 @@ onShareAppMessage: function () {
 .popPick{
   position:fixed; 
   left:10%; 
-  bottom:10%;
+  bottom:5%;
   width:80%; 
   overflow:scroll;
   z-index:9999;
@@ -291,5 +361,20 @@ onShareAppMessage: function () {
 .popImg{
   border:1px solid #f3f3f3;
 }
+
+
+.popPick .shareLButton{
+  float:left;
+  margin-left:20px;
+  margin-top:10px;
+  margin-bottom:10px;
+ }
+
+ .popPick .shareRButton{
+  float:right;
+  margin-right:20px;
+  margin-top:10px;
+  margin-bottom:10px;
+ }
 
 </style>
