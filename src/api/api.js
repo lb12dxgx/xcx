@@ -84,12 +84,12 @@ export const getProblem = params => { return fly.post(`${base}/xcx/login/sns/get
 export const createShareImg= params => { return fly.post(`${base}/xcx/login/sns/createShareImg.xcx`,qs.stringify(params)).then(res => res.data); }; 
 export const getProblemByShareCode= params => { return fly.post(`${base}/xcx/login/sns/getProblemByShareCode.xcx`,qs.stringify(params)).then(res => res.data); }; 
 export const saveAnswer= params => { return fly.post(`${base}/xcx/login/sns/saveAnswer.xcx`,qs.stringify(params)).then(res => res.data); }; 
+export const getAnswer= params => { return fly.post(`${base}/xcx/login/sns/getAnswerByProblemId.xcx`,qs.stringify(params)).then(res => res.data); }; 
+
+
+
+
 export const getProblemByOutShareCode= params => { return fly.post(`${base}/xcx/out/sns/getProblemByShareCode.xcx`,qs.stringify(params)).then(res => res.data); }; 
-
-
-
-
-
 export const wxPay = params => { return fly.post(`${base}/xcx/login/pay/wxPay.xcx`,qs.stringify(params)).then(res => res.data); }; 
 
 

@@ -30,15 +30,32 @@
             <span class="viewNum">{{addForm.viewNum}}  围观</span>
             <span class="answerNum">{{addForm.answerNum}}  回答</span>
          </div>
+         <div class="answerAction">
+             <a  @click="handle"> 管理</a>
+         </div>
 
-        
-      
+         <div class="answerItem" v-for="(item,index) in list" :key="index">
+            <div class="answerHead">
+              <span class="answerPersonName">{{item.personName}}</span>
+              <span class="answerEnterpriseName">
+               {{item.enterpriseName}}|{{item.personPosition}}</span>
+            </div>
+
+            <div class="answerContent">
+              <icon type="success" size="20" color="red" />
+              <div class='icon_none' style="display:inline-block"></div>
+              <div style="display:inline-block;margin-left:5px">{{item.content}}</div>
+            </div>
+            <div class="answerBottom">
+              {{item.createDate}}
+            </div>
+         </div>  
+      </div>
 
         <div class="problemButton">
-          <button type="primary"  class="shareLButton" @click="handle"> 解决问题 </button>
-          <button type="primary" class="shareRButton" @click="showPop" >分享</button>
+          <button type="primary" style="width:30%" @click="showPop" >分享</button>
         </div>
-    </div>
+    
 
   <div :class="popContainer" @click="hiddenPop" v-if="popContainer!=''">
   </div>
@@ -55,12 +72,13 @@
 </template>
 
 <script>
-import {getProblem,getFileList,createShareImg,url} from '../../../api/api';
+import {getProblem,getAnswer,getFileList,createShareImg,url} from '../../../api/api';
 
 export default {
 
 data () {
     return {
+        list:[],
         addForm:{
           problemId:'',
           title:'',
@@ -201,7 +219,10 @@ onShareAppMessage: function (e) {
       let problemId=this.$root.$mp.query.problemId;
       getProblem({'problemId':problemId}).then((res)=>{
         this.addForm=res.retData;
-        getFileList({'bussinessId':query.problemId}).then((res)=>{
+        getAnswer({'problemId':problemId}).then((res)=>{
+          this.list=res.retData;
+        })
+        getFileList({'bussinessId':problemId}).then((res)=>{
           this.files=res.retData;
         })
       })
@@ -257,6 +278,44 @@ onShareAppMessage: function (e) {
   margin-right:60px;
 }
 
+.answerAction{
+  background-color:#f3f3f3;
+  padding: 5px;
+  border-top:1px solid red;
+  height: 25px;
+}
+
+.answerAction a{
+  color:#d80702;
+  font-size:16px;
+  padding-left: 10px;
+}
+
+
+.answerItem{
+  margin:5px 5px;
+  border-bottom:1px solid #f3f3f3;
+  width: 100%;
+}
+
+.answerItem .answerHead{
+  font-size: 12px;
+  color: #b4b4b4;
+}
+
+
+.answerItem .answerHead .answerEnterpriseName{
+  margin-left: 10px;
+}
+
+.answerItem  .answerContent{
+  margin: 5px 5px;
+}
+.answerItem  .answerBottom{
+  margin-left:80%;
+  font-size: 12px;
+  color: #b4b4b4;
+}
 
 .problemButton{
   margin-top:10px;
@@ -310,5 +369,13 @@ onShareAppMessage: function (e) {
   margin-top:10px;
   margin-bottom:10px;
  }
+
+ .icon_none{
+  display:inline-block;
+  width: 40rpx;
+  height: 40rpx;
+  border: 1rpx solid #d6d6d6;
+  border-radius: 50%;
+}
 
 </style>
