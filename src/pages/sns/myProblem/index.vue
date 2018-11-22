@@ -18,11 +18,11 @@
       </div>
       <div class="clear"></div>
       <div class="problem-item" v-for="(item,index) in list" :key="index">
-          <a @click="view(item.meetId)">
+          <a @click="view(item.problemId)">
             <div class="problem-head">
               <span class="problem-personName">{{item.personName}}</span>
               <span class="problem-createDate">{{item.createDate}}</span>
-              <span class="problem-state">{{item.state}}</span>
+              <span class="problem-state">{{statMap[item.state]}}</span>
             </div>
             <div class="problem-title">{{item.title}}</div>
             <div class="problem-content">{{item.content}}</div>
@@ -49,15 +49,20 @@ export default {
      list:[],
      pageNum:0,
      total:0,
+     statMap:{
+      0:'进行中',
+      1:'已解决 ',
+      2:'已超时'
+     }
     }
      
   },
 
   
   methods: {
-    view(meetId){
+    view(problemId){
       wx.navigateTo({
-        url: '/pages/meet/view/main?meetId='+meetId
+        url: '/pages/sns/viewMyProblem/main?problemId='+problemId
       })
     },
     goStep1(){
@@ -83,6 +88,12 @@ export default {
         url: '/pages/sns/shareProblem/main'
       })
     },
+
+    share(problemId){
+      wx.navigateTo({
+        url: '/pages/sns/shareProblem/main?problemId='+problemId
+      })
+    }
 
 
   },
@@ -128,7 +139,7 @@ export default {
 
 .problem-item a{
   text-decoration: none;
-  font-size: 12px;
+  font-size: 14px;
   margin-top: 10px;
   float: left;
   width: 100%;

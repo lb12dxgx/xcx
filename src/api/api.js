@@ -8,9 +8,9 @@ var fly=new Fly
 //let base = ip;
 //let base = 'http://'+ip+'/api/';
 //let base = 'http://www.118-china.com/'
-//let base = 'https://xcx.118-china.com/'
+let base = 'https://xcx.118-china.com/';
 //let base = 'http://127.0.0.1:80';
-let base = 'http://192.168.3.11:80';
+//let base = 'http://192.168.3.11:80';
 export const url=base;
 export const isExitByTelphone = params => {return fly.post(`${base}/xcx/isExitByTelphone.xcx`,qs.stringify(params)).then(res => res.data);}; 
 export const getSmsCode = params => { return fly.post(`${base}/xcx/getSmsCode.xcx`,qs.stringify(params)).then(res => res.data); }; 
@@ -84,6 +84,8 @@ export const getProblem = params => { return fly.post(`${base}/xcx/login/sns/get
 export const createShareImg= params => { return fly.post(`${base}/xcx/login/sns/createShareImg.xcx`,qs.stringify(params)).then(res => res.data); }; 
 export const getProblemByShareCode= params => { return fly.post(`${base}/xcx/login/sns/getProblemByShareCode.xcx`,qs.stringify(params)).then(res => res.data); }; 
 export const saveAnswer= params => { return fly.post(`${base}/xcx/login/sns/saveAnswer.xcx`,qs.stringify(params)).then(res => res.data); }; 
+export const getProblemByOutShareCode= params => { return fly.post(`${base}/xcx/out/sns/getProblemByShareCode.xcx`,qs.stringify(params)).then(res => res.data); }; 
+
 
 
 

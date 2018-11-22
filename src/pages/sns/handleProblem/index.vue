@@ -31,9 +31,18 @@ data () {
   methods: {
    
    saveAnswer(){
+
+    if(this.addForm.content==''){
+          wx.showToast({
+            title: '请填写内容',
+            duration: 2000
+          });
+          return false;
+    };
+
     saveAnswer(this.addForm).then((res)=>{
         wx.redirectTo({
-          url: '/pages/sns/viewProblem/main?shareCode='+this.addForm.shareCode
+          url: '/pages/sns/submitProblem/main'
       })
     })
    },

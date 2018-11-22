@@ -32,25 +32,7 @@
          </div>
 
         
-          <div class="gift">
-             <div class="giftTitle">
-                悬赏礼品  <span class="giftName">{{addForm.giftName}}</span>
-             </div>
-             <div class="giftContent">
-                <div class="giftMoney">{{addForm.money}}</div>
-                <div class="giftName">{{addForm.giftName}}</div>
-             </div>
-             <div class="giftBottom">
-                <div class="giftBottomMoney">
-                  <span class="answerMoney">80%</span>
-                  <span class="shareMoney">20%</span>
-                </div>
-                <div class="giftBottomDesc">
-                  <span class="answerDesc">成功解决奖</span>
-                  <span class="shareDesc">传播有功奖</span>
-                </div>
-             </div>    
-          </div>
+      
 
         <div class="problemButton">
           <button type="primary"  class="shareLButton" @click="handle"> 解决问题 </button>
@@ -73,7 +55,7 @@
 </template>
 
 <script>
-import {getProblemByShareCode,getProblemByOutShareCode,getFileList,createShareImg,url} from '../../../api/api';
+import {getProblem,getFileList,createShareImg,url} from '../../../api/api';
 
 export default {
 
@@ -216,36 +198,14 @@ onShareAppMessage: function (e) {
   },
 
   onLoad() {
-     let query=this.$root.$mp.query;
-     let shareCode="";
-     if(query.shareCode!=""){
-        shareCode=query.shareCode;
-     }else{
-        shareCode=decodeURIComponent(query.scene)
-     }
-     console.log("shareCode="+shareCode);
-  
-    var openid=wx.getStorageSync('openid');
-      console.log("openid="+openid);
-    if(openid==''){
-      getProblemByOutShareCode({'shareCode':shareCode}).then((res)=>{
+      let problemId=this.$root.$mp.query.problemId;
+      getProblem({'problemId':problemId}).then((res)=>{
         this.addForm=res.retData;
         getFileList({'bussinessId':query.problemId}).then((res)=>{
           this.files=res.retData;
         })
       })
-    }else{
-      getProblemByShareCode({'shareCode':shareCode}).then((res)=>{
-        this.addForm=res.retData;
-        getFileList({'bussinessId':query.problemId}).then((res)=>{
-          this.files=res.retData;
-        })
-      })
-    }
-
-
-   
-  },
+   },
 
 
 
@@ -296,67 +256,7 @@ onShareAppMessage: function (e) {
   float: right;
   margin-right:60px;
 }
-.gift{
-   border: 1px solid #f3f3f3;
-   padding: 10px;
-}
 
-.gift .giftTitle{
-   font-size: 16px;
-   font-weight: bold;
-}
-
-.gift .giftTitle .giftMoney{
-   font-size: 16px;
-   font-weight: bold;
-   color: red;
-}
-.gift .giftContent{
-  text-align: center;
-}
-
-.gift .giftContent .giftMoney{
-  margin-top: 80px;
-  font-size: 16px;
-  color: red;
-}
-
-.gift .giftContent .giftName{
-  font-size: 12px;
- 
-}
-
-.giftBottom{
-  margin-top: 100px;
-}
-
-.giftBottom .giftBottomMoney{
-  text-align: center;
-  color: red;
-  font-size: 16px;
-  font-weight: bold;
-}
-
-.giftBottom .giftBottomMoney .answerMoney{
-  margin-right: 120px;
-}
-
-.giftBottom .giftBottomMoney .shareMoney{
-  margin-left: 120px;
-}
-
-
-.giftBottom .giftBottomDesc{
-  text-align: center;
-}
-
-.giftBottom .giftBottomDesc .answerDesc{
-  margin-right: 100px;
-}
-
-.giftBottom .giftBottomDesc .shareDesc{
-  margin-left: 100px;
-}
 
 .problemButton{
   margin-top:10px;
