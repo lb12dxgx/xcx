@@ -31,7 +31,8 @@
             <span class="answerNum">{{addForm.answerNum}}  回答</span>
          </div>
          <div class="answerAction">
-             <a  @click="handle"> 管理</a>
+             <a  @click="handleAdmin" v-if="itemArray.length==0"> 管理</a>
+             <a  @click="handleCancel" v-if="itemArray.length>0"> 取消</a>
          </div>
 
          <div class="answerItem" v-for="(item,index) in list" :key="index">
@@ -41,10 +42,15 @@
                {{item.enterpriseName}}|{{item.personPosition}}</span>
             </div>
 
-            <div class="answerContent">
-              <icon type="success" size="20" color="red" />
-              <div class='icon_none' style="display:inline-block"></div>
-              <div style="display:inline-block;margin-left:5px">{{item.content}}</div>
+            <div class="answerContent" @click="selectCheck(index)">
+              <icon type="success" size="25" color="red" style="margin-right:5px"
+              v-if="itemArray[index]==1" />
+              <div class='icon_none' style="display:inline-block;margin-right:5px" v-if="itemArray[index]==0">
+                
+              </div>
+              <div style="display:inline-block;margin-left:5px">
+                {{item.content}}{{itemArray[index]}}
+              </div>
             </div>
             <div class="answerBottom">
               {{item.createDate}}
@@ -53,7 +59,12 @@
       </div>
 
         <div class="problemButton">
-          <button type="primary" style="width:30%" @click="showPop" >分享</button>
+          <button type="primary" style="width:30%" @click="showPop" v-if="itemArray.length==0">
+          分享
+          </button>
+          <button type="primary" style="width:30%" @click="saveR" v-if="itemArray.length>0">
+           提交
+          </button>
         </div>
     
 
@@ -90,6 +101,7 @@ data () {
           picId:'',
           shareCode:''
         },
+        itemArray:[],
         files:[],
         popContainer:'',
         popPick:'',
@@ -170,19 +182,31 @@ data () {
 
       });
    },
-    handle(){
-      var openid=wx.getStorageSync('openid');
-      console.log("openid="+openid);
-      if(openid==''){
-          wx.switchTab({
-            url: '/pages/my/main'
-          });
-         
-      }else{
-       wx.navigateTo({
-              url: '/pages/sns/handleProblem/main?problemId='+this.addForm.problemId
-        })
+
+    handleAdmin(){
+      var array=[];
+      for(var i=0;i<this.list.length;i++){
+          array[i]=0;
       }
+        this.itemArray=array;
+    },
+
+     handleCancel(){
+      this.itemArray=[];
+    },
+
+    selectCheck(index){
+      var array=[...this.itemArray];
+      if(this.itemArray[index]==null){
+        return;
+      }
+      if(array[index]==0){
+        array[index]=1
+       }else{
+        array[index]=0
+      }
+      this.itemArray=array;
+      console.log(this.itemArray);
     }
 
   
@@ -211,7 +235,9 @@ onShareAppMessage: function (e) {
           dayNum:'',
           picId:''
         };
-       this.files=[]
+       this.files=[];
+       this.list=[];
+       this.itemArray=[];
       
   },
 
