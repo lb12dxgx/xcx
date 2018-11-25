@@ -288,8 +288,8 @@ data () {
           content:'',
           giftId:'',
           giftName:'',
-          giftNum:'',
-          dayNum:'',
+          giftNum:1,
+          dayNum:3,
           picId:''
         },
        this.files=[],

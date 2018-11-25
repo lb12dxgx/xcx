@@ -35,8 +35,8 @@
             <li class="right">会议培训</li>
           </ul>
         </a>
-        <a class="right sgsb-box" @click="goUrl('/pages/sns/submitProblem/main')"> 
-      <!--  <a class="right sgsb-box" @click="goUrl('/pages/sns/shareProblem/main?problemId=1')">   -->
+       <!--  <a class="right sgsb-box" @click="goUrl('/pages/sns/submitProblem/main')">  -->
+       <a class="right sgsb-box" @click="goUrl('/pages/sns/viewProblem/main?problemId=cedf5ca3-42c1-4e57-8f14-051418b892e9')">  
     <!--   <a class="right sgsb-box" @click="goUrl('/pages/sns/viewProblem/main?shareCode=idday2018112211')" >  -->
           <ul class="pictext">
             <li class="left"><p><img src="/static/img/gxbbb.png"  class="inconbox"></p></li>

@@ -22,8 +22,14 @@
               </block>
             </div>
         </div>
-         <div class="problemEndTime">
+         <div class="problemEndTime" v-if="addForm.state==0">
             {{addForm.endTime}}
+         </div>
+          <div class="problemEndTime" v-if="addForm.state==1">
+            已结束
+         </div>
+          <div class="problemEndTime" v-if="addForm.state==2">
+            超时结束
          </div>
 
          <div class="problemNum">
@@ -52,7 +58,7 @@
              </div>    
           </div>
 
-        <div class="problemButton">
+        <div class="problemButton" v-if="addForm.state==0">
           <button type="primary"  class="shareLButton" @click="handle"> 解决问题 </button>
           <button type="primary" class="shareRButton" @click="showPop" >分享</button>
         </div>
@@ -73,7 +79,7 @@
 </template>
 
 <script>
-import {getProblemByShareCode,getProblemByOutShareCode,getFileList,createShareImg,url} from '../../../api/api';
+import {getProblem,getProblemByShareCode,getProblemByOutShareCode,getFileList,createShareImg,url} from '../../../api/api';
 
 export default {
 
@@ -81,6 +87,7 @@ data () {
     return {
         addForm:{
           problemId:'',
+          state:'',
           title:'',
           content:'',
           giftId:'',
@@ -183,8 +190,27 @@ data () {
               url: '/pages/sns/handleProblem/main?problemId='+this.addForm.problemId
         })
       }
-    }
+    },
 
+    getByShareCode(shareCode){
+      var openid=wx.getStorageSync('openid');
+        console.log("openid="+openid);
+      if(openid==''){
+        getProblemByOutShareCode({'shareCode':shareCode}).then((res)=>{
+          this.addForm=res.retData;
+          getFileList({'bussinessId':this.addForm.problemId}).then((res)=>{
+            this.files=res.retData;
+          })
+        })
+      }else{
+        getProblemByShareCode({'shareCode':shareCode}).then((res)=>{
+          this.addForm=res.retData;
+          getFileList({'bussinessId':this.addForm.problemId}).then((res)=>{
+            this.files=res.retData;
+          })
+        })
+      }
+    }
   
  },
 
@@ -217,32 +243,23 @@ onShareAppMessage: function (e) {
 
   onLoad() {
      let query=this.$root.$mp.query;
-     let shareCode="";
-     if(query.shareCode!=""){
-        shareCode=query.shareCode;
-     }else{
-        shareCode=decodeURIComponent(query.scene)
-     }
-     console.log("shareCode="+shareCode);
-  
-    var openid=wx.getStorageSync('openid');
-      console.log("openid="+openid);
-    if(openid==''){
-      getProblemByOutShareCode({'shareCode':shareCode}).then((res)=>{
+    if(query.problemId!=""){
+     getProblem({'problemId':query.problemId}).then((res)=>{
         this.addForm=res.retData;
-        getFileList({'bussinessId':query.problemId}).then((res)=>{
+        getFileList({'bussinessId':this.addForm.problemId}).then((res)=>{
           this.files=res.retData;
         })
-      })
+     })
     }else{
-      getProblemByShareCode({'shareCode':shareCode}).then((res)=>{
-        this.addForm=res.retData;
-        getFileList({'bussinessId':query.problemId}).then((res)=>{
-          this.files=res.retData;
-        })
-      })
+       let shareCode="";
+       if(query.shareCode!=""){
+          shareCode=query.shareCode;
+       }else{
+          shareCode=decodeURIComponent(query.scene)
+       }
+       console.log("shareCode="+shareCode);
+       this.getByShareCode(shareCode);
     }
-
 
    
   },

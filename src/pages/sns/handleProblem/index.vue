@@ -21,7 +21,7 @@ data () {
       addForm:{
         content:'',
         problemId:'',
-        shareCode:''
+        preShareCode:''
       }
      
     }
@@ -58,7 +58,7 @@ data () {
      this.addForm={
           content:'',
           problemId:'',
-          shareCode:''
+          preShareCode:''
         };
       
   },
@@ -67,7 +67,7 @@ data () {
       let query=this.$root.$mp.query;
       this.addForm.problemId=query.problemId
       getProblem({'problemId':query.problemId}).then((res)=>{
-        this.addForm.shareCode=res.retData.shareCode;
+        this.addForm.preShareCode=res.retData.shareCode;
       })
 
   },

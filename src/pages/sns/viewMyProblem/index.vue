@@ -22,19 +22,26 @@
               </block>
             </div>
         </div>
-         <div class="problemEndTime">
+         <div class="problemEndTime" v-if="addForm.state==0">
             {{addForm.endTime}}
          </div>
+          <div class="problemEndTime" v-if="addForm.state==1">
+            已结束
+         </div>
+          <div class="problemEndTime" v-if="addForm.state==2">
+            超时结束
+         </div>
+
 
          <div class="problemNum">
             <span class="viewNum">{{addForm.viewNum}}  围观</span>
             <span class="answerNum">{{addForm.answerNum}}  回答</span>
          </div>
-         <div class="answerAction">
+         <div class="answerAction" v-if="list.length>0&&addForm.state==0">
              <a  @click="handleAdmin" v-if="itemArray.length==0"> 管理</a>
              <a  @click="handleCancel" v-if="itemArray.length>0"> 取消</a>
          </div>
-
+        
          <div class="answerItem" v-for="(item,index) in list" :key="index">
             <div class="answerHead">
               <span class="answerPersonName">{{item.personName}}</span>
@@ -58,13 +65,17 @@
          </div>  
       </div>
 
-        <div class="problemButton">
+        <div class="problemButton" v-if="addForm.state==0">
           <button type="primary" style="width:30%" @click="showPop" v-if="itemArray.length==0">
           分享
           </button>
-          <button type="primary" style="width:30%" @click="saveR" v-if="itemArray.length>0">
+          <button type="primary" style="width:30%" @click="save" v-if="itemArray.length>0">
            提交
           </button>
+        </div>
+
+         <div class="problemButton" v-if="addForm.state==1">
+           <button type="primary" style="width:30%" @click="viewSucess">获奖名单</button>
         </div>
     
 
@@ -83,7 +94,7 @@
 </template>
 
 <script>
-import {getProblem,getAnswer,getFileList,createShareImg,url} from '../../../api/api';
+import {getProblem,getAnswer,getFileList,createShareImg,url,saveResult} from '../../../api/api';
 
 export default {
 
@@ -92,6 +103,7 @@ data () {
         list:[],
         addForm:{
           problemId:'',
+          state:'',
           title:'',
           content:'',
           giftId:'',
@@ -207,6 +219,22 @@ data () {
       }
       this.itemArray=array;
       console.log(this.itemArray);
+    },
+
+    save(){
+      var answerIdList=[];
+      for(var i=0;i<this.itemArray.length;i++){
+          if(this.itemArray[i]==1){
+            var answerId=this.list[i].answerId;
+            answerIdList.push(answerId);
+          }
+      }
+
+      saveResult({'problemId':this.addForm.problemId,'answerIdList':answerIdList}).then((res)=>{
+        wx.redirectTo({
+          url: '/pages/sns/myProblem/main'
+        })
+      })
     }
 
   
