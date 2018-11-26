@@ -88,6 +88,7 @@ export const getProblemByShareCode= params => { return fly.post(`${base}/xcx/log
 export const getResultByProblemId= params => { return fly.post(`${base}/xcx/login/sns/getResultByProblemId.xcx`,qs.stringify(params)).then(res => res.data); }; 
 export const saveAnswer= params => { return fly.post(`${base}/xcx/login/sns/saveAnswer.xcx`,qs.stringify(params)).then(res => res.data); }; 
 export const getAnswer= params => { return fly.post(`${base}/xcx/login/sns/getAnswerByProblemId.xcx`,qs.stringify(params)).then(res => res.data); }; 
+export const getAnswerByOpenId= params => { return fly.post(`${base}/xcx/login/sns/getAnswerByProblemIdAndOpenId.xcx`,qs.stringify(params)).then(res => res.data); }; 
 export const saveResult = params => { return fly.post(`${base}/xcx/login/sns/saveResult.xcx`,qs.stringify(params,{arrayFormat:'repeat'})).then(res => res.data); };
 
 

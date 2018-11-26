@@ -32,37 +32,22 @@
             超时结束
          </div>
 
-         <div class="problemNum">
+          <div class="problemNum">
             <span class="viewNum">{{addForm.viewNum}}  围观</span>
             <span class="answerNum">{{addForm.answerNum}}  回答</span>
-         </div>
-
-        
-          <div class="gift">
-             <div class="giftTitle">
-                悬赏礼品  <span class="giftName">{{addForm.giftName}}</span>
-             </div>
-             <div class="giftContent">
-                <div class="giftMoney">{{addForm.money}}</div>
-                <div class="giftName">{{addForm.giftName}}</div>
-             </div>
-             <div class="giftBottom">
-                <div class="giftBottomMoney">
-                  <span class="answerMoney">80%</span>
-                  <span class="shareMoney">20%</span>
-                </div>
-                <div class="giftBottomDesc">
-                  <span class="answerDesc">成功解决奖</span>
-                  <span class="shareDesc">传播有功奖</span>
-                </div>
-             </div>    
+            <span class="giftName">{{addForm.giftName}}  </span>
           </div>
-
-        <div class="problemButton" v-if="addForm.state==0">
-          <button type="primary"  class="shareLButton" @click="handle"> 查看回答 </button>
-          <button type="primary" class="shareRButton" @click="showPop" >分享</button>
-        </div>
-    </div>
+          <div class="answer">
+            <div class="answerContent">
+              {{answer.content}}
+            </div>
+            <div class="answerCreateDate">
+              {{answer.createDate}} 
+            </div>
+          </div>
+       </div>
+          <button type="primary" style="width:40%;margin-top:20px" @click="showPop" >分享</button>
+       
 
   <div :class="popContainer" @click="hiddenPop" v-if="popContainer!=''">
   </div>
@@ -75,11 +60,20 @@
       <button type="primary" class="shareRButton" @click="downLoadJpg" > 分享朋友圈 </button>
   </div>
 
+  <div :class="popAnswer" v-if="popAnswer!=''" >
+    <div class="popImg">
+      <img :src="popImgUrl" style="width:298px;height:400px"></img>
+    </div>
+   
+      <button type="primary" class="shareLButton" open-type="share"  > 分享好友 </button>
+      <button type="primary" class="shareRButton" @click="downLoadJpg" > 分享朋友圈 </button>
+  </div>
+
 </div>
 </template>
 
 <script>
-import {getProblem,getProblemByShareCode,getProblemByOutShareCode,getFileList,createShareImg,url} from '../../../api/api';
+import {getProblem,getProblemByShareCode,getProblemByOutShareCode,getFileList,createShareImg,getAnswerByOpenId,url} from '../../../api/api';
 
 export default {
 
@@ -96,6 +90,9 @@ data () {
           dayNum:3,
           picId:'',
           shareCode:''
+        },
+        answer:{
+
         },
         files:[],
         popContainer:'',
@@ -245,8 +242,8 @@ onShareAppMessage: function (e) {
      let query=this.$root.$mp.query;
      getProblem({'problemId':query.problemId}).then((res)=>{
         this.addForm=res.retData;
-        getFileList({'bussinessId':this.addForm.problemId}).then((res)=>{
-          this.files=res.retData;
+        getAnswerByOpenId({'problemId':query.problemId}).then((res)=>{
+          this.answer=res.retData;
         })
      })
   },
@@ -288,8 +285,9 @@ onShareAppMessage: function (e) {
 .problemNum{
   border-bottom: 1px solid #f3f3f3;
   padding-bottom:10px;
-  font-size: 14px;
-  width: 100%
+  font-size: 12px;
+  width: 100%;
+  color: #b4b4b4;
 }
 
 .problemNum .viewNum{
@@ -297,9 +295,34 @@ onShareAppMessage: function (e) {
 }
 
 .problemNum .answerNum{
-  float: right;
-  margin-right:60px;
+  margin-left: 20px;
 }
+
+.problemNum .giftName{
+  float: right;
+  margin-right:30px;
+}
+
+.answer{
+  width: 100%;
+  display: inline-block;
+ }
+ .answer .answerContent{
+   padding: 10px;
+   font-size: 16px;
+   width: 100%;
+
+ }
+
+ .answer .answerCreateDate{
+   font-size: 12px;
+   color: #b4b4b4;
+   margin-right: 20px;
+   float: right;
+ }
+
+
+
 .gift{
    border: 1px solid #f3f3f3;
    padding: 10px;
