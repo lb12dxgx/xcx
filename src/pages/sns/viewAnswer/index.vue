@@ -309,7 +309,7 @@ onShareAppMessage: function (e) {
  }
  .answer .answerContent{
    padding: 10px;
-   font-size: 16px;
+   font-size: 16px;  
    width: 100%;
 
  }
