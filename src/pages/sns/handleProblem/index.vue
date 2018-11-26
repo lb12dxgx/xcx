@@ -42,7 +42,7 @@ data () {
 
     saveAnswer(this.addForm).then((res)=>{
         wx.redirectTo({
-          url: '/pages/sns/submitProblem/main'
+          url: '/pages/sns/listProblem/main'
       })
     })
    },

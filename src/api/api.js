@@ -78,11 +78,14 @@ export const exchangeList = params => { return fly.post(`${base}/xcx/login/mail/
 
 
 export const myProblem = params => { return fly.post(`${base}/xcx/login/sns/myProblem.xcx`,qs.stringify(params)).then(res => res.data); }; 
+export const listProblem = params => { return fly.post(`${base}/xcx/login/sns/listProblem.xcx`,qs.stringify(params)).then(res => res.data); }; 
+export const otherProblem = params => { return fly.post(`${base}/xcx/login/sns/otherProblem.xcx`,qs.stringify(params)).then(res => res.data); }; 
 export const addProblem = params => { return fly.post(`${base}/xcx/login/sns/addProblem.xcx`,qs.stringify(params)).then(res => res.data); }; 
 export const saveProblem = params => { return fly.post(`${base}/xcx/login/sns/saveProblem.xcx`,qs.stringify(params)).then(res => res.data); }; 
 export const getProblem = params => { return fly.post(`${base}/xcx/login/sns/getProblem.xcx`,qs.stringify(params)).then(res => res.data); }; 
 export const createShareImg= params => { return fly.post(`${base}/xcx/login/sns/createShareImg.xcx`,qs.stringify(params)).then(res => res.data); }; 
 export const getProblemByShareCode= params => { return fly.post(`${base}/xcx/login/sns/getProblemByShareCode.xcx`,qs.stringify(params)).then(res => res.data); }; 
+export const getResultByProblemId= params => { return fly.post(`${base}/xcx/login/sns/getResultByProblemId.xcx`,qs.stringify(params)).then(res => res.data); }; 
 export const saveAnswer= params => { return fly.post(`${base}/xcx/login/sns/saveAnswer.xcx`,qs.stringify(params)).then(res => res.data); }; 
 export const getAnswer= params => { return fly.post(`${base}/xcx/login/sns/getAnswerByProblemId.xcx`,qs.stringify(params)).then(res => res.data); }; 
 export const saveResult = params => { return fly.post(`${base}/xcx/login/sns/saveResult.xcx`,qs.stringify(params,{arrayFormat:'repeat'})).then(res => res.data); };

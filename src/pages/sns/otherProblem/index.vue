@@ -6,13 +6,13 @@
               <a  class="link-none" @click="goStep1">寻找帮助</a>
             </li>
             <li>
-              <a   class="link-on" @click="goStep2">我的问题</a>
+              <a   class="link-none" @click="goStep2">我的问题</a>
             </li>
              <li>
               <a   class="link-none" @click="goStep3">问题大厅</a>
             </li>
              <li>
-              <a   class="link-none" @click="goStep4">我参与的</a>
+              <a   class="link-on" @click="goStep4">我参与的</a>
             </li>
           </ul>
       </div>
@@ -21,7 +21,9 @@
           <a @click="view(item.problemId)">
             <div class="problem-head">
               <span class="problem-personName">{{item.personName}}</span>
-              <span class="problem-createDate">{{item.createDate}}</span>
+              <div class="problem-enterpriseName">
+                  {{item.enterpriseName}}
+              </div>
               <span class="problem-state">{{statMap[item.state]}}</span>
             </div>
             <div class="problem-title">{{item.title}}</div>
@@ -29,6 +31,7 @@
             <div class="problem-bottom">
               <span class="problem-viewNum">围观：{{item.viewNum}}</span>
               <span class="problem-answerNum">回答：{{item.answerNum}}</span>
+               <span class="problem-createDate">{{item.createDate}}</span>
               <span class="problem-giftName">{{item.giftName}}</span>
             </div>
           </a>
@@ -40,7 +43,7 @@
 <script>
 
 
-import {myProblem} from '../../../api/api';
+import {otherProblem} from '../../../api/api';
 
 
 export default {
@@ -62,7 +65,7 @@ export default {
   methods: {
     view(problemId){
       wx.navigateTo({
-        url: '/pages/sns/viewMyProblem/main?problemId='+problemId
+        url: '/pages/sns/viewAnswer/main?problemId='+problemId
       })
     },
     goStep1(){
@@ -101,7 +104,7 @@ export default {
   onReachBottom() {
     if(this.total>this.list.length){
       this.pageNum=this.pageNum+1
-      myProblem({'pageNum':this.pageNum}).then((res)=>{
+      otherProblem({'pageNum':this.pageNum}).then((res)=>{
         this.list=this.list.concat(res.retData.content);
       })
     }
@@ -112,7 +115,7 @@ export default {
   },
 
   onLoad() {
-   myProblem().then((res)=>{
+   otherProblem().then((res)=>{
     this.list=res.retData.content;
     this.total=res.retData.totalElements;
    });
@@ -153,6 +156,10 @@ export default {
   color: #b4b4b4;
 }
 
+.problem-enterpriseName{
+  float: left;
+  margin-left:10px;
+}
 .problem-createDate{
   float: left;
   margin-left:10px;

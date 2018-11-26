@@ -160,7 +160,7 @@ data () {
 
     goStep4(){
       wx.redirectTo({
-        url: '/pages/sns/shareProblem/main'
+        url: '/pages/sns/otherProblem/main'
       })
     },
 

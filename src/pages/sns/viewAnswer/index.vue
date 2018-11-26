@@ -32,52 +32,37 @@
             超时结束
          </div>
 
-
          <div class="problemNum">
             <span class="viewNum">{{addForm.viewNum}}  围观</span>
             <span class="answerNum">{{addForm.answerNum}}  回答</span>
          </div>
-         <div class="answerAction" v-if="list.length>0&&addForm.state==0">
-             <a  @click="handleAdmin" v-if="itemArray.length==0"> 管理</a>
-             <a  @click="handleCancel" v-if="itemArray.length>0"> 取消</a>
-         </div>
-        
-         <div class="answerItem" v-for="(item,index) in list" :key="index">
-            <div class="answerHead">
-              <span class="answerPersonName">{{item.personName}}</span>
-              <span class="answerEnterpriseName">
-               {{item.enterpriseName}}|{{item.personPosition}}</span>
-            </div>
 
-            <div class="answerContent" @click="selectCheck(index)">
-              <icon type="success" size="25" color="red" style="margin-right:5px"
-              v-if="itemArray[index]==1" />
-              <div class='icon_none' style="display:inline-block;margin-right:5px" v-if="itemArray[index]==0">
-                
-              </div>
-              <div style="display:inline-block;margin-left:5px">
-                {{item.content}}
-              </div>
-            </div>
-            <div class="answerBottom">
-              {{item.createDate}}
-            </div>
-         </div>  
-      </div>
+        
+          <div class="gift">
+             <div class="giftTitle">
+                悬赏礼品  <span class="giftName">{{addForm.giftName}}</span>
+             </div>
+             <div class="giftContent">
+                <div class="giftMoney">{{addForm.money}}</div>
+                <div class="giftName">{{addForm.giftName}}</div>
+             </div>
+             <div class="giftBottom">
+                <div class="giftBottomMoney">
+                  <span class="answerMoney">80%</span>
+                  <span class="shareMoney">20%</span>
+                </div>
+                <div class="giftBottomDesc">
+                  <span class="answerDesc">成功解决奖</span>
+                  <span class="shareDesc">传播有功奖</span>
+                </div>
+             </div>    
+          </div>
 
         <div class="problemButton" v-if="addForm.state==0">
-          <button type="primary" style="width:30%" @click="showPop" v-if="itemArray.length==0">
-          分享
-          </button>
-          <button type="primary" style="width:30%" @click="save" v-if="itemArray.length>0">
-           提交
-          </button>
+          <button type="primary"  class="shareLButton" @click="handle"> 查看回答 </button>
+          <button type="primary" class="shareRButton" @click="showPop" >分享</button>
         </div>
-
-         <div class="problemButton" v-if="addForm.state==1">
-           <button type="primary" style="width:30%" @click="viewSucess">获奖名单</button>
-        </div>
-    
+    </div>
 
   <div :class="popContainer" @click="hiddenPop" v-if="popContainer!=''">
   </div>
@@ -94,13 +79,12 @@
 </template>
 
 <script>
-import {getProblem,getAnswer,getFileList,createShareImg,url,saveResult} from '../../../api/api';
+import {getProblem,getProblemByShareCode,getProblemByOutShareCode,getFileList,createShareImg,url} from '../../../api/api';
 
 export default {
 
 data () {
     return {
-        list:[],
         addForm:{
           problemId:'',
           state:'',
@@ -113,7 +97,6 @@ data () {
           picId:'',
           shareCode:''
         },
-        itemArray:[],
         files:[],
         popContainer:'',
         popPick:'',
@@ -194,55 +177,40 @@ data () {
 
       });
    },
-
-    handleAdmin(){
-      var array=[];
-      for(var i=0;i<this.list.length;i++){
-          array[i]=0;
-      }
-        this.itemArray=array;
-    },
-
-     handleCancel(){
-      this.itemArray=[];
-    },
-
-    selectCheck(index){
-      var array=[...this.itemArray];
-      if(this.itemArray[index]==null){
-        return;
-      }
-      if(array[index]==0){
-        array[index]=1
-       }else{
-        array[index]=0
-      }
-      this.itemArray=array;
-      console.log(this.itemArray);
-    },
-
-    save(){
-      var answerIdList=[];
-      for(var i=0;i<this.itemArray.length;i++){
-          if(this.itemArray[i]==1){
-            var answerId=this.list[i].answerId;
-            answerIdList.push(answerId);
-          }
-      }
-
-      saveResult({'problemId':this.addForm.problemId,'answerIdList':answerIdList}).then((res)=>{
-        wx.redirectTo({
-          url: '/pages/sns/myProblem/main'
+    handle(){
+      var openid=wx.getStorageSync('openid');
+      console.log("openid="+openid);
+      if(openid==''){
+          wx.switchTab({
+            url: '/pages/my/main'
+          });
+         
+      }else{
+       wx.navigateTo({
+              url: '/pages/sns/handleProblem/main?problemId='+this.addForm.problemId
         })
-      })
+      }
     },
 
-    viewSucess(){
-      wx.redirectTo({
-          url: '/pages/sns/viewResult/main?problemId='+this.addForm.problemId
-      })
+    getByShareCode(shareCode){
+      var openid=wx.getStorageSync('openid');
+        console.log("openid="+openid);
+      if(openid==''){
+        getProblemByOutShareCode({'shareCode':shareCode}).then((res)=>{
+          this.addForm=res.retData;
+          getFileList({'bussinessId':this.addForm.problemId}).then((res)=>{
+            this.files=res.retData;
+          })
+        })
+      }else{
+        getProblemByShareCode({'shareCode':shareCode}).then((res)=>{
+          this.addForm=res.retData;
+          getFileList({'bussinessId':this.addForm.problemId}).then((res)=>{
+            this.files=res.retData;
+          })
+        })
+      }
     }
-
   
  },
 
@@ -269,24 +237,19 @@ onShareAppMessage: function (e) {
           dayNum:'',
           picId:''
         };
-       this.files=[];
-       this.list=[];
-       this.itemArray=[];
+       this.files=[]
       
   },
 
   onLoad() {
-      let problemId=this.$root.$mp.query.problemId;
-      getProblem({'problemId':problemId}).then((res)=>{
+     let query=this.$root.$mp.query;
+     getProblem({'problemId':query.problemId}).then((res)=>{
         this.addForm=res.retData;
-        getAnswer({'problemId':problemId}).then((res)=>{
-          this.list=res.retData;
-        })
-        getFileList({'bussinessId':problemId}).then((res)=>{
+        getFileList({'bussinessId':this.addForm.problemId}).then((res)=>{
           this.files=res.retData;
         })
-      })
-   },
+     })
+  },
 
 
 
@@ -337,44 +300,66 @@ onShareAppMessage: function (e) {
   float: right;
   margin-right:60px;
 }
-
-.answerAction{
-  background-color:#f3f3f3;
-  padding: 5px;
-  border-top:1px solid red;
-  height: 25px;
+.gift{
+   border: 1px solid #f3f3f3;
+   padding: 10px;
 }
 
-.answerAction a{
-  color:#d80702;
-  font-size:16px;
-  padding-left: 10px;
+.gift .giftTitle{
+   font-size: 16px;
+   font-weight: bold;
 }
 
-
-.answerItem{
-  margin:5px 5px;
-  border-bottom:1px solid #f3f3f3;
-  width: 100%;
+.gift .giftTitle .giftMoney{
+   font-size: 16px;
+   font-weight: bold;
+   color: red;
+}
+.gift .giftContent{
+  text-align: center;
 }
 
-.answerItem .answerHead{
+.gift .giftContent .giftMoney{
+  margin-top: 80px;
+  font-size: 16px;
+  color: red;
+}
+
+.gift .giftContent .giftName{
   font-size: 12px;
-  color: #b4b4b4;
+ 
+}
+
+.giftBottom{
+  margin-top: 100px;
+}
+
+.giftBottom .giftBottomMoney{
+  text-align: center;
+  color: red;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.giftBottom .giftBottomMoney .answerMoney{
+  margin-right: 120px;
+}
+
+.giftBottom .giftBottomMoney .shareMoney{
+  margin-left: 120px;
 }
 
 
-.answerItem .answerHead .answerEnterpriseName{
-  margin-left: 10px;
+.giftBottom .giftBottomDesc{
+  text-align: center;
 }
 
-.answerItem  .answerContent{
-  margin: 5px 5px;
+.giftBottom .giftBottomDesc .answerDesc{
+  margin-right: 100px;
 }
-.answerItem  .answerBottom{
-  margin-left:80%;
-  font-size: 12px;
-  color: #b4b4b4;
+
+.giftBottom .giftBottomDesc .shareDesc{
+  margin-left: 100px;
 }
 
 .problemButton{
@@ -429,13 +414,5 @@ onShareAppMessage: function (e) {
   margin-top:10px;
   margin-bottom:10px;
  }
-
- .icon_none{
-  display:inline-block;
-  width: 40rpx;
-  height: 40rpx;
-  border: 1rpx solid #d6d6d6;
-  border-radius: 50%;
-}
 
 </style>
