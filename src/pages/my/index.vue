@@ -51,13 +51,13 @@
 
             <a class="weui-cell weui-cell_access" @click="goGift">
                 <div class="weui-cell__bd">
-                    <p>我的礼物</p>
+                    <p>我的兑换记录</p>
                 </div>
                 <div class="weui-cell__ft">
                 </div>
             </a>
             
-            <a class="weui-cell weui-cell_access" href="javascript:;">
+            <a class="weui-cell weui-cell_access" @click="goProblem">
                 <div class="weui-cell__bd">
                     <p>我的提问</p>
                 </div>
@@ -202,7 +202,13 @@ export default {
   wx.navigateTo({
     url: '/pages/mail/myexchange/main'
   })
- }
+ },
+
+ goProblem(){
+  wx.navigateTo({
+    url: '/pages/sns/myProblem/main'
+  })
+ },
 
 },
   onShow() {

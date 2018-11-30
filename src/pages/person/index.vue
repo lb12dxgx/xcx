@@ -34,12 +34,9 @@
                   <label class="weui-label">性别</label>
               </div>
               <div class="weui-cell__bd">
-                  <radio-group class="radio-group" @change="radioChange">
-                    <label class="radio" v-for="(item, index) in items" :key="item.name">
-                      <radio :value="item.name" :checked="item.checked"/> {{item.value}}
-                    </label>
-                </radio-group>
-                 
+                <picker mode="selector"  :range="items" range-key="name"  @change="sexChange">
+                   <input class="weui-input" placeholder="请输入身份证号" v-model="addForm.personSex">
+                </picker>
               </div>
               
         </div>
@@ -111,12 +108,12 @@ export default {
         personName:'',
         userCode:'',
         enterpriseName:'',
-        personSex:'男',
+        personSex:'',
         personPosition:''
       },
       items: [
-        {name: '男', value: '男',checked: 'true'},
-        {name: '女', value: '女',}
+        {name: '男', value: '男'},
+        {name: '女', value: '女'}
       ],
 
       error_personName:'',
@@ -133,17 +130,20 @@ export default {
       this.addForm.personSex=e.target.value
     },
 
+    sexChange:function(e){
+      this.addForm.personSex=this.items[e.mp.detail.value].value;
+      
+    },
+
   
   savePerson(){
+
+
         if(!isPersonName(this.addForm.personName)){
            wx.showToast({
             title: '请输入姓名',
             duration: 2000
           });
-          this.error_personName="error";
-          return false;
-        }else{
-          this.error_personName="";
         };
 
         if(!isCardNo(this.addForm.userCode)){
@@ -151,11 +151,31 @@ export default {
             title: '请输入身份证号',
             duration: 2000
           });
-          this.error_userCode="error";
+         };
+
+        if(this.addForm.enterpriseName==''){
+          wx.showToast({
+            title: '请输入企业名称',
+            duration: 2000
+          });
           return false;
-        }else{
-          this.error_userCode="";
-        };
+       };
+
+        if(this.addForm.personPosition==''){
+          wx.showToast({
+            title: '请输入职位',
+            duration: 2000
+          });
+          return false;
+       };
+
+        if(this.addForm.personSex==''){
+          wx.showToast({
+            title: '请输入性别',
+            duration: 2000
+          });
+          return false;
+       };
 
         savePersonDesc(this.addForm) .then((res)=>{
          wx.switchTab({
