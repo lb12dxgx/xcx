@@ -8,8 +8,8 @@ var fly=new Fly
 //let base = ip;
 //let base = 'http://'+ip+'/api/';
 //let base = 'http://www.118-china.com/'
-//let base = 'https://xcx.118-china.com/';
-let base = 'http://127.0.0.1:80';
+let base = 'https://xcx.118-china.com/';
+//let base = 'http://127.0.0.1:80';
 //let base = 'http://192.168.3.11:80';
 export const url=base;
 export const isExitByTelphone = params => {return fly.post(`${base}/xcx/isExitByTelphone.xcx`,qs.stringify(params)).then(res => res.data);}; 
