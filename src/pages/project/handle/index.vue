@@ -170,7 +170,6 @@ export default {
           type:'',
           resultDate:'',
           resultSumary:''
-
         },
         projectForm:{},
         centpoint:{
@@ -221,6 +220,14 @@ export default {
       this.step2=true;
       this.step1=false;
       this.step3=false;
+      this.centpoint={
+          longitude:'',
+          latitude:'',
+        };
+      this.pointarray=[];
+      this.markers= [];
+      this.polyline= [];
+
       getApplayproject({'beforeProjectId':this.beforeProjectId}).then((res)=>{
         this.projectForm=res.retData;
         this.showMap();
@@ -233,6 +240,12 @@ export default {
       this.step3=true;
       this.step1=false;
       this.step2=false;
+      this.addForm={
+          result:'',
+          type:'',
+          resultDate:'',
+          resultSumary:''
+        };
     },
 
     saveResult(){
@@ -313,7 +326,6 @@ export default {
       this.step1=true;
       this.step2=false;
       this.step3=false;
-      this.addForm={};
       this.fileList=[];
   },
 

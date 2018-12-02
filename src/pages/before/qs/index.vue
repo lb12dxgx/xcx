@@ -158,10 +158,6 @@
               <label class="lablefocus">工程地点</label>
               
            </div>
-           <div class="text-box ">
-              <input  type="text" v-model="addForm.projectStartEnd" />
-              <label class="lablefocus">工程起止点</label>
-           </div>
 
            <div class="weui-uploader__bd th-backwhite clearfix">
             <div class="weui-uploader__files" id="uploaderFiles">
@@ -363,6 +359,21 @@ export default {
       this.step1class='link-none';
       this.step2class='link-none';
       this.step3class='link-on';
+
+      this.addForm={
+        projectName:'',
+        projectType:'',
+        cityDistrictId:'',
+        projectDistrict:'',
+        cityAreaId:'',
+        projectArea:'',
+        projectStartDate:'',
+        projectAddren:'',
+        projectStartEnd:'',
+        picId:'',
+        mapJson:''
+        };
+
       addApplayproject() .then((res)=>{
         this.addForm.picId=res.retData.picId;
         this.addForm.openid=wx.getStorageSync('openid');
@@ -616,13 +627,6 @@ export default {
           return false;
        };
 
-        if(this.addForm.projectStartEnd==''){
-          wx.showToast({
-            title: '请填写工程起止点',
-            duration: 2000
-          });
-          return false;
-       };
         var jsonStr=JSON.stringify(this.pointarray);
         this.addForm.mapJson=jsonStr;
         saveApplayproject(this.addForm).then((res)=>{

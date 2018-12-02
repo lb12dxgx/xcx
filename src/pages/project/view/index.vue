@@ -242,6 +242,14 @@ export default {
       this.step3=true;
       this.step1=false;
       this.step2=false;
+      this.centpoint={
+          longitude:'',
+          latitude:'',
+        };
+      this.pointarray=[];
+      this.markers= [];
+      this.polyline= [];
+
       getApplayproject({'beforeProjectId':this.beforeProjectId}).then((res)=>{
         this.projectForm=res.retData;
          this.showMap();

@@ -82,15 +82,56 @@ export default {
     },
 
     save(){
+
+       if(this.addForm.enterpriseName==''){
+          wx.showToast({
+            title: '请输入企业名称',
+            duration: 2000
+          });
+          return false;
+       };
+
+        if(this.addForm.qsType==''){
+          wx.showToast({
+            title: '请选择企业类型',
+            duration: 2000
+          });
+          return false;
+       };
+
+       if(this.addForm.enttelphone==''){
+          wx.showToast({
+            title: '请输入企业电话',
+            duration: 2000
+          });
+          return false;
+       };
+
+        if(this.addForm.lxName==''){
+          wx.showToast({
+            title: '请输入联系人',
+            duration: 2000
+          });
+          return false;
+       };
+
+        if(this.addForm.telphone==''){
+          wx.showToast({
+            title: '请输入联系电话',
+            duration: 2000
+          });
+          return false;
+       };
+
       saveEnterprise(this.addForm).then((res)=>{
        addPersonEnterprise({enterpriseId:res.retData.enterpriseId}).then((res)=>{
         wx.setStorageSync("enterpriseType",this.addForm.enterpriseType);
         if(this.addForm.enterpriseType==3){
-            wx.navigateTo({
+            wx.redirectTo({
               url: '/pages/before/js/main'
             })
           }else{
-             wx.navigateTo({
+             wx.redirectTo({
               url: '/pages/before/qs/main'
             })
           }
