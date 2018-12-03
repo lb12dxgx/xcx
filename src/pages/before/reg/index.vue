@@ -159,14 +159,14 @@ export default {
 
     addQS(){
       let query="?enterpriseType=2&applyCityId="+this.applyCityId
-      wx.navigateTo({
+      wx.redirectTo({
         url: '/pages/before/enterprise/main'+query
      })
     },
 
     addJS(){
        let query="?enterpriseType=3&applyCityId="+this.applyCityId
-      wx.navigateTo({
+      wx.redirectTo({
         url: '/pages/before/enterprise/main'+query
      })
     },

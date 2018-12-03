@@ -257,6 +257,20 @@ export default {
       this.step1class='link-on';
       this.step2class='link-none';
 
+      this.addForm={
+        projectName:'',
+        projectType:'',
+        cityDistrictId:'',
+        projectDistrict:'',
+        cityAreaId:'',
+        projectArea:'',
+        projectStartDate:'',
+        projectAddren:'',
+        projectStartEnd:'',
+        picId:'',
+        mapJson:''
+        };
+
       addApplayproject() .then((res)=>{
         this.addForm.picId=res.retData.picId;
         this.addForm.openid=wx.getStorageSync('openid');
