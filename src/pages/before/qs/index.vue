@@ -257,6 +257,8 @@ export default {
         typeArray:['水利工程', '燃气工程', '交通工程', '通讯工程', '其他工程'],
         type:"",
         list:[],
+        pageNum:0,
+        total:0,
         finshlist:[],
         finshpageNum:0,
         finshtotal:0,
@@ -335,9 +337,11 @@ export default {
       this.step1class='link-on';
       this.step2class='link-none';
       this.step3class='link-none';
+      this.pageNum=0;
+      this.list=[];
       applayprojectListByCityId().then((res)=>{
-        this.list=res.retData;
-        
+        this.list=res.retData.content;
+        this.total=res.retData.totalElements;
       });
     },
 
@@ -348,9 +352,11 @@ export default {
       this.step1class='link-none';
       this.step2class='link-on';
       this.step3class='link-none';
+      this.finshpageNum=0;
+      this.finshlist=[];
       applayprojectListFinshByOpenId().then((res)=>{
         this.finshlist=res.retData.content;
-        this.total=res.retData.totalElements;
+        this.finshtotal=res.retData.totalElements;
       });
     },
 
@@ -697,12 +703,25 @@ export default {
 
 
   onReachBottom() {
-    if(this.finshtotal>this.finshlist.length){
-      this.finshpageNum=this.finshpageNum+1
-      applayprojectListFinshByOpenId({'pageNum':this.pageNum}).then((res)=>{
-        this.finshlist=this.finshlist.concat(res.retData.content);
-      })
+    if(this.step2){
+      if(this.finshtotal>this.finshlist.length){
+        this.finshpageNum=this.finshpageNum+1
+        applayprojectListFinshByOpenId({'pageNum':this.finshpageNum}).then((res)=>{
+          this.finshlist=this.finshlist.concat(res.retData.content);
+        })
+      }
     }
+
+    if(this.step1){
+      if(this.total>this.list.length){
+        this.pageNum=this.pageNum+1
+        applayprojectListByCityId({'pageNum':this.pageNum}).then((res)=>{
+          this.list=this.list.concat(res.retData.content);
+        })
+      }
+    }
+
+
   },
 
   onUnload(){

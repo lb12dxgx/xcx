@@ -136,6 +136,15 @@ export default {
       this.step2=false;
       this.files=[];
       this.viedoFiles=[];
+      this.addForm={
+        accidentPicId:'',
+        accidentVideoId:'',
+        openid:'',
+        accidentName:'',
+        accidentDesc:'',
+        accidentPlace:'',
+        accidentDate:''
+       };
       addAccidentinfo().then((res)=>{
         this.addForm.accidentPicId=res.retData.accidentPicId;
         this.addForm.accidentVideoId=res.retData.accidentVideoId;

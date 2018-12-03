@@ -296,8 +296,11 @@ export default {
       this.step1=false;
       this.step1class='link-none';
       this.step2class='link-on';
+      this.pageNum=0;
+      this.list=[];
       applayprojectListByOpenId().then((res)=>{
-        this.list=res.retData;
+        this.list=res.retData.content;
+        this.total=res.retData.totalElements;
         
       });
     },
@@ -594,6 +597,18 @@ export default {
     
  },
 
+ onReachBottom() {
+    if(this.step2){
+      if(this.total>this.list.length){
+        this.pageNum=this.pageNum+1
+        applayprojectListByOpenId({'pageNum':this.pageNum}).then((res)=>{
+          this.list=this.list.concat(res.retData.content);
+        })
+      }
+    }
+
+
+  },
 
 
 
