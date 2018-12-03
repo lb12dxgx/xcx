@@ -186,6 +186,8 @@ export default {
         typeArray:['水利工程', '燃气工程', '交通工程', '通讯工程', '其他工程'],
         type:"",
         list:[],
+        pageNum:0,
+        total:0,
         districtArray: [],
         areaArray: [],
         addForm:{

@@ -262,6 +262,8 @@ export default {
         type:"",
         list:[],
         finshlist:[],
+        finshpageNum:0,
+        finshtotal:0,
         districtArray: [],
         areaArray: [],
         addForm:{
@@ -351,8 +353,8 @@ export default {
       this.step2class='link-on';
       this.step3class='link-none';
       applayprojectListFinshByOpenId().then((res)=>{
-        this.finshlist=res.retData;
-        
+        this.finshlist=res.retData.content;
+        this.total=res.retData.totalElements;
       });
     },
 
@@ -688,6 +690,16 @@ export default {
    
     
  },
+
+
+  onReachBottom() {
+    if(this.finshtotal>this.finshlist.length){
+      this.finshpageNum=this.finshpageNum+1
+      applayprojectListFinshByOpenId({'pageNum':this.pageNum}).then((res)=>{
+        this.finshlist=this.finshlist.concat(res.retData.content);
+      })
+    }
+  },
 
   onUnload(){
       this.step1=true;
