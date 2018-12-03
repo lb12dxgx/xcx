@@ -42,11 +42,12 @@
       </div>
     </div>
 
-    <div class="weui-cells__title" v-if="viedoFiles.length!=0">事故视频</div>
-    <div class="weui-uploader__files">
+    <div class="weui-cells__title" v-if="viedoFiles.length!=0">事故视频</div> 
+    <div class="weui-uploader__files" style="text-align:center">
          <block v-for="(item,index) in viedoFiles" :key="index">
               <video   :src="item.webPath" controls />
-              <a  class="weui-btn weui-btn_min weui-btn_primary" style="width:70%;margin:20px" @click="delVideo(index,item.fileInfoId)" >删除</a> 
+             
+               <button type="primary"  class="shareLButton" @click="delVideo(index,item.fileInfoId)" style="width:40%"> 删除 </button>
           </block>
      </div>
 
@@ -169,6 +170,10 @@ export default {
         sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
         sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
         success: function (res) {
+          wx.showLoading({
+            title: '上传中',
+            mask:true
+          })
         wx.uploadFile({
             url: url+'/xcx/accidentinfo/uploadImg.xcx', //仅为示例，非真实的接口地址
             filePath: res.tempFilePaths[0],
@@ -189,6 +194,7 @@ export default {
             }
 
               _this.files=fileJsonArray;
+               wx.hideLoading();
             }
         })
 
@@ -235,7 +241,10 @@ export default {
         maxDuration: 60,
         camera: 'back',
         success(res) {
-
+          wx.showLoading({
+            title: '上传中',
+            mask:true
+          })
           wx.uploadFile({
             url: url+'/xcx/accidentinfo/uploadVideo.xcx', //仅为示例，非真实的接口地址
             filePath: res.tempFilePath,
@@ -254,6 +263,7 @@ export default {
                 fileJsonArray.push(fileJson);
              }
               _this.viedoFiles=fileJsonArray;
+              wx.hideLoading();
             }
           })
           

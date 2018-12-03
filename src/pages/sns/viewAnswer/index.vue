@@ -46,7 +46,7 @@
             </div>
           </div>
        </div>
-          <button type="primary" style="width:40%;margin-top:20px" @click="showPop" >分享</button>
+          <button type="primary" style="width:40%;margin-top:20px" @click="showPop" v-if="addForm.state==0" >分享</button>
        
 
   <div :class="popContainer" @click="hiddenPop" v-if="popContainer!=''">

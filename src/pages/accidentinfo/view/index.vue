@@ -30,7 +30,7 @@
     </div>
 
     <div class="weui-cells__title" v-if="viedoFiles.length!=0">事故视频</div>
-    <div class="weui-uploader__files">
+    <div class="weui-uploader__files"  style="text-align:center">
          <block v-for="(item,index) in viedoFiles" :key="index">
               <video   :src="item.webPath" controls />
           </block>
