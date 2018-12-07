@@ -37,7 +37,7 @@
         </a>
         <a class="right sgsb-box" @click="goUrl('/pages/sns/submitProblem/main')"> 
       <!--  <a class="right sgsb-box" @click="goUrl('/pages/sns/viewProblem/main?problemId=cedf5ca3-42c1-4e57-8f14-051418b892e9')">   -->
-    <!--   <a class="right sgsb-box" @click="goUrl('/pages/sns/viewProblem/main?shareCode=idday2018112211')" >  -->
+    <!--   <a class="right sgsb-box" @click="goUrl('/pages/sns/viewProblem/main?shareCode=idday201812043')" >  -->
           <ul class="pictext">
             <li class="left"><p><img src="/static/img/gxbbb.png"  class="inconbox"></p></li>
             <li class="right">管线帮帮帮</li>
@@ -90,13 +90,20 @@ export default {
 
   methods: {
      view(meetId){
+      var openid=wx.getStorageSync('openid');
+      if(openid==''){
+        wx.switchTab({
+          url: '/pages/my/main'
+        });
+        return;
+      }
       wx.navigateTo({
         url: '/pages/meet/view/main?meetId='+meetId
       })
     },
     goUrl(path){
       var openid=wx.getStorageSync('openid');
-      console.log("openid="+openid);
+     
       if(openid==''){
         wx.switchTab({
           url: '/pages/my/main'

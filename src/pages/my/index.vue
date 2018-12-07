@@ -79,8 +79,8 @@ export default {
       senddis:false,
       isLogin:true,
       openid:'',
-      telphone:'13720053036',
-      smscode:'5707',
+      telphone:'',
+      smscode:'',
       sendMsg:'发送验证码'
     
     }

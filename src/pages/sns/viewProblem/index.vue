@@ -243,7 +243,7 @@ onShareAppMessage: function (e) {
 
   onLoad() {
      let query=this.$root.$mp.query;
-    if(query.problemId!=""){
+    if(typeof(query.problemId) != "undefined"){
      getProblem({'problemId':query.problemId}).then((res)=>{
         this.addForm=res.retData;
         getFileList({'bussinessId':this.addForm.problemId}).then((res)=>{

@@ -36,6 +36,13 @@ export default {
   
   methods: {
     view(giftId){
+      var openid=wx.getStorageSync('openid');
+      if(openid==''){
+        wx.switchTab({
+          url: '/pages/my/main'
+        });
+        return;
+      }
       wx.navigateTo({
         url: '/pages/mail/view/main?giftId='+giftId
       })
