@@ -35,7 +35,7 @@
               </div>
               <div class="weui-cell__bd">
                 <picker mode="selector"  :range="items" range-key="name"  @change="sexChange">
-                   <input class="weui-input" placeholder="请输入身份证号" v-model="addForm.personSex">
+                   <input class="weui-input" placeholder="请输入身份证号" v-model="addForm.personSex" disabled="true">
                 </picker>
               </div>
               
@@ -144,6 +144,7 @@ export default {
             title: '请输入姓名',
             duration: 2000
           });
+           return false;
         };
 
         if(!isCardNo(this.addForm.userCode)){
@@ -151,6 +152,7 @@ export default {
             title: '请输入身份证号',
             duration: 2000
           });
+           return false;
          };
 
         if(this.addForm.enterpriseName==''){
