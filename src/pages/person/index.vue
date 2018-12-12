@@ -35,7 +35,7 @@
               </div>
               <div class="weui-cell__bd">
                 <picker mode="selector"  :range="items" range-key="name"  @change="sexChange">
-                   <input class="weui-input" placeholder="请输入身份证号" v-model="addForm.personSex" disabled="true">
+                   <input class="weui-input" placeholder="请选择性别" v-model="addForm.personSex" disabled="true">
                 </picker>
               </div>
               
