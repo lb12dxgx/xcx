@@ -29,9 +29,10 @@
     <div class="step1" v-if="step2">
         <div class="weui-cells__title">请选择身份</div>
         <div class="weui-cells ">
-            <a v-for="(item, index) in items" class="weui-cell weui-cell_access" @click="toStep2(item.name)">
+            <a v-for="(item, index) in items" class="weui-cell weui-cell_access" @click="toStep2(item.name,item.state)">
                 <div class="weui-cell__bd">
                     <p>{{item.value}}</p>
+                    <p>{{item.state==0?"启用":"禁用"}}</p>
                 </div>
                 <div class="weui-cell__ft">
                 </div>
@@ -48,9 +49,10 @@
         </div>
 
         <div class="weui-cells ">
-           <a v-for="(item, index) in qsitems" class="weui-cell weui-cell_access" @click="toStepQs(item.enterpriseId)">
+           <a v-for="(item, index) in qsitems" class="weui-cell weui-cell_access" @click="toStepQs(item.enterpriseId,item.state)">
                 <div class="weui-cell__bd">
                     <p>{{item.enterpriseName}}</p>
+                    <p>{{item.state==0?"启用":"禁用"}}</p>
                 </div>
                 <div class="weui-cell__ft">
                 </div>
@@ -171,16 +173,24 @@ export default {
      })
     },
 
-    toStepJs(enterpriseId){
-      addPersonEnterprise({enterpriseId:enterpriseId}).then((res)=>{
-       wx.setStorageSync("enterpriseType",this.addForm.type);
-         wx.redirectTo({
-          url: '/pages/before/js/main'
-          })
-      })
+    toStepJs(enterpriseId,state){
+      if(state==0){
+        addPersonEnterprise({enterpriseId:enterpriseId}).then((res)=>{
+         wx.setStorageSync("enterpriseType",this.addForm.type);
+           wx.redirectTo({
+            url: '/pages/before/js/main'
+            })
+        })
+      }else{
+        wx.showToast({
+            title: '请等待企业审批',
+            duration: 2000
+          });
+          return false;
+      }
     },
 
-    toStepQs(enterpriseId){
+    toStepQs(enterpriseId,state){
       addPersonEnterprise({enterpriseId:enterpriseId}).then((res)=>{
        wx.setStorageSync("enterpriseType",this.addForm.type);
           wx.redirectTo({
